@@ -1,3 +1,6 @@
 # DataLogger
-// am i doing it right
-// testz
+Data logging program for UW-Platteville Rocket Club
+
+To Install:
+___
+
