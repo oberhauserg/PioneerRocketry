@@ -65,6 +65,7 @@ Distributed as-is; no warranty is given.
 // Unfortunately, you'll need to include both in the Arduino
 // sketch, before including the SFE_LSM9DS0 library.
 #include <SPI.h> // Included for SFE_LSM9DS0 library
+#include <SD.h>
 #include <Wire.h>
 #include <SFE_LSM9DS0.h>
 
@@ -94,8 +95,14 @@ LSM9DS0 dof(MODE_SPI, LSM9DS0_CSG, LSM9DS0_CSXM);
 // to pick:
 #define PRINT_CALCULATED
 //#define PRINT_RAW
+//#define PRINT_TO_FILE
+
 
 #define PRINT_SPEED 500 // 500 ms between prints
+
+//File to output to!
+
+File outputFile;
 
 void setup()
 {
@@ -114,6 +121,32 @@ void setup()
   Serial.println(status, HEX);
   Serial.println("Should be 0x49D4");
   Serial.println();
+  
+  #ifdef PRINT_TO_FILE
+    // Open serial communications and wait for port to open:
+  Serial.begin(9600);
+  while (!Serial) {
+    ; // wait for serial port to connect. Needed for Leonardo only
+  }
+
+
+  Serial.print("Initializing SD card...");
+  // On the Ethernet Shield, CS is pin 4. It's set as an output by default.
+  // Note that even if it's not used as the CS pin, the hardware SS pin
+  // (10 on most Arduino boards, 53 on the Mega) must be left as an output
+  // or the SD library functions will not work.
+  pinMode(10, OUTPUT);
+
+  if (!SD.begin(4)) {
+    Serial.println("card initialization failed!");
+    return;
+  }
+  Serial.println("card initialization done.");
+
+  outputFile = SD.open("output.txt", FILE_WRITE);
+  
+  #endif
+  
 }
 
 void loop()
@@ -156,6 +189,16 @@ void printGyro()
   Serial.print(dof.gy);
   Serial.print(", ");
   Serial.println(dof.gz);
+#elif defined PRINT_TO_FILE
+
+  outputFile.print(dof.calcGyro(dof.gx), 2);
+  outputFile.print(", ");
+  outputFile.print(dof.calcGyro(dof.gy), 2);
+  outputFile.print(", ");
+  outputFile.println(dof.calcGyro(dof.gz), 2);
+
+  
+  
 #endif
 }
 
@@ -184,6 +227,15 @@ void printAccel()
   Serial.print(dof.ay);
   Serial.print(", ");
   Serial.println(dof.az);
+  
+#elif defined PRINT_TO_FILE
+  outputFile.print(dof.calcAccel(dof.ax), 2);
+  outputFile.print(", ");
+  outputFile.print(dof.calcAccel(dof.ay), 2);
+  outputFile.print(", ");
+  outputFile.println(dof.calcAccel(dof.az), 2);
+  
+  
 #endif
 
 }
@@ -213,6 +265,14 @@ void printMag()
   Serial.print(dof.my);
   Serial.print(", ");
   Serial.println(dof.mz);
+#elif defined PRINT_TO_FILE
+  outputFile.print(dof.calcMag(dof.mx), 2);
+  outputFile.print(", ");
+  outputFile.print(dof.calcMag(dof.my), 2);
+  outputFile.print(", ");
+  outputFile.println(dof.calcMag(dof.mz), 2);
+  
+  
 #endif
 }
 
