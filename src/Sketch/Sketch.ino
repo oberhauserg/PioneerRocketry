@@ -65,7 +65,7 @@ Distributed as-is; no warranty is given.
 // Unfortunately, you'll need to include both in the Arduino
 // sketch, before including the SFE_LSM9DS0 library.
 #include <SPI.h> // Included for SFE_LSM9DS0 library
-#include <SD.h>
+#include <SdFat.h>
 #include <Wire.h>
 #include <SFE_LSM9DS0.h>
 
@@ -102,11 +102,17 @@ LSM9DS0 dof(MODE_SPI, LSM9DS0_CSG, LSM9DS0_CSXM);
 
 //File to output to!
 
-File outputFile;
+
+SdFat sd;
+SdFile outputFile;
+const int chipSelect = 4;
 
 void setup()
 {
-  Serial.begin(115200); // Start serial at 115200 bps
+  Serial.begin(9600); // Start serial at 115200 bps
+  
+  Serial.print("Stuff");
+  
   // Use the begin() function to initialize the LSM9DS0 library.
   // You can either call it with no parameters (the easy way):
   uint16_t status = dof.begin();
@@ -124,7 +130,6 @@ void setup()
   
   #ifdef PRINT_TO_FILE
     // Open serial communications and wait for port to open:
-  Serial.begin(9600);
   while (!Serial) {
     ; // wait for serial port to connect. Needed for Leonardo only
   }
@@ -135,15 +140,21 @@ void setup()
   // Note that even if it's not used as the CS pin, the hardware SS pin
   // (10 on most Arduino boards, 53 on the Mega) must be left as an output
   // or the SD library functions will not work.
-  pinMode(10, OUTPUT);
+  //pinMode(10, OUTPUT);
 
-  if (!SD.begin(4)) {
+  if (!sd.begin(chipSelect, SPI_HALF_SPEED))
+  {
+    sd.initErrorHalt();
     Serial.println("card initialization failed!");
     return;
   }
   Serial.println("card initialization done.");
 
-  outputFile = SD.open("output.txt", FILE_WRITE);
+  //outputFile = SD.open("output.txt", FILE_WRITE);
+  
+  if (!outputFile.open("output.txt", O_RDWR | O_CREAT | O_AT_END)) {
+    sd.errorHalt("opening test.txt for write failed");
+  }
   
   #endif
   
@@ -155,13 +166,16 @@ void loop()
   printAccel(); // Print "A: ax, ay, az"
   printMag();   // Print "M: mx, my, mz"
   
-  // Print the heading and orientation for fun!
+  //Print the heading and orientation for fun!
   printHeading((float) dof.mx, (float) dof.my);
   printOrientation(dof.calcAccel(dof.ax), dof.calcAccel(dof.ay), 
                    dof.calcAccel(dof.az));
   Serial.println();
   
   delay(PRINT_SPEED);
+  
+  Serial.println("Test");
+  
 }
 
 void printGyro()
