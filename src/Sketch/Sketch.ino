@@ -91,21 +91,22 @@ LSM9DS0 dof(MODE_SPI, LSM9DS0_CSG, LSM9DS0_CSXM);
 */
 
 // Do you want to print calculated values or raw ADC ticks read
-// from the sensor? Comment out ONE of the two #defines below
+// from the sensor? Comment out ONE of the three #defines below
 // to pick:
-#define PRINT_CALCULATED
+//#define PRINT_CALCULATED
 //#define PRINT_RAW
-//#define PRINT_TO_FILE
+#define PRINT_TO_FILE
 
 
-#define PRINT_SPEED 500 // 500 ms between prints
+#define PRINT_SPEED 0 // 500 ms between prints
 
 //File to output to!
 
+unsigned long startTime;
 
 SdFat sd;
 SdFile outputFile;
-const int chipSelect = 4;
+const int chipSelect = 8;
 
 void setup()
 {
@@ -150,11 +151,13 @@ void setup()
   }
   Serial.println("card initialization done.");
 
-  //outputFile = SD.open("output.txt", FILE_WRITE);
   
-  if (!outputFile.open("output.txt", O_RDWR | O_CREAT | O_AT_END)) {
+  
+  if (!outputFile.open("output.csv", O_CREAT | O_TRUNC | O_WRITE )) {
     sd.errorHalt("opening test.txt for write failed");
   }
+  
+  startTime = millis();
   
   #endif
   
@@ -163,8 +166,22 @@ void setup()
 void loop()
 {
   printGyro();  // Print "G: gx, gy, gz"
+  #ifdef PRINT_TO_FILE
+  outputFile.print(", ");
+  #endif
   printAccel(); // Print "A: ax, ay, az"
+  #ifdef PRINT_TO_FILE
+  outputFile.print(", ");
+  #endif
   printMag();   // Print "M: mx, my, mz"
+  
+  #ifdef PRINT_TO_FILE
+    outputFile.print(", ");
+    outputFile.print(millis() - startTime);
+    outputFile.println("");
+    if(millis() - startTime >= 5000)
+      commitToFile();
+  #endif
   
   //Print the heading and orientation for fun!
   printHeading((float) dof.mx, (float) dof.my);
@@ -205,11 +222,13 @@ void printGyro()
   Serial.println(dof.gz);
 #elif defined PRINT_TO_FILE
 
+  Serial.println("Printing to the file... I hope");
+
   outputFile.print(dof.calcGyro(dof.gx), 2);
   outputFile.print(", ");
   outputFile.print(dof.calcGyro(dof.gy), 2);
   outputFile.print(", ");
-  outputFile.println(dof.calcGyro(dof.gz), 2);
+  outputFile.print(dof.calcGyro(dof.gz), 2);
 
   
   
@@ -247,8 +266,7 @@ void printAccel()
   outputFile.print(", ");
   outputFile.print(dof.calcAccel(dof.ay), 2);
   outputFile.print(", ");
-  outputFile.println(dof.calcAccel(dof.az), 2);
-  
+  outputFile.print(dof.calcAccel(dof.az), 2);
   
 #endif
 
@@ -284,8 +302,7 @@ void printMag()
   outputFile.print(", ");
   outputFile.print(dof.calcMag(dof.my), 2);
   outputFile.print(", ");
-  outputFile.println(dof.calcMag(dof.mz), 2);
-  
+  outputFile.print(dof.calcMag(dof.mz), 2);
   
 #endif
 }
@@ -335,3 +352,19 @@ void printOrientation(float x, float y, float z)
   Serial.print(", ");
   Serial.println(roll, 2);
 }
+
+
+void commitToFile()
+{
+   outputFile.close();
+   
+   SdFile newFile;
+   
+   outputFile = newFile;
+  
+   if (!outputFile.open("output.txt", O_CREAT | O_APPEND | O_WRITE)) {
+     sd.errorHalt("opening test.txt for write failed");
+   }
+  
+}
+
