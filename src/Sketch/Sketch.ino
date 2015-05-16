@@ -110,16 +110,16 @@ const int chipSelect = 8;
 
 void setup()
 {
-  Serial.begin(9600); // Start serial at 115200 bps
+  Serial.begin(9600); 
   
   Serial.print("Stuff");
   
   // Use the begin() function to initialize the LSM9DS0 library.
   // You can either call it with no parameters (the easy way):
-  uint16_t status = dof.begin();
+  //uint16_t status = dof.begin();
   // Or call it with declarations for sensor scales and data rates:  
-  //uint16_t status = dof.begin(dof.G_SCALE_2000DPS, 
-  //                            dof.A_SCALE_6G, dof.M_SCALE_2GS);
+  uint16_t status = dof.begin(dof.G_SCALE_2000DPS, 
+                              dof.A_SCALE_16G, dof.M_SCALE_2GS);
   
   // begin() returns a 16-bit value which includes both the gyro 
   // and accelerometers WHO_AM_I response. You can check this to
@@ -131,9 +131,9 @@ void setup()
   
   #ifdef PRINT_TO_FILE
     // Open serial communications and wait for port to open:
-  while (!Serial) {
-    ; // wait for serial port to connect. Needed for Leonardo only
-  }
+ // while (!Serial) {
+ //   ; // wait for serial port to connect. Needed for Leonardo only
+ // }
 
 
   Serial.print("Initializing SD card...");
@@ -151,9 +151,21 @@ void setup()
   }
   Serial.println("card initialization done.");
 
+  String startString = "output";
+  String fileExtend = ".csv";
+  int thisStuff = 0;
+  String finalString = startString + fileExtend;
+
+  Serial.println("File: " + finalString);
+
+  while(sd.exists(finalString.c_str()))
+  {
+    finalString = startString + thisStuff + fileExtend;
+    Serial.println("File: " + finalString);
+    thisStuff++;
+  }
   
-  
-  if (!outputFile.open("output.csv", O_CREAT | O_TRUNC | O_WRITE )) {
+  if (!outputFile.open(finalString.c_str(), O_CREAT | O_TRUNC | O_WRITE )) {
     sd.errorHalt("opening test.txt for write failed");
   }
   
@@ -180,7 +192,7 @@ void loop()
     outputFile.print(millis() - startTime);
     outputFile.println("");
     if(millis() - startTime >= 5000)
-      commitToFile();
+    outputFile.sync();
   #endif
   
   //Print the heading and orientation for fun!
@@ -262,11 +274,11 @@ void printAccel()
   Serial.println(dof.az);
   
 #elif defined PRINT_TO_FILE
-  outputFile.print(dof.calcAccel(dof.ax), 2);
+  outputFile.print(dof.calcAccel(dof.ax));
   outputFile.print(", ");
-  outputFile.print(dof.calcAccel(dof.ay), 2);
+  outputFile.print(dof.calcAccel(dof.ay));
   outputFile.print(", ");
-  outputFile.print(dof.calcAccel(dof.az), 2);
+  outputFile.print(dof.calcAccel(dof.az));
   
 #endif
 
@@ -281,7 +293,7 @@ void printMag()
   
   // Now we can use the mx, my, and mz variables as we please.
   // Either print them as raw ADC values, or calculated in Gauss.
-  Serial.print("M: ");
+  
 #ifdef PRINT_CALCULATED
   // If you want to print calculated values, you can use the
   // calcMag helper function to convert a raw ADC value to
