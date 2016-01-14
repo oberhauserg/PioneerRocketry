@@ -7,13 +7,13 @@
 // data to the XBee.
 // Author: Jacob Napp
 // ----------------------------------------------------------------- 
-//#include <MatrixMath.h>
+#include <MatrixMath.h>
 #include <Wire.h>
-//#include "I2Cdev.h"
-//#include "MPU6050_9Axis_MotionApps41.h"
+#include "I2Cdev.h"
+#include "MPU6050_9Axis_MotionApps41.h"
 
 //#include <SoftwareSerial.h>
-//#include <SdFat.h>
+#include <SdFat.h>
 #include <SPI.h>
 // Note: You can only have one software serial running 
 // at one time
@@ -32,8 +32,6 @@ void setup()
   Wire.begin(); // used for 9DOF 
   Serial.begin(9600);
   Serial2.begin(9600); 
-
-  Constants
   
   delay(2000); // gives serial time to open up
 
@@ -342,13 +340,29 @@ float I[][3] = {
                 {0,1,0},
                 {0,0,1}
                 };
-
+}
 
 float Y[2]; // observed displacement and velocity
 
 float X[2]; // real value for displacement and velocity
 
 float gravity = -32.2f;
+
+
+
+void setUpFilter(float combinedVel, int combinedDis)
+{
+  /*
+}
+  prevX[0] = combinedDis;
+  prevX[1] = combinedVel;
+
+  prevP[0][0] = processErrorsDis * processErrorsDis;
+  prevP[0][1] = processErrorsDis * processErrorsVel;
+  prevP[1][0] = processErrorsDis * processErrorsVel;
+  prevP[1][1] = processErrorsVel * processErrorsVel;
+  */
+}
 
 void kalmanFilter(float *combinedVel, int *combinedDis, int deltaTime)
 {
@@ -380,7 +394,10 @@ void kalmanFilter(float *combinedVel, int *combinedDis, int deltaTime)
   UpdateP();
   
   // step 8: current values become previous values
-  Matrix2.Copy((float*)P,3,3,(float*)prevP);
+  prevP[0][0] = P[0][0];
+  prevP[0][1] = P[0][1];
+  prevP[1][0] = P[1][0];
+  prevP[1][1] = P[1][1];
 
   prevX[0] = X[0];
   prevX[1] = X[1];
@@ -409,7 +426,7 @@ void updatePBar()
 
   // tempP = (A * prevP) * A^T
   float tempP[3][3];
-  Matrix2.Multiply((float*)AtimesprevP, (float*)transposeA, 3, 3, 3, (float*)tempP);
+  Matrix2.Multiply((float*)AtimesprevP, (float*)transposeA, 3 3, 3, (float*)tempP);
 
   // P = tempP + E;
   Matrix2.Add((float*)tempP,(float*)E, 3, 3, (float*)P);
@@ -446,7 +463,8 @@ void updateK()
   Matrix2.Multiply((float*)temp,(float*)temp5,3,2,2,(float*)K);
 }
 
-//X = predX + K(Y - H * predX)
+//X = predX + K(Y - H * predX); H is identity so we remove it
+//X = predX + K(Y - predX);
 void UpdateX()
 {
   // temp0 = H * predX
@@ -540,6 +558,7 @@ bool checkForBurnout(float vel, int dis)
     sendMessage("Reached Burnout.\n");
     engineBurning = false;
     midLaunch = true;
+    setUpFilter(vel, dis);
     return true;
   }
   return false;
