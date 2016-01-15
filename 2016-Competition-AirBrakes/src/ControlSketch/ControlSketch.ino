@@ -9,12 +9,17 @@
 // ----------------------------------------------------------------- 
 #include <MatrixMath.h>
 #include <Wire.h>
-#include "I2Cdev.h"
-#include "MPU6050_9Axis_MotionApps41.h"
-
-//#include <SoftwareSerial.h>
+#include <I2Cdev.h>
+#include <MPU6050_9Axis_MotionApps41.h>
 #include <SdFat.h>
 #include <SPI.h>
+
+//Include our classes
+#include "AirBrakes.h"
+#include "Constants.h"
+#include "Controller.h"
+
+
 // Note: You can only have one software serial running 
 // at one time
 //SoftwareSerial Strato(10, 11); //RX, TX
@@ -26,6 +31,19 @@ bool mpuWorking = true;
 bool airBreaking = false;
 
 int apogee = 0;
+
+void kalmanFilter(float *combinedVel, int *combinedDis, int deltaTime);
+
+void initializeGyro();
+
+void initializeStrato();
+
+void initializeApogee();
+
+
+Controller * cont;
+
+AirBrakes * brakes; 
 
 void setup() 
 {
@@ -40,7 +58,10 @@ void setup()
 
   // initialize Strattologger
   initializeStrato();
-  
+
+  brakes = new AirBrakes();
+
+  cont = new Controller(*brakes);
 
   checkAirBreaks();
   if(airBreaking)
@@ -78,6 +99,7 @@ bool havePitoData = false;
 
 void loop() 
 {
+  
   haveStratoData = havePitoData = false;
   if( airBreaking &&  midLaunch)
   {
