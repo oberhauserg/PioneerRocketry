@@ -7,10 +7,10 @@
 // data to the XBee.
 // Author: Jacob Napp
 // ----------------------------------------------------------------- 
-//#include <MatrixMath.h>
+#include <MatrixMath.h>
 #include <Wire.h>
-//#include "I2Cdev.h"
-//#include "MPU6050_9Axis_MotionApps41.h"
+#include "I2Cdev.h"
+#include "MPU6050_9Axis_MotionApps41.h"
 
 //#include <SoftwareSerial.h>
 //#include <SdFat.h>
@@ -33,7 +33,7 @@ void setup()
   Serial.begin(9600);
   Serial2.begin(9600); 
 
-  Constants
+//  Constants
   
   delay(2000); // gives serial time to open up
 
