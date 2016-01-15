@@ -15,7 +15,7 @@ class Controller
 
 		/**
 		* Sets whether the controller should be active. 
-		* Competiton guidelines say that you should start deploying
+		* Competiton guidelines say that you should not start deploying
 		* brakes before burnout. So this should probably be set to false
 		* right away. 
 		*/
@@ -30,7 +30,34 @@ class Controller
 		*/
 		void update();
 
+		/**
+		* Set the P parameter for the 
+		*
+		*/
+		void setPParameter(float param);
+
+		void setIParameter(float param);
+
+		void setDParameter(float param);
+
+
+
 	private:
+
+		/**
+		* The P parameter for the controller
+		*/
+		float paramP;
+
+		/**
+		* The I parameter for the controller
+		*/
+		float paramI;
+
+		/**
+		* The D parameter for the controller
+		*/
+		float paramD;
 
 		/**
 		* The default constructor is private 
