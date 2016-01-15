@@ -20,7 +20,7 @@ class AirBrakes
 		* way and any attempt to set the deployment percentage will be
 		* ignored. (The update function still has to be called to achieve this).
 		*/
-		void setActive(bool a){active = a; linearActuatorGoal = 0};
+		void setActive(bool a){active = a; linearActuatorGoal = 0;}
 
 		/**
 		* The linear actuator (or whatever else is being used), needs
@@ -40,4 +40,4 @@ class AirBrakes
 		bool active = false;
 
 
-}
+};
