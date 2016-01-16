@@ -362,7 +362,6 @@ float I[][3] = {
                 {0,1,0},
                 {0,0,1}
                 };
-}
 
 float Y[2]; // observed displacement and velocity
 
@@ -448,7 +447,7 @@ void updatePBar()
 
   // tempP = (A * prevP) * A^T
   float tempP[3][3];
-  Matrix2.Multiply((float*)AtimesprevP, (float*)transposeA, 3 3, 3, (float*)tempP);
+  Matrix2.Multiply((float*)AtimesprevP, (float*)transposeA, 3, 3, 3, (float*)tempP);
 
   // P = tempP + E;
   Matrix2.Add((float*)tempP,(float*)E, 3, 3, (float*)P);
