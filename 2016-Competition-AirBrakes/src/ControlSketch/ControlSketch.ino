@@ -32,7 +32,7 @@ bool airBreaking = false;
 
 int apogee = 0;
 
-void kalmanFilter(float *combinedVel, int *combinedDis, int deltaTime);
+void kalmanFilter(float *combinedVel, int *combinedDis, float deltaTime);
 
 void initializeGyro();
 
@@ -120,7 +120,7 @@ void loop()
     // combine values
     if(!haveStratoData && !havePitoData)
       sendData("No Data");
-    combineValues(&combinedVel, &combinedDis, pitoVel, pitoDis, stratoVel, stratoDis, deltaTime);
+    combineValues(&combinedVel, &combinedDis, pitoVel, pitoDis, stratoVel, stratoDis, (float) deltaTime / numMillisecondsInSecond);
 
     sendData(combinedVel, combinedDis);
 
@@ -149,7 +149,7 @@ void loop()
     // combine values
     if(!haveStratoData && !havePitoData)
       sendData("No Data");
-    combineValues(&combinedVel, &combinedDis, pitoVel, pitoDis, stratoVel, stratoDis, deltaTime);
+    combineValues(&combinedVel, &combinedDis, pitoVel, pitoDis, stratoVel, stratoDis, (float) deltaTime / numMillisecondsInSecond);
       
     sendData(combinedVel, combinedDis);
     if(!checkForBurnout(combinedVel,combinedDis))
@@ -167,7 +167,7 @@ void loop()
     stratoVel = getVelStrato(deltaTime, deltaDis);
 
     havePitoData = false;
-    combineValues(&combinedVel, &combinedDis, 0, 0, stratoVel, stratoDis, deltaTime);
+    combineValues(&combinedVel, &combinedDis, 0, 0, stratoVel, stratoDis, (float) deltaTime / numMillisecondsInSecond);
     
     sendData(stratoVel, stratoDis);
     checkForLanding(combinedDis);
@@ -193,7 +193,7 @@ void loop()
       sendData("No Data");
     else
     {
-      combineValues(&combinedVel, &combinedDis, pitoVel, pitoDis, stratoVel, stratoDis, deltaTime);
+      combineValues(&combinedVel, &combinedDis, pitoVel, pitoDis, stratoVel, stratoDis, (float) deltaTime / numMillisecondsInSecond);
     }
     sendData(combinedVel, combinedDis);
     checkForLiftoff(pitoVel, stratoVel);
@@ -254,7 +254,7 @@ float localPitoDisplacement = 0.0f;
 
 int getDisPito(int deltaTime, float pitoVel)
 {
-  localPitoDisplacement = localPitoDisplacement + deltaTime * pitoVel;
+  localPitoDisplacement = localPitoDisplacement + deltaTime * pitoVel / numMillisecondsInSecond;
   return (int)localPitoDisplacement;
 }
 
@@ -310,7 +310,7 @@ float RATIO_PITO_DIS = 0.3f;
 float RATIO_STRATO_VEL = 0.3f;
 float RATIO_STRATO_DIS = 0.7f;
 
-void combineValues(float *combinedVel, int *combinedDis, float pitoVel, int pitoDis, float stratoVel, int stratoDis, int deltaTime)
+void combineValues(float *combinedVel, int *combinedDis, float pitoVel, int pitoDis, float stratoVel, int stratoDis, float deltaTime)
 {
     if(haveStratoData && havePitoData)
     {
@@ -385,7 +385,7 @@ void setUpFilter(float combinedVel, int combinedDis)
   */
 }
 
-void kalmanFilter(float *combinedVel, int *combinedDis, int deltaTime)
+void kalmanFilter(float *combinedVel, int *combinedDis, float deltaTime)
 {
   A[0][1] *= deltaTime;
   A[0][2] *= deltaTime * deltaTime;
