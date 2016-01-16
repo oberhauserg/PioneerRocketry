@@ -65,9 +65,9 @@ void setup()
 
   checkAirBreaks();
   if(airBreaking)
-    sendMessage("Airbreaks are on.\n");
+    sendMessage("Airbreaks are on.\n\n");
   else
-    sendMessage("AirBreaks are off.\n");
+    sendMessage("AirBreaks are off.\n\n");
 
   // initialize apogee
   initializeApogee(); 
@@ -286,7 +286,7 @@ void sendMessage(String msg)
   Serial.print(msg);
 }
 
-long timeDelay = 7000; // time to wait for response in micro seconds
+long timeDelay = 10000; // time to wait for response in micro seconds
 
 String receiveMessage()
 {
@@ -300,7 +300,7 @@ String receiveMessage()
   }
   else
   {
-    sendMessage("Timeout occured! Did not recieve you message.\n");
+    sendMessage("\nTimeout occured! Did not recieve you message.\n");
     return "TIME OUT";
   }
 }
@@ -651,28 +651,29 @@ void writeApogeeToArduino(int apogee)
 
 void initializeApogee()
 {
-  readApogeeFromSDCard();
+//  readApogeeFromSDCard();
 
   // get apogee from XBee
   sendMessage("Current apogee is set at : " + String(apogee) + 
               "\nDo you want to change this. \"Y\" -> change. \"N\" -> leave as is\n");
   String response = receiveMessage(); 
   response.toUpperCase();
-  if(response.equals("Y") || response.equals("Y\n")) // good to here
+  if(response.equals("Y") || response.equals("Y\n") || response.equals("Y\r")) // good to here
   {
     bool badMessage = true;
     int numTimesInLoop = 0;
     int maxTimesInLoop = 10;
     while(badMessage && numTimesInLoop++ != maxTimesInLoop)
+    while(badMessage && numTimesInLoop++ != maxTimesInLoop)
     {
-      sendMessage("Please input your altitude as an integer. (No Periods, Spaces, Commas, or \\n).\n");
+      sendMessage("\nPlease input your altitude as an integer. (No Periods, Spaces, Commas, or \\n).\n");
       sendMessage("Don't mess this up!!!\n");
       response = receiveMessage();
-      sendMessage("Current apogee is set at : " + response +      // BAD MESSAGE
-                "\nIs this correct.  \"Y\" -> correct. \"N\" -> re do");
+      sendMessage("\nCurrent apogee is set at : " + response +      // BAD MESSAGE
+                "\nIs this correct.  \"Y\" -> correct. \"N\" -> try again\n");
       String response2 = receiveMessage();
       response2.toUpperCase();
-      if(response2.equals("Y") || response2.equals("Y\n"))
+      if(response2.equals("Y") || response2.equals("Y\n")|| response2.equals("Y\r"))
       {
         badMessage = false;
         apogee = response.toInt();
@@ -682,10 +683,10 @@ void initializeApogee()
     }  
     if(numTimesInLoop == maxTimesInLoop)
     {
-      sendMessage("Exceeded max number of attemps!\n");       
+      sendMessage("\nExceeded max number of attemps!\n");       
     }
   }
-
+  String y = "Y";
   sendMessage("Apogee set at :" + String(apogee) + "\n");
 }
 
