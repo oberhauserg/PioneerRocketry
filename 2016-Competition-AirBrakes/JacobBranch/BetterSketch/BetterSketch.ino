@@ -51,8 +51,6 @@ void setup()
 
   // initialize apogee
   initializeApogee(); 
-
-  writeApogeeToArduino(apogee);
     
   sendMessage("SequenceNumber,Time(milliSec),Altitude(feet),Velocity(fps)\n");
   lastTimeRecorded = micros();
@@ -659,6 +657,7 @@ void initializeApogee()
     }
   }
   sendMessage("Apogee set at :" + String(apogee) + "\n");
+  writeApogeeToArduino(apogee);
 }
 
 
