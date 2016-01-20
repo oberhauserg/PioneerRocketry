@@ -260,7 +260,7 @@ void writeToSD(int deltaTime, int stratoDis, float pitoVel)
   mz = m3*10.0f*1229.0f/4096.0f + 270.0f;
   
   String info;
-  String accel = String(ax,3) + " " + String(ay,3) + " " + String(az,3);
+  String accel = String(ay,3);
   float ratioUp = getRatioVertical();
   String ratio = String(ratioUp);
   
