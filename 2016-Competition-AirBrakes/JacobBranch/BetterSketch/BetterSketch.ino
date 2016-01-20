@@ -966,14 +966,14 @@ void initializeGyro()
   mpu.setIntDataReadyEnabled(true); // enable data ready interrupt
 }
 
-long DELAY_FOR_STRATO = 12000; // 2 minutes
+long DELAY_FOR_STRATO = 120000; // 2 minutes
 void initializeStrato()
 {
   sendMessage("Waiting for Strattologger to begin transmitting\n");
   long endTime = millis() + DELAY_FOR_STRATO;
   long failSafeCount = 9000000;
   int count = 0;
-  while(Serial2.available() <= 0 && millis() > endTime); // loop until we receive data from stratologger
+  while(Serial2.available() <= 0 && millis() <= endTime); // loop until we receive data from stratologger
   if(millis() >= endTime)
     sendMessage("Telemetry took too long to set up!\n");
   else
