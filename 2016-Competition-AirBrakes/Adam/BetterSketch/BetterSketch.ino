@@ -17,6 +17,7 @@
 // at one time
 //SoftwareSerial Strato(10, 11); //RX, TX
 
+MPU6050 mpu;
 int16_t a1, a2, a3, g1, g2, g3, m1, m2, m3;     // raw data arrays reading
 float ax, ay, az, gx, gy, gz, mx, my, mz; // variables to hold latest sensor data values 
 
@@ -243,9 +244,20 @@ void initDataFile()
 
 void writeToSD(int deltaTime, int stratoDis, float pitoVel)
 {
+  mpu.getAcceleration  ( &a1, &a2, &a3  );
   ax = a1*2.0f/32768.0f;
   ay = a2*2.0f/32768.0f;
   az = a3*2.0f/32768.0f;
+
+  mpu.getRotation  ( &g1, &g2, &g3  );
+  gx = g1*250.0f/32768.0f; // 250 deg/s full range for gyroscope
+  gy = g2*250.0f/32768.0f;
+  gz = g3*250.0f/32768.0f;
+
+  mpu.getMag  ( &m1, &m2, &m3 );
+  mx = m1*10.0f*1229.0f/4096.0f + 18.0f; // milliGauss (1229 microTesla per 2^12 bits, 10 mG per microTesla)
+  my = m2*10.0f*1229.0f/4096.0f + 70.0f; // apply calibration offsets in mG that correspond to your environment and magnetometer
+  mz = m3*10.0f*1229.0f/4096.0f + 270.0f;
   
   String info;
   String accel = String(ax,3) + " " + String(ay,3) + " " + String(az,3);
@@ -741,7 +753,7 @@ void readApogeeFromSDCard()
 // The performance of the orientation filter is at least as good as conventional Kalman-based filtering algorithms
 // but is much less computationally intensive---it can be performed on a 3.3 V Pro Mini operating at 8 MHz!
 //9DOF sensor variables
-MPU6050 mpu;
+
 #define GyroMeasError PI * (40.0f / 180.0f)       // gyroscope measurement error in rads/s (shown as 3 deg/s)
 #define GyroMeasDrift PI * (0.0f / 180.0f)      // gyroscope measurement drift in rad/s/s (shown as 0.0 deg/s/s)
 // There is a tradeoff in the beta parameter between accuracy and response speed.
