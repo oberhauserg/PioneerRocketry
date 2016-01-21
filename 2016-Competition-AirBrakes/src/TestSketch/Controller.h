@@ -17,7 +17,7 @@ class Controller
 		* This way, other parts of the system can 
 		* deactivate the breaks if necessary. 
 		*/
-		Controller(const AirBrakes &b);
+		Controller(const AirBrakes &b){*brakes = b;}
 
 		/**
 		* Sets whether the controller should be active. 

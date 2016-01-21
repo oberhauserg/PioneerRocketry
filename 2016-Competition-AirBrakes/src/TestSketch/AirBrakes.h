@@ -1,5 +1,9 @@
+#include <Servo.h>
+
 #ifndef AIRBRAKES_H
 #define AIRBRAKES_H 
+
+
 
 /**
 * This class deals with the airbreaks, and setting 
@@ -10,12 +14,20 @@ class AirBrakes
 	
 	public:
 
+                AirBrakes(){linearActuator = new Servo();}
+
 		/**
 		* Set the deployment percentage here. 
 		* The PID controller relies on percentage of available force applied.
 		* So just put the controller output into here, and you should be good.
 		*/
 		void setDeploymentPercentage(int percentage);
+
+
+                /*
+                * Set the linear actuator to some amount,
+                */
+                void setLinearActuatorAmount(int amount);
 
 		/**
 		* Sets whether or not the braking system should be active or not. 
@@ -35,6 +47,8 @@ class AirBrakes
 
 	private:
 
+                Servo * linearActuator;
+
 		/**
 		* The goal we are trying to hit with the actuators.
 		*/
@@ -42,6 +56,11 @@ class AirBrakes
 
 		bool active = false;
 
+
+                //These will have to be correctly set up.
+                static const int MAX_ACTUATE = 2000;
+                
+                static const int MIN_ACTUATE = 1050;
 
 };
 

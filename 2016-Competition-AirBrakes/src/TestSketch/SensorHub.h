@@ -11,13 +11,13 @@ public:
 	/**
 	* Return a value to a pointer 
 	*/
-	int* static getGyroMeasurements();
+	static int * getGyroMeasurements(){return gyroArray;}
 
-	int* static getAccelMeasurements();
+	static int * getAccelMeasurements(){return accelArray;}
 
-	int static getAltitude();
+	int static getAltitude(){return 0;}
 
-	int static getPitotTubeVelocity();
+	int static getPitotTubeVelocity(){return 0;}
 
 	/**
 	* Makes the sensor hub update all of the sensor readings again
@@ -33,13 +33,13 @@ private:
 	*
 	* Mapped as: x, y, z
 	*/
-	int * gyroArray = {0,0,0};
+	static int gyroArray[3];
 
 	/**
 	* This is the array that contains acceleration data
 	* Mapped as: x, y, z
 	*/
-	int * accelArray = {0,0,0};
+	static int accelArray[3];
 
 
 

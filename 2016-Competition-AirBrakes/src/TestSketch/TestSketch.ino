@@ -5,6 +5,8 @@
 //
 //-------------------------------------------
 
+#include <Servo.h>
+
 #include "AirBrakes.h"
 #include "Constants.h"
 #include "Controller.h"
@@ -13,6 +15,12 @@
 AirBrakes * brakes;
 
 Controller * cont;
+
+boolean on = true;
+
+int count = 0;
+
+int max_count = 1000;
 
 void setup() {
 
@@ -24,9 +32,7 @@ void setup() {
   
 }
 
-void loop() {
-
-
+void loop() { 
 
   //Update the controller
   cont->update();
@@ -34,4 +40,15 @@ void loop() {
   //Make sure the brakes are being updated
   brakes->update();
   
+  if(on)
+    digitalWrite(13, HIGH); 
+  else
+    digitalWrite(13, LOW);
+   
+  if(count >= max_count)
+  {
+    on = !on;
+    count = 0;
+  }
+  count++;
 }

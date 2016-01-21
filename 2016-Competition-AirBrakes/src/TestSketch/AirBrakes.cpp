@@ -30,7 +30,28 @@ void AirBrakes::setDeploymentPercentage(int percentage)
 	//
 }
 
+void AirBrakes::setLinearActuatorAmount(int amount)
+{
+ 
+  linearActuatorGoal = amount;
+  
+}
+
 void AirBrakes::update()
 {
 	//This will be fun.
+  
+  int tempGoal = linearActuatorGoal;
+  
+  if(tempGoal > MAX_ACTUATE)
+    tempGoal = MAX_ACTUATE;
+  else if(tempGoal < MIN_ACTUATE)
+    tempGoal = MIN_ACTUATE;
+    
+  
+  linearActuator->writeMicroseconds(tempGoal); 
+  
+
+
+
 }

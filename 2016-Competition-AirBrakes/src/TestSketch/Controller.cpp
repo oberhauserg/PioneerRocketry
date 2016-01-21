@@ -1,6 +1,9 @@
 #include "Controller.h"
+#include "Constants.h"
 #include "SensorHub.h"
-#include <math.h>
+#include <math.h> 
+//For the millis() function
+#include <Arduino.h>
 
 void Controller::update()
 {
@@ -9,8 +12,6 @@ void Controller::update()
 
 	//Get the z acceleration from the SensorHub
 	int acceleration = SensorHub::getAccelMeasurements()[2];
-
-
 
 	//Is the PID controller supposed to be controlling now?
 	if(active)
@@ -29,8 +30,8 @@ void Controller::update()
 		float finalAltitude = 
 		(Constants::BURNOUT_MASS_IN_GRAMS /(2 * Constants::NOMINAL_K_VALUE)) 
 		* log((Constants::BURNOUT_MASS_IN_GRAMS * -Constants::GRAVITY_METERS 
-		+ CONSTANTS::NOMINAL_K_VALUE * vertVelocity * vertVelocity) 
-		/ (CONSTANTS::BURNOUT_MASS_IN_GRAMS * -Constants::GRAVITY_METERS))
+		+ Constants::NOMINAL_K_VALUE * vertVelocity * vertVelocity) 
+		/ (Constants::BURNOUT_MASS_IN_GRAMS * -Constants::GRAVITY_METERS))
 		+ SensorHub::getAltitude();
 
 		double elapsedSecs = getElapsedSeconds();
@@ -41,11 +42,28 @@ void Controller::update()
 
 		derivative = (error - prevError)/elapsedSecs;
 
-		int output = P * error + I * integral + D * derivative;
+		int output = paramP * error + paramI * integral + paramD * derivative;
 
-		brakes->setOutputPercentage(output);
+		brakes->setDeploymentPercentage(output);
 
 	}
 
+        cleanupController();
 
+
+}
+
+double Controller::getElapsedSeconds()
+{
+
+  return (millis() - lastControlTime) * Constants::MILLIS_TO_BASE;
+  
+}
+
+
+void Controller::cleanupController()
+{
+  
+  lastControlTime = millis();
+  
 }
