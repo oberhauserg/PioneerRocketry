@@ -29,6 +29,11 @@ File data;
 
 int apogee = 0;
 
+// first test flight data
+long timeToBurnOut = 1500; // 1.5 seconds
+long timeToTriggerAirbreak = 2147483647; // max long
+// end first test flight data
+
 void setup() 
 {
   Wire.begin(); // used for 9DOF 
@@ -85,6 +90,10 @@ int numMillisecondsInSecond = 1000;
 
 void loop() 
 {
+  // time controlled airbreak is used in first test only
+  if(millis() >= timeToTriggerAirbreak)
+    openAirBreaks();
+  // end timed airbreak control
   haveStratoData = havePitoData = false;
   if( airBreaking &&  midLaunch)
   {
@@ -593,6 +602,11 @@ void checkForLiftoff(float vel1, float vel2)
     sendMessage("Lift Off\n");
     preLaunch = false;
     engineBurning = true;
+    
+    // timed airbreak deployment used for first flight only
+    timeToTriggerAirbreak = millis() + timeToBurnOut;
+    
+    
   }
 }
 
@@ -604,7 +618,7 @@ void checkForLiftoff(float vel1, float vel2)
 // -----------------------------------------------------------------------------------
 int NUM_BURNOUT_SAMPLES = 4;
 float burnoutVel[] = {0.0f,0.0f,0.0f,0.0f};
-float burnoutTime[] = {0.00001,0.00001,0.00001}; // prevents division by zero
+float burnoutTime[] = {0.00001f,0.00001f,0.00001f}; // prevents division by zero
 int burnoutPnt = 0;
 
 bool checkForBurnout(float vel, int deltaT)
@@ -808,7 +822,31 @@ void readApogeeFromSDCard()
   {
     sendMessage("Error opening apogee file\n");
   }
-  
+}
+
+File sdFile;
+void checkAirBreaks() // needs to be implemented..............................................................................................................
+{
+  sendMessage("Attempting to open checkAirBreak file...\n");
+  sdFile = SD.open("break.txt");
+  if(sdFile)
+  {
+    char temp = sdFile.read();
+    if(temp == 'Y' || temp == 'y')
+    {
+      airBreaking = true;
+    }
+    else
+    {
+      sendMessage(" first char was " + String(temp) + "\n");
+      airBreaking = false;
+    }
+  }
+  else
+  {
+    sendMessage("didn't find file.\n");
+    airBreaking = false;
+  }
 }
 
 //-------------------------------------------------------------------------------------
@@ -1126,7 +1164,8 @@ void initializeSDCard()
   sendMessage("initialization done.\n");
 }
 
-void checkAirBreaks() // needs to be implemented..............................................................................................................
+void openAirBreaks()
 {
+  
 }
 
