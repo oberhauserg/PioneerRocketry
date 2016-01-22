@@ -254,9 +254,9 @@ void initDataFile()
 void writeToSD(int deltaTime, int stratoDis, float pitoVel)
 {
   mpu.getAcceleration  ( &a1, &a2, &a3  );
-  ax = a1*2.0f/32768.0f;
-  ay = a2*2.0f/32768.0f;
-  az = a3*2.0f/32768.0f;
+  ax = a1*16.0f/32768.0f;
+  ay = a2 *16.0f/32768.0f;
+  az = a3*16.0f/32768.0f;
 
   mpu.getRotation  ( &g1, &g2, &g3  );
   gx = g1*250.0f/32768.0f; // 250 deg/s full range for gyroscope
@@ -838,13 +838,13 @@ void checkAirBreaks() // needs to be implemented................................
     }
     else
     {
-      sendMessage(" first char was " + String(temp) + "\n");
+      sendMessage("First char was " + String(temp) + "\n");
       airBreaking = false;
     }
   }
   else
   {
-    sendMessage("didn't find file.\n");
+    sendMessage("Didn't find file.\n");
     airBreaking = false;
   }
 }
@@ -1124,7 +1124,7 @@ void initializeGyro()
 
   // Full-scale accelerometer range.
   // The full-scale range of the accelerometer: 0 = +/- 2g, 1 = +/- 4g, 2 = +/- 8g, 3 = +/- 16g
-  mpu.setFullScaleAccelRange(0); // set accelerometer to 2 g range
+  mpu.setFullScaleAccelRange(3); // set accelerometer to 2 g range
 
   mpu.setIntDataReadyEnabled(true); // enable data ready interrupt
 }
