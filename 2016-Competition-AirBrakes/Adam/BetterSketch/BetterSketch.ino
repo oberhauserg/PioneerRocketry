@@ -1111,6 +1111,11 @@ void initializeStrato()
 File dataFromLaunch;
 int csPin = 4;
 
+// -----------------------------------------------------------------------------------
+// This method is called to update initialize the SD card reader/writer. 
+// It prints a message indicating whether it was successful or not.
+// -----------------------------------------------------------------------------------
+
 void initializeSDCard()
 {
   sendMessage("Initializing SD card...\n");
