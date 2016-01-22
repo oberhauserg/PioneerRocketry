@@ -1166,6 +1166,7 @@ void initializeSDCard()
 
 void openAirBreaks()
 {
-  
+  timeToTriggerAirbreak = 2147483647; // Max long prevents being triggered
+                                      // more than once.
 }
 
