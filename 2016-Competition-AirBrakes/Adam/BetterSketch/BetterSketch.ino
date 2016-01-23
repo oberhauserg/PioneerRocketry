@@ -198,7 +198,8 @@ void loop()
     sendData(combinedVel, combinedDis);
     checkForLiftoff(pitoVel, stratoVel);
     
-    writeToSD(deltaTime, stratoDis, pitoVel);
+    //writeToSD(deltaTime, stratoDis, pitoVel);
+    data.close();
   }
 }
 
@@ -247,7 +248,7 @@ void initDataFile()
   if(data)
   {
     data.println("Time(milliSec), PitoVelocity, StratoDisplacement, acceleration, RatioToVertical");
-    data.close();
+    data.flush();
   }
 }
 
@@ -275,12 +276,12 @@ void writeToSD(int deltaTime, int stratoDis, float pitoVel)
   
   info = String(deltaTime) + "," + String(pitoVel) + "," + String(stratoDis) + "," + accel + "," + ratio + "\n";
   
-  data = SD.open("data.txt", FILE_WRITE);
+  //data = SD.open("data.txt", FILE_WRITE);
   // if the file opened okay, write to it:
   if(data)
   {
     data.println(String(info));
-    data.close();
+    data.flush();
   } 
 }
 
