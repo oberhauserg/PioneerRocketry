@@ -67,6 +67,10 @@ void setup()
   initDataFile();
 } // end setup
 
+// -----------------------------------------------------------------------------------
+// This is the primary control loop.
+// -----------------------------------------------------------------------------------
+
 float pitoVel;
 int pitoDis;
 float stratoVel;
@@ -116,7 +120,7 @@ void loop()
       sendData("No Data");
     combineValues(&combinedVel, &combinedDis, pitoVel, pitoDis, stratoVel, stratoDis, (float) deltaTime / numMillisecondsInSecond);
 
-    sendData(combinedVel, combinedDis);
+    sendData(combinedVel, combinedDis, lastTimeRecorded);
 
     controlAirBreaks();
 
@@ -147,7 +151,7 @@ void loop()
       sendData("No Data");
     combineValues(&combinedVel, &combinedDis, pitoVel, pitoDis, stratoVel, stratoDis, (float)deltaTime / numMillisecondsInSecond);
       
-    sendData(combinedVel, combinedDis);
+    sendData(combinedVel, combinedDis, lastTimeRecorded);
     if(!checkForBurnout(combinedVel,deltaTime))
       checkForApogee(stratoVel, combinedDis); // pitot tube will stop working after apogee
       
@@ -167,7 +171,7 @@ void loop()
     havePitoData = false;
     combineValues(&combinedVel, &combinedDis, 0, 0, stratoVel, stratoDis, (float) deltaTime / numMillisecondsInSecond);
     
-    sendData(stratoVel, stratoDis);
+    sendData(stratoVel, stratoDis, lastTimeRecorded );
     checkForLanding(combinedDis);
     
     writeToSD(deltaTime, stratoDis, pitoVel);
@@ -195,7 +199,7 @@ void loop()
     {
       combineValues(&combinedVel, &combinedDis, pitoVel, pitoDis, stratoVel, stratoDis, (float) deltaTime / numMillisecondsInSecond);
     }
-    sendData(combinedVel, combinedDis);
+    sendData(combinedVel, combinedDis, lastTimeRecorded);
     checkForLiftoff(pitoVel, stratoVel);
     
     //writeToSD(deltaTime, stratoDis, pitoVel);
@@ -203,44 +207,64 @@ void loop()
   }
 }
 
-int sequenceNum = 0;
+// -----------------------------------------------------------------------------------
+// This method sends data via the XBee.
+// It sends a data sequence number. Plus the given time data, and displacement data.
+// it sends "None" for the velocity data.
+// -----------------------------------------------------------------------------------
+int SEQ_NUM = 0;
 int maxInt = 1000;
 
-void sendData(int combinedDis)
+void sendData(int combinedDis, long timeData)
 {
-  if(sequenceNum == maxInt)
-    sequenceNum = 0;
-  sequenceNum++;
-  String num = String(sequenceNum);
-  String msgTime = String(lastTimeRecorded);
+  if(SEQ_NUM == maxInt)
+    SEQ_NUM = 0;
+  SEQ_NUM++;
+  String num = String(SEQ_NUM);
+  String msgTime = String(timeData);
   String vel = "None";
   String dis = String(combinedDis);
   String temp = num + ',' + msgTime + ',' + dis + "," + vel + '\n';
   sendMessage(temp);
 }
 
-void sendData(float combinedVel, int combinedDis)
+// -----------------------------------------------------------------------------------
+// This method sends data via the XBee.
+// It sends a data sequence number. Plus the given time data, velocity data, 
+// displacement data.
+// -----------------------------------------------------------------------------------
+int MAX_SEQ_NUM = 100;
+
+void sendData(float combinedVel, int combinedDis, long timeData)
 {
-  if(sequenceNum == maxInt)
-    sequenceNum = 0;
-  sequenceNum++;
-  String num = String(sequenceNum);
-  String msgTime = String(lastTimeRecorded);
+  if(SEQ_NUM++ == MAX_SEQ_NUM)
+    SEQ_NUM = 0;
+  String num = String(SEQ_NUM);
+  String msgTime = String(timeData);
   String vel = String(combinedVel,3);
   String dis = String(combinedDis);
   String temp = num + ',' + msgTime + ',' + dis + "," + vel + "\n";
   sendMessage(temp);
 }
 
+// -----------------------------------------------------------------------------------
+// This method sends data via the XBee.
+// It sends a data sequence number plus the input string value.
+// -----------------------------------------------------------------------------------
 void sendData(String msg)
 {
-  sequenceNum++;
-  String num = String(sequenceNum);
+  if(SEQ_NUM++ == MAX_SEQ_NUM)
+    SEQ_NUM = 0;
+  
+  String num = String(SEQ_NUM);
   String msgTime = String(lastTimeRecorded);
   String temp = num + "," + msgTime + "," + msg + "\n";
   sendMessage(temp);
 }
 
+// -----------------------------------------------------------------------------------
+// This function initializes and opens the data file.
+// -----------------------------------------------------------------------------------
 void initDataFile()
 {
   data = SD.open("data.txt", FILE_WRITE);
@@ -305,6 +329,10 @@ int getDisPito(int deltaTime, float pitoVel)
   return (int)localPitoDisplacement;
 }
 
+// -----------------------------------------------------------------------------------
+// This function reads altitude data from the Strattologger. 
+// If no data is available, then 0 is returned and haveStratoData is set to false;
+// -----------------------------------------------------------------------------------
 int getDisStrato()
 {
   if(Serial2.available() > 0)
@@ -320,19 +348,32 @@ int getDisStrato()
   }
 }
 
-
-// returns fps
-
+// -----------------------------------------------------------------------------------
+// This function calculates velocity from change in time and change in displacement.
+// The deltaTime is given in milliseconds, so it will need to be converted to seconds
+// before feet per second can be calculated. 
+// -----------------------------------------------------------------------------------
 float getVelStrato(int deltaTime, int deltaDis)
 {
   return ((float)deltaDis)* numMillisecondsInSecond / ((float)deltaTime);
 }
 
+// -----------------------------------------------------------------------------------
+// This function sends a message to the XBee. 
+// It allows the user to change the serial port the XBee is connected with a minimal
+// ammount of modified code.
+// -----------------------------------------------------------------------------------
 void sendMessage(String msg)
 {
   Serial1.print(msg);
 }
 
+// -----------------------------------------------------------------------------------
+// This method is called to receive a message via the XBee.
+// It waits timeDelay seconds for the message from the user. If a message is not 
+// recieved in that time, an error message is sent to the XBee and the String
+// "TIME OUT" is returned. Otherwise, the String is read from the XBee returned.
+// -----------------------------------------------------------------------------------
 long timeDelay = 10000; // time to wait for response in micro seconds
 
 String receiveMessage()
@@ -353,10 +394,12 @@ String receiveMessage()
 }
 
 // -----------------------------------------------------------------------------------
-// This is the method called to combined the Stratologger and Pitot tube readings.
-// combinedVel and combinedDis are read in as pointers and are initialized to the
-// combined values for velocity and displacement. This function then uses a Kalman
-// filter to smooth the data.
+// This function takes the values for velocity and displacement and combineds them.
+// If both Stratologger and Pitot tube data are available, then the calculated values 
+// have a much smaller impact on the combined values then the directly measured 
+// values. If only one data source is available, then combined values are just the 
+// one measured value and the one calculated value. Once the combined values are
+// calculated, they are put through a Kalman filter to smooth the data.
 // -----------------------------------------------------------------------------------
 float RATIO_PITO_VEL = 0.7f;
 float RATIO_PITO_DIS = 0.3f;
@@ -744,6 +787,11 @@ void checkForLanding(int dis)
   }
 }
 
+// -----------------------------------------------------------------------------------
+// This methods write the given apogee to the SD card.
+// If an old apogee file is recorded, the file is erased. A new apogee file is then 
+// created containing the new apogee.
+// -----------------------------------------------------------------------------------
 File thisFile;
 
 void writeApogeeToArduino(int apogee)
@@ -759,6 +807,13 @@ void writeApogeeToArduino(int apogee)
   }
 }
 
+// -----------------------------------------------------------------------------------
+// This function allows the user to modify the apogee via the XBee.
+// It first reads the apogee from the SD card. After this has been done, the user 
+// then has the option to modify this value via the XBee. It has a while loop that
+// will loop through a maximum of 10 times. Each time, the user can modify the 
+// apogee. Then they verify that it was correctly input.
+// -----------------------------------------------------------------------------------
 void initializeApogee()
 {
   readApogeeFromSDCard();
@@ -772,9 +827,8 @@ void initializeApogee()
   {
     bool badMessage = true;
     int numTimesInLoop = 0;
-    int maxTimesInLoop = 10;
-    while(badMessage && numTimesInLoop++ != maxTimesInLoop)
-    while(badMessage && numTimesInLoop++ != maxTimesInLoop)
+    int maxTimesInLoop = 10; // makes sure you don't have infinite loop if XBee communcation cut.
+    while(badMessage && (numTimesInLoop++ != maxTimesInLoop))
     {
       sendMessage("\nPlease input your altitude as an integer. (No Periods, Spaces, Commas, or \\n).\n");
       sendMessage("Don't mess this up!!!\n");
@@ -797,10 +851,15 @@ void initializeApogee()
     }
   }
   sendMessage("Apogee set at :" + String(apogee) + "\n");
-  writeApogeeToArduino(apogee);
+  writeApogeeToArduino(apogee); // update record of apogee in case of power reset
 }
 
-
+// -----------------------------------------------------------------------------------
+// This method reads the apogee from the SD card.
+// The apogee must be stored as an integer in a file "APOGEE.TXT". The integer is 
+// read as a string and then converted into an int. This integer is used to set the 
+// apogee variable.
+// -----------------------------------------------------------------------------------
 File myFile;
 
 void readApogeeFromSDCard()
