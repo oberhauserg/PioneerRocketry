@@ -172,6 +172,7 @@ void checkForLanding(int dis)
     sendMessage("Has Landed.\n");
     descending = false;
     landed = true;
+    data.close(); // needs to be implemented without using global variable .......................................
   }
 }
 
