@@ -118,16 +118,19 @@ void loop()
     // combine values
     if(!haveStratoData && !havePitoData)
       sendData("No Data");
-    combineValues(&combinedVel, &combinedDis, pitoVel, pitoDis, stratoVel, stratoDis, (float) deltaTime / numMillisecondsInSecond);
+    else
+    {
+      combineValues(&combinedVel, &combinedDis, pitoVel, pitoDis, stratoVel, stratoDis, (float) deltaTime / numMillisecondsInSecond);
 
-    sendData(combinedVel, combinedDis, lastTimeRecorded);
+      sendData(combinedVel, combinedDis, lastTimeRecorded);
 
-    controlAirBreaks();
+      controlAirBreaks();
 
-    // check for state change
-    checkForApogee(combinedVel,combinedDis);
+      // check for state change
+      checkForApogee(combinedVel,combinedDis);
     
-    writeToSD(deltaTime, stratoDis, pitoVel);
+      writeToSD(deltaTime, stratoDis, pitoVel);
+    }
   }
   else if((!airBreaking && midLaunch) || engineBurning)
   {
@@ -149,13 +152,16 @@ void loop()
     // combine values
     if(!haveStratoData && !havePitoData)
       sendData("No Data");
-    combineValues(&combinedVel, &combinedDis, pitoVel, pitoDis, stratoVel, stratoDis, (float)deltaTime / numMillisecondsInSecond);
+    else
+    {
+      combineValues(&combinedVel, &combinedDis, pitoVel, pitoDis, stratoVel, stratoDis, (float)deltaTime / numMillisecondsInSecond);
       
-    sendData(combinedVel, combinedDis, lastTimeRecorded);
-    if(!checkForBurnout(combinedVel,deltaTime))
-      checkForApogee(stratoVel, combinedDis); // pitot tube will stop working after apogee
+      sendData(combinedVel, combinedDis, lastTimeRecorded);
+      if(!checkForBurnout(combinedVel,deltaTime))
+        checkForApogee(stratoVel, combinedDis); // pitot tube will stop working after apogee
       
-    writeToSD(deltaTime, stratoDis, pitoVel);
+      writeToSD(deltaTime, stratoDis, pitoVel);
+    }
   }
   else if(descending) // assume pitot tube no longer functioning
   {
@@ -168,13 +174,17 @@ void loop()
     prevStratoDis = stratoDis;
     stratoVel = getVelStrato(deltaTime, deltaDis);
 
-    havePitoData = false;
-    combineValues(&combinedVel, &combinedDis, 0, 0, stratoVel, stratoDis, (float) deltaTime / numMillisecondsInSecond);
-    
-    sendData(stratoVel, stratoDis, lastTimeRecorded );
-    checkForLanding(combinedDis);
-    
-    writeToSD(deltaTime, stratoDis, pitoVel);
+    if(haveStratoData)
+    {
+      combineValues(&combinedVel, &combinedDis, 0, 0, stratoVel, stratoDis, (float) deltaTime / numMillisecondsInSecond);
+      sendData(stratoVel, stratoDis, lastTimeRecorded );
+      checkForLanding(combinedDis);
+      writeToSD(deltaTime, stratoDis, pitoVel);
+    }
+    else
+    {
+      sendData("No Data");
+    }
   }
   else // preLaunch or grounded
   {
@@ -198,9 +208,10 @@ void loop()
     else
     {
       combineValues(&combinedVel, &combinedDis, pitoVel, pitoDis, stratoVel, stratoDis, (float) deltaTime / numMillisecondsInSecond);
+      sendData(combinedVel, combinedDis, lastTimeRecorded);
+      checkForLiftoff(pitoVel, stratoVel);
     }
-    sendData(combinedVel, combinedDis, lastTimeRecorded);
-    checkForLiftoff(pitoVel, stratoVel);
+    
     
     //writeToSD(deltaTime, stratoDis, pitoVel);
     data.close();

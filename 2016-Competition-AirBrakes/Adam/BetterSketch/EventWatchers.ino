@@ -109,6 +109,7 @@ void checkForApogee(float vel, int dis)
   {
     midLaunch = false;
     descending = true;
+    havePitoData = false;
     int maxApogee = 0;
     // find largest apogee in array
     for(int i = 0; i < NUM_APOGEE_AVE; i++)
