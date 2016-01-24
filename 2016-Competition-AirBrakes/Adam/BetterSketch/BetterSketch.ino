@@ -825,8 +825,13 @@ void readApogeeFromSDCard()
   }
 }
 
+// -----------------------------------------------------------------------------------
+// This function checks to see if airbreaks are on or off during this sketch.
+// It checks the SD card for a file "BREAK". If this file exhists and the first
+// character in the file is 'y', then the airbreaks are turned on.
+// -----------------------------------------------------------------------------------
 File sdFile;
-void checkAirBreaks() // needs to be implemented..............................................................................................................
+void checkAirBreaks()
 {
   sendMessage("Attempting to open checkAirBreak file...\n");
   sdFile = SD.open("break.txt");
@@ -839,7 +844,6 @@ void checkAirBreaks() // needs to be implemented................................
     }
     else
     {
-      sendMessage("First char was " + String(temp) + "\n");
       airBreaking = false;
     }
   }
@@ -1086,6 +1090,11 @@ float CaclulateUpwardDisplacmentRatio(float angle1, float angle2)
 // End of CaclulateUpwardDisplacmentRatio function
 //-------------------------------------------------------------------------------------
 
+//-------------------------------------------------------------------------------------
+// This method initializes the 9 degrees of freedom board.
+// The accelerometer was adjusted to +/-16G. Otherwise, the settings where taken from 
+// the example code for this board. (mpu9150)
+//-------------------------------------------------------------------------------------
 void initializeGyro()
 {
   mpu.initialize();
@@ -1147,13 +1156,12 @@ void initializeStrato()
   } 
 }
 
-File dataFromLaunch;
-int csPin = 4;
-
 // -----------------------------------------------------------------------------------
 // This method is called to update initialize the SD card reader/writer. 
 // It prints a message indicating whether it was successful or not.
 // -----------------------------------------------------------------------------------
+File dataFromLaunch;
+int csPin = 4;
 
 void initializeSDCard()
 {
