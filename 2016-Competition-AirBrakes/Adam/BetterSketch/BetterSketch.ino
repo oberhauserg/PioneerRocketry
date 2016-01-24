@@ -130,6 +130,7 @@ void loop()
       checkForApogee(combinedVel,combinedDis);
     
       writeToSD(deltaTime, stratoDis, pitoVel);
+    }
   }
   else if((!airBreaking && midLaunch) || engineBurning)
   {
@@ -151,13 +152,16 @@ void loop()
     // combine values
     if(!haveStratoData && !havePitoData)
       sendData("No Data");
-    combineValues(&combinedVel, &combinedDis, pitoVel, pitoDis, stratoVel, stratoDis, (float)deltaTime / numMillisecondsInSecond);
+    else
+    {
+      combineValues(&combinedVel, &combinedDis, pitoVel, pitoDis, stratoVel, stratoDis, (float)deltaTime / numMillisecondsInSecond);
       
-    sendData(combinedVel, combinedDis, lastTimeRecorded);
-    if(!checkForBurnout(combinedVel,deltaTime))
-      checkForApogee(stratoVel, combinedDis); // pitot tube will stop working after apogee
+      sendData(combinedVel, combinedDis, lastTimeRecorded);
+      if(!checkForBurnout(combinedVel,deltaTime))
+        checkForApogee(stratoVel, combinedDis); // pitot tube will stop working after apogee
       
-    writeToSD(deltaTime, stratoDis, pitoVel);
+      writeToSD(deltaTime, stratoDis, pitoVel);
+    }
   }
   else if(descending) // assume pitot tube no longer functioning
   {
@@ -208,8 +212,6 @@ void loop()
       checkForLiftoff(pitoVel, stratoVel);
       writeToSD(deltaTime, stratoDis, pitoVel);
     }
-    sendData(combinedVel, combinedDis, lastTimeRecorded);
-    checkForLiftoff(pitoVel, stratoVel);
     
     
     

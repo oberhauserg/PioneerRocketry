@@ -171,14 +171,14 @@ float getRatioVertical()
   // modified so that roll and pitch are at 0 when y-axis is pointing up
   roll = roll - 90.0f;
     
-  
+  /*
   Serial1.print("Yaw, Pitch, Roll: ");
   Serial1.print(yaw, 2);
   Serial1.print(", ");
   Serial1.print(pitch, 2);
   Serial1.print(", ");
-  Serial1.println(roll, 2);
-  
+  Serial1.print(roll, 2);
+  */
   float ratio = CaclulateUpwardDisplacmentRatio(pitch, roll);
   return ratio;
 }
@@ -214,12 +214,12 @@ float CaclulateUpwardDisplacmentRatio(float angle1, float angle2)
         Serial1.print("angle2 is ");
         Serial1.println(angle2);
         #endif
-  float firstValue = cos(PI/16.0f - angle1);
+  float firstValue = cos(PI/2.0f - angle1);
         #ifdef debugThis
         Serial1.print("firstValue is ");
         Serial1.println(firstValue);
         #endif
-  float secondValue = cos(PI/16.0f - angle2);
+  float secondValue = cos(PI/2.0f - angle2);
         #ifdef debugThis
         Serial1.print("secondValue is ");
         Serial1.println(secondValue);
@@ -284,7 +284,7 @@ void initializeGyro()
 
   // Full-scale accelerometer range.
   // The full-scale range of the accelerometer: 0 = +/- 2g, 1 = +/- 4g, 2 = +/- 8g, 3 = +/- 16g
-  mpu.setFullScaleAccelRange(3); // set accelerometer to 16 g range
+  mpu.setFullScaleAccelRange(3); // set accelerometer to 2 g range
 
   mpu.setIntDataReadyEnabled(true); // enable data ready interrupt
 }
