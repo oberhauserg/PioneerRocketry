@@ -1,3 +1,7 @@
+// -----------------------------------------------------------------------------------
+// Any functions directly operating the SD Card.
+// -----------------------------------------------------------------------------------
+
 void writeToSD(int deltaTime, int stratoDis, float pitoVel)
 {
   mpu.getAcceleration  ( &a1, &a2, &a3  );

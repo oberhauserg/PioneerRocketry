@@ -1,3 +1,7 @@
+// -----------------------------------------------------------------------------------
+// Any functions directly operating with the airbreaks.
+// -----------------------------------------------------------------------------------
+
 void openAirBreaks()
 {
   timeToTriggerAirbreak = 2147483647; // Max long prevents being triggered

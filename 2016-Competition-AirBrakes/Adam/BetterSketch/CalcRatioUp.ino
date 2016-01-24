@@ -1,3 +1,8 @@
+// -----------------------------------------------------------------------------------
+// Any functions calculating upward displacement. 
+// This is a subset of the Sensor tab because it directly uses the 9 degree of 
+// freedom sensor.
+// -----------------------------------------------------------------------------------
 
 //-------------------------------------------------------------------------------------
 // Beginning of MagwickQuaternionUpdate function

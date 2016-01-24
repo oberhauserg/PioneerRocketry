@@ -1,4 +1,10 @@
 // -----------------------------------------------------------------------------------
+// Any functions directly send Data to the XBee. 
+// Note this is different from SendfREceiveMesssage because each time data is sent,
+// it contains a sequence number.
+// -----------------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------------
 // This method sends data via the XBee.
 // It sends a data sequence number. Plus the given time data, and displacement data.
 // it sends "None" for the velocity data.

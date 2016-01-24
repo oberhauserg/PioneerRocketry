@@ -1,4 +1,8 @@
 // -----------------------------------------------------------------------------------
+// Any functions that check for events triggering state changes.
+// -----------------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------------
 // This function watches for liftoff and perfoms necessary state change procedures.
 // It averages the last LIFTOFF_NUM_AVE velocities. If the average velocity is less 
 // greater than 20.0 fps, it triggers the liftoff event state change. You input at 
