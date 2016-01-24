@@ -4,6 +4,7 @@
 
 void writeToSD(int deltaTime, int stratoDis, float pitoVel)
 {
+  
   mpu.getAcceleration  ( &a1, &a2, &a3  );
   ax = a1*16.0f/32768.0f;
   ay = a2 *16.0f/32768.0f;
