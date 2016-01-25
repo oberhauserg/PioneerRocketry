@@ -13,15 +13,15 @@ class Constants
   /**
   * Constants that deal with real-world physical constants. 
   */
-  static const float GRAVITY_METERS = -9.81;
-  static const float GRAVITY_IMPERIAL_SCUM = -32.2;
+  static constexpr float GRAVITY_METERS = -9.81;
+  static constexpr float GRAVITY_IMPERIAL_SCUM = -32.2;
 
-  static const float MILLIS_TO_BASE = 1000;
+  static constexpr float MILLIS_TO_BASE = 1000;
 
   /**
   * Constants that deal with airbreaking. 
   */
-  static const int MAXIMUM_BREAK_PERCENTAGE = 100;
+  static constexpr int MAXIMUM_BREAK_PERCENTAGE = 100;
 
   
 

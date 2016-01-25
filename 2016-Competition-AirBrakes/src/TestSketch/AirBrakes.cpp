@@ -1,4 +1,5 @@
 #include "AirBrakes.h"
+#include <Servo.h>
 
 void AirBrakes::setDeploymentPercentage(int percentage)
 {
@@ -28,6 +29,12 @@ void AirBrakes::setDeploymentPercentage(int percentage)
 	//       should probably take measurments of Jake's spinny 
 	//       contraption before diving in too far. 
 	//
+
+  //Ignore above
+
+  linearActuatorGoal = MAX_ACTUATE - MIN_ACTUATE + ((1 - (percentage * 0.01)) * (MAX_ACTUATE - MIN_ACTUATE));
+
+  
 }
 
 void AirBrakes::setLinearActuatorAmount(int amount)
@@ -37,7 +44,7 @@ void AirBrakes::setLinearActuatorAmount(int amount)
   
 }
 
-void AirBrakes::update()
+int AirBrakes::update()
 {
 	//This will be fun.
   
@@ -47,11 +54,18 @@ void AirBrakes::update()
     tempGoal = MAX_ACTUATE;
   else if(tempGoal < MIN_ACTUATE)
     tempGoal = MIN_ACTUATE;
-    
-  
-  linearActuator->writeMicroseconds(tempGoal); 
-  
 
+  
+  
+  if(tempGoal != currentSet)
+  {
+    linearActuator->writeMicroseconds(tempGoal);
+    currentSet = tempGoal; 
+  }
 
+  
+  newPos = false;
+
+  return tempGoal;
 
 }

@@ -1,5 +1,4 @@
 #include <Servo.h>
-
 #ifndef AIRBRAKES_H
 #define AIRBRAKES_H 
 
@@ -14,7 +13,7 @@ class AirBrakes
 	
 	public:
 
-                AirBrakes(){linearActuator = new Servo();}
+    AirBrakes(){linearActuator = new Servo(); linearActuator->attach(13);}
 
 		/**
 		* Set the deployment percentage here. 
@@ -43,11 +42,11 @@ class AirBrakes
 		* Make sure to call this function to make sure everything is in 
 		* tip top shape with the actuators (or whatever). 
 		*/
-		void update();
+		int update();
 
 	private:
 
-                Servo * linearActuator;
+    Servo * linearActuator;
 
 		/**
 		* The goal we are trying to hit with the actuators.
@@ -56,11 +55,14 @@ class AirBrakes
 
 		bool active = false;
 
+    bool newPos = false;
 
-                //These will have to be correctly set up.
-                static const int MAX_ACTUATE = 2000;
+    int currentSet;
+
+    //These will have to be correctly set up.
+    static const int MAX_ACTUATE = 2000;
                 
-                static const int MIN_ACTUATE = 1050;
+    static const int MIN_ACTUATE = 1000;
 
 };
 
