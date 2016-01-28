@@ -2,6 +2,12 @@
 // Any functions calculating upward displacement. 
 // This is a subset of the Sensor tab because it directly uses the 9 degree of 
 // freedom sensor.
+//
+// Functions
+// void MadgwickQuaternionUpdate(float ax, float ay, float az, float gx, float gy, float gz, float mx, float my, float mz)
+// float getRatioVertical()
+// float CaclulateUpwardDisplacmentRatio(float angle1, float angle2)
+// void initializeGyro()
 // -----------------------------------------------------------------------------------
 
 //-------------------------------------------------------------------------------------

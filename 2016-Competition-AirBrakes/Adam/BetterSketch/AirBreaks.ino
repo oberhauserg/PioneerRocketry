@@ -1,5 +1,9 @@
 // -----------------------------------------------------------------------------------
 // Any functions directly operating with the airbreaks.
+//
+// Functions
+// void openAirBreaks()
+// void controlAirBreaks()
 // -----------------------------------------------------------------------------------
 
 void openAirBreaks()

@@ -1,6 +1,44 @@
 // -----------------------------------------------------------------------------------
 // Any functions directly operating the SD Card.
+//
+// Functions
+// void writeToSD(int deltaTime, int stratoDis, float pitoVel)
+// void writeApogeeToSD(int apogee)
+// void readApogeeFromSDCard()
+// void initializeSDCard()
+// void initDataFile()
 // -----------------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------------
+// This method is called to update initialize the SD card reader/writer. 
+// It prints a message indicating whether it was successful or not.
+// -----------------------------------------------------------------------------------
+File dataFromLaunch;
+int csPin = 4;
+
+void initializeSDCard()
+{
+  sendMessage("Initializing SD card...\n");
+  if (!SD.begin(csPin)) {
+    sendMessage("initialization failed!\n");
+    return;
+  }
+  sendMessage("initialization done.\n");
+}
+
+// -----------------------------------------------------------------------------------
+// This function initializes and opens the data file.
+// -----------------------------------------------------------------------------------
+void initDataFile()
+{
+  data = SD.open("data.txt", FILE_WRITE);
+  
+  if(data)
+  {
+    data.println("Time(milliSec), PitoVelocity, StratoDisplacement, acceleration, RatioToVertical");
+    data.flush();
+  }
+}
 
 void writeToSD(int deltaTime, int stratoDis, float pitoVel)
 {
@@ -85,33 +123,4 @@ void readApogeeFromSDCard()
   }
 }
 
-// -----------------------------------------------------------------------------------
-// This method is called to update initialize the SD card reader/writer. 
-// It prints a message indicating whether it was successful or not.
-// -----------------------------------------------------------------------------------
-File dataFromLaunch;
-int csPin = 4;
 
-void initializeSDCard()
-{
-  sendMessage("Initializing SD card...\n");
-  if (!SD.begin(csPin)) {
-    sendMessage("initialization failed!\n");
-    return;
-  }
-  sendMessage("initialization done.\n");
-}
-
-// -----------------------------------------------------------------------------------
-// This function initializes and opens the data file.
-// -----------------------------------------------------------------------------------
-void initDataFile()
-{
-  data = SD.open("data.txt", FILE_WRITE);
-  
-  if(data)
-  {
-    data.println("Time(milliSec), PitoVelocity, StratoDisplacement, acceleration, RatioToVertical");
-    data.flush();
-  }
-}

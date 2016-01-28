@@ -1,5 +1,11 @@
 // -----------------------------------------------------------------------------------
 // Any functions that check for events triggering state changes.
+// 
+// Functions
+// void checkForLiftoff(float vel1, float vel2)
+// bool checkForBurnout(float vel, int deltaT)
+// void checkForApogee(float vel, int dis)
+// void checkForLanding(int dis)
 // -----------------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------------

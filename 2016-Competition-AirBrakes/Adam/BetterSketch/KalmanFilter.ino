@@ -1,5 +1,12 @@
 // -----------------------------------------------------------------------------------
 // Any functions used to implement the Kalman filter.
+//
+// Function
+// void kalmanFilter(float *combinedVel, int *combinedDis, float deltaTime)
+// void updatePredX()
+// void updatePBar()
+// void updateK()
+// void UpdateX()
 // -----------------------------------------------------------------------------------
 
 #include <MatrixMath.h>

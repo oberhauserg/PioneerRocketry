@@ -6,6 +6,11 @@
 // the strattologger is fully implemented. It also sends correct 
 // data to the XBee.
 // Author: Jacob Napp
+// 
+// Functions
+// void setup() 
+// void loop() 
+// void combineValues(float *combinedVel, int *combinedDis, float pitoVel, int pitoDis, float stratoVel, int stratoDis, float deltaTime)
 // ----------------------------------------------------------------- 
 
 #include <Wire.h>
@@ -218,4 +223,44 @@ void loop()
     //data.close();
   }
 }
+
+// -----------------------------------------------------------------------------------
+// This function takes the values for velocity and displacement and combineds them.
+// If both Stratologger and Pitot tube data are available, then the calculated values 
+// have a much smaller impact on the combined values then the directly measured 
+// values. If only one data source is available, then combined values are just the 
+// one measured value and the one calculated value. Once the combined values are
+// calculated, they are put through a Kalman filter to smooth the data.
+// -----------------------------------------------------------------------------------
+float RATIO_PITO_VEL = 0.7f;
+float RATIO_PITO_DIS = 0.3f;
+float RATIO_STRATO_VEL = 0.3f;
+float RATIO_STRATO_DIS = 0.7f;
+
+void combineValues(float *combinedVel, int *combinedDis, float pitoVel, int pitoDis, float stratoVel, int stratoDis, float deltaTime)
+{
+    if(haveStratoData && havePitoData)
+    {
+      *combinedVel = RATIO_PITO_VEL * pitoVel + RATIO_STRATO_VEL * stratoVel;
+      *combinedDis = RATIO_PITO_DIS * pitoDis + RATIO_STRATO_DIS * stratoDis;
+      //kalmanFilter(&combinedVel, &combinedDis, deltaTime);
+      // we will not be using kalman filter during the first test flight
+    }
+    else if(haveStratoData)
+    {
+      *combinedVel = stratoVel;
+      *combinedDis = stratoDis;
+      //kalmanFilter(&combinedVel, &combinedDis, deltaTime);
+      // we will not be using kalman filter during the first test flight
+    }
+    else
+    {
+      *combinedVel = pitoVel;
+      *combinedDis = pitoDis;
+      //kalmanFilter(&combinedVel, &combinedDis, deltaTime);
+      // we will not be using kalman filter during the first test flight
+    }
+}
+
+
 

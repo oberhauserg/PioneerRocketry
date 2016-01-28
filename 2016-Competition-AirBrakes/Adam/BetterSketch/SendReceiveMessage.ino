@@ -1,11 +1,18 @@
 // -----------------------------------------------------------------------------------
-// Any functions directly send or receive data from the XBee.
+// Any functions directly send or receive data from the XBee. Does not include send
+// data functions that include a sequence number.
+//
+// Functions
+// void sendMessage(String msg)
+// String receiveMessage()
+// void initializeApogee()
 // -----------------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------------
 // This function sends a message to the XBee. 
 // It allows the user to change the serial port the XBee is connected with a minimal
-// ammount of modified code.
+// ammount of modified code. Does not include newline, so user will have to hardcode 
+// those in.
 // -----------------------------------------------------------------------------------
 void sendMessage(String msg)
 {

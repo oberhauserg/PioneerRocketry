@@ -2,6 +2,11 @@
 // Any functions directly send Data to the XBee. 
 // Note this is different from SendfREceiveMesssage because each time data is sent,
 // it contains a sequence number.
+// 
+// Functions
+// void sendData(int combinedDis, long timeData)
+// void sendData(float combinedVel, int combinedDis, long timeData)
+// void sendData(String msg)
 // -----------------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------------
