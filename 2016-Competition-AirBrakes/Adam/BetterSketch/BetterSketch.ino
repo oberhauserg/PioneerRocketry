@@ -53,13 +53,16 @@ void setup()
   // 9DOF initialization
   initializeGyro();
 
+  // initialize air Brakes
+  initializeAirBreak()
+
   // initialize Strattologger
   initializeStrato();
   
 
   checkAirBreaks();
   if(airBreaking)
-    sendMessage("Airbreaks are on.\n\n");
+    sendMessage("Air Brakes are on.\n\n");
   else
     sendMessage("AirBreaks are off.\n\n");
 
@@ -99,10 +102,12 @@ int numMillisecondsInSecond = 1000;
 
 void loop() 
 {
-  // time controlled airbreak is used in first test only
+  // time controlled airbrake is used in first test only
   if(millis() >= timeToTriggerAirbreak)
     openAirBreaks();
-  // end timed airbreak control
+  if(airBreaking)
+    updateAirBreaks();
+  // end timed airbrake control
   haveStratoData = havePitoData = false;
   if( airBreaking &&  midLaunch)
   {
