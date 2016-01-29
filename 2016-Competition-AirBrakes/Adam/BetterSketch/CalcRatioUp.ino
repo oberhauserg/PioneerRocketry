@@ -161,7 +161,7 @@ float getRatioVertical()
 {
   if(mpu.getIntDataReadyStatus() == 1) // wait for data ready status register to update all data registers
   mpu.getMotion9(&a1, &a2, &a3, &g1, &g2, &g3, &m1, &m2, &m3);
-  now = micros();
+  now = millis();
   deltat = ((now - lastUpdate)/1000000.0f); // set integration time by time elapsed since last filter update
   lastUpdate = now;
 

@@ -25,7 +25,7 @@ void initializeAirBreak()
   brakes->setDeploymentPercentage(initialPercent);
 
   //Initialize controller module
-  cont = new Controller(*brakes);
+  //cont = new Controller(*brakes); // Kills program!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 }
 
 boolean on = true;

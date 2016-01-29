@@ -70,7 +70,7 @@ void setup()
   initializeApogee(); 
     
   sendMessage("SequenceNumber,Time(milliSec),Altitude(feet),Velocity(fps)\n");
-  lastTimeRecorded = micros();
+  lastTimeRecorded = millis();
   
   initDataFile();
 } // end setup
@@ -112,8 +112,8 @@ void loop()
   if( airBreaking &&  midLaunch)
   {
     // resetting time variables
-    int deltaTime = (int)(micros() - lastTimeRecorded);
-    lastTimeRecorded = micros();
+    int deltaTime = (int)(millis() - lastTimeRecorded);
+    lastTimeRecorded = millis();
      
     // get pitot tube values
     pitoVel = getVelocityPito();
@@ -145,8 +145,8 @@ void loop()
   else if((!airBreaking && midLaunch) || engineBurning)
   {
     // resetting time variables
-    int deltaTime = (int)(micros() - lastTimeRecorded);
-    lastTimeRecorded = micros();
+    int deltaTime = (int)(millis() - lastTimeRecorded);
+    lastTimeRecorded = millis();
      
     // get pitot tube values
     pitoVel = getVelocityPito();
@@ -176,8 +176,8 @@ void loop()
   else if(descending) // assume pitot tube no longer functioning
   {
      // resetting time variables
-    int deltaTime = (int)(micros() - lastTimeRecorded);
-    lastTimeRecorded = micros();
+    int deltaTime = (int)(millis() - lastTimeRecorded);
+    lastTimeRecorded = millis();
     
     stratoDis = getDisStrato();
     int deltaDis = stratoDis - prevStratoDis;
@@ -199,8 +199,8 @@ void loop()
   else // preLaunch or grounded
   {
     // resetting time variables
-    int deltaTime = (int)(micros() - lastTimeRecorded);
-    lastTimeRecorded = micros();
+    int deltaTime = (int)(millis() - lastTimeRecorded);
+    lastTimeRecorded = millis();
      
     // get pitot tube values
     pitoVel = getVelocityPito();
@@ -219,7 +219,7 @@ void loop()
     {
       combineValues(&combinedVel, &combinedDis, pitoVel, pitoDis, stratoVel, stratoDis, (float) deltaTime / numMillisecondsInSecond);
       sendData(combinedVel, combinedDis, lastTimeRecorded);
-      checkForLiftoff(pitoVel, stratoVel);
+      checkForLiftoff(pitoVel, stratoVel, combinedDis);
       writeToSD(deltaTime, stratoDis, pitoVel);
     }
     

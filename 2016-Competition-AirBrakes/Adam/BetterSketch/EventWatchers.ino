@@ -15,26 +15,31 @@
 // most two velocity measurement. The larger measurement is recorded. Thus, if only 
 // one form of velocity is measured, the remaining velocity can be set to 0.
 // -----------------------------------------------------------------------------------
-int LIFTOFF_THRESHHOLD = 20;
-int LIFTOFF_NUM_AVE = 3;
-float velocity[] = {0.0f,0.0f,0.0f};
+int LIFTOFF_THRESHHOLD = 200;
+int LIFTOFF_NUM_AVE = 6;
+int LIFTOFF_ALT = 200;
+float velocity[] = {0.0f,0.0f,0.0f,0.0f,0.0f,0.0f};
+int disArray[] = {0.0f,0.0f,0.0f,0.0f,0.0f,0.0f};
 int liftoffPnt = 0;
 
-void checkForLiftoff(float vel1, float vel2)
+void checkForLiftoff(float vel1, float vel2, int dis)
 { 
+  disArray[liftoffPnt] = dis;
   if(vel1 > vel2)
     velocity[liftoffPnt++] = vel1;
   else
     velocity[liftoffPnt++] = vel2;
   if(liftoffPnt == LIFTOFF_NUM_AVE)
     liftoffPnt = 0;
-  float sum;
+  float sum = 0;
+  int sumDis = 0;
   for(int i = 0; i < LIFTOFF_NUM_AVE; i++)
   {
     sum += velocity[i];
+    sumDis += disArray[i];
   }
   float average = ((int)sum)/LIFTOFF_NUM_AVE; // convert to int for faster math
-  if(average >= LIFTOFF_THRESHHOLD)
+  if(average >= LIFTOFF_THRESHHOLD || sumDis >=  LIFTOFF_ALT)
   {
     sendMessage("Lift Off\n");
     preLaunch = false;
@@ -94,8 +99,8 @@ bool checkForBurnout(float vel, int deltaT)
 // Also, the displacements are recorded, so that once apogee is reached, the largest
 // value for the apogee is recorded as apogee.
 // -----------------------------------------------------------------------------------
-int NUM_APOGEE_AVE = 3;
-float apogeeVel[] = {0.0f,0.0f,0.0f};
+int NUM_APOGEE_AVE = 6;
+float apogeeVel[] = {0.0f,0.0f,0.0f,0.0f,0.0f,0.0f};;
 int apogeeDis[] = {0,0,0};
 int apogeePnt = 0;
 

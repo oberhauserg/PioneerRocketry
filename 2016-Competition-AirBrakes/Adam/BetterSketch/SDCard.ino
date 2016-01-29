@@ -19,11 +19,12 @@ int csPin = 4;
 void initializeSDCard()
 {
   sendMessage("Initializing SD card...\n");
-  if (!SD.begin(csPin)) {
+  if (!SD.begin(csPin)) 
+  {
     sendMessage("initialization failed!\n");
-    return;
   }
-  sendMessage("initialization done.\n");
+  else
+    sendMessage("initialization done.\n");
 }
 
 // -----------------------------------------------------------------------------------
