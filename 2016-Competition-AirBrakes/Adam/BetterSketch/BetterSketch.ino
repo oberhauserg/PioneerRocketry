@@ -54,7 +54,7 @@ void setup()
   initializeGyro();
 
   // initialize air Brakes
-  initializeAirBreak()
+  initializeAirBreak();
 
   // initialize Strattologger
   initializeStrato();
