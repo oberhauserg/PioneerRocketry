@@ -27,22 +27,30 @@ int max_count = 1000;
 void setup() 
 {
 
+    Serial.begin(9600);
+  Serial.println("1\n");
   //Initialize AirBrakes module
   brakes = new AirBrakes();
 
+  delay(100);
+
+  Serial.println("2\n");
   brakes->setDeploymentPercentage(100);
 
-  //Initialize controller module
-  cont = new Controller(*brakes);
+  delay(100);
 
-  Serial.begin(9600);
+  Serial.println("3\n");
+  //Initialize controller module
+  //cont = new Controller(*brakes);
+
   
 }
 
 void loop() { 
 
   //Update the controller
-  cont->update();
+  //cont->update();
+  
 
   //Make sure the brakes are being updated
   int test = brakes->update();

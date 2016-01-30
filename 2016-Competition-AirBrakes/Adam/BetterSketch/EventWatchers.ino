@@ -42,15 +42,17 @@ void checkForLiftoff(float vel1, int dis)
     sumDis += disArray[i];
   }
   float average = ((int)sum)/LIFTOFF_NUM_AVE; // convert to int for faster math
-  if(average >= LIFTOFF_THRESHHOLD || sumDis >=  LIFTOFF_ALT)
+  float aveDis = (float)sumDis / (float) LIFTOFF_NUM_AVE;
+  if(aveDis >=  LIFTOFF_ALT)
   {
-    sendMessage("Lift Off\n");
+    //sendMessage("Lift Off\n");
     preLaunch = false;
     engineBurning = true;
     
     // timed airbreak deployment used for first flight only
     //timeToTriggerAirbreak = millis() + timeToBurnOut;
-    openAirBreaks();
+    if(airBreaking)
+      openAirBreaks();
     
     
   }

@@ -12,7 +12,7 @@
 
 // needs to be implemented.......................................................................
 int MAX_12_INT = 1024;//4096;
-int pitoAnalogPin = A0;
+int pitoAnalogPin = A5;
 
 float getVelocityPito()
 {

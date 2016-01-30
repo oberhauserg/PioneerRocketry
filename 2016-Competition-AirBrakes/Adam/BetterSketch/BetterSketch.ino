@@ -174,6 +174,7 @@ void loop()
   }
   else if(descending) // assume pitot tube no longer functioning
   {
+    havePitoData = false;
      // resetting time variables
     int deltaTime = (int)(millis() - lastTimeRecorded);
     lastTimeRecorded = millis();
@@ -246,7 +247,7 @@ void combineValues(float *combinedVel, int *combinedDis, float pitoVel, int pito
     if(haveStratoData && havePitoData)
     {
       *combinedVel = pitoVel; //RATIO_PITO_VEL * pitoVel + RATIO_STRATO_VEL * stratoVel;
-      *combinedDis = stratoVel; //RATIO_PITO_DIS * pitoDis + RATIO_STRATO_DIS * stratoDis;
+      *combinedDis = stratoDis; //RATIO_PITO_DIS * pitoDis + RATIO_STRATO_DIS * stratoDis;
       //kalmanFilter(&combinedVel, &combinedDis, deltaTime);
       // we will not be using kalman filter during the first test flight
     }

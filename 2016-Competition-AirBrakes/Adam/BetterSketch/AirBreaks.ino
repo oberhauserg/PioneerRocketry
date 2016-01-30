@@ -38,7 +38,7 @@ int finalPercent = 100;
 
 void openAirBreaks()
 {
-  timeToTriggerAirbreak = 2147483647; // Max long prevents being triggered
+  //timeToTriggerAirbreak = 2147483647; // Max long prevents being triggered
                                       // more than once.
   brakes->setDeploymentPercentage(finalPercent);
   if(airBreaking)
