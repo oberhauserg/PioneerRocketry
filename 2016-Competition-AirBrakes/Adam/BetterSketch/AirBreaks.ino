@@ -15,7 +15,7 @@
 // -----------------------------------------------------------------------------------
 int initialPercent = 0;
 AirBrakes * brakes;
-Controller * cont;
+//Controller * cont;
 
 void initializeAirBreak()
 {
