@@ -57,10 +57,15 @@ int AirBrakes::update()
 
   
   
-  if(tempGoal != currentSet)
+  if(tempGoal != currentSet && isActive)
   {
     linearActuator->writeMicroseconds(tempGoal);
     currentSet = tempGoal; 
+  }
+  else(!isActive)
+  {
+  	linearActuator->writeMicroseconds(MAX_ACTUATE);
+    currentSet = MAX_ACTUATE; 
   }
 
   

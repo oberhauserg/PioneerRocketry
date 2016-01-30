@@ -26,7 +26,7 @@ class AirBrakes
                 /*
                 * Set the linear actuator to some amount,
                 */
-                void setLinearActuatorAmount(int amount);
+        void setLinearActuatorAmount(int amount);
 
 		/**
 		* Sets whether or not the braking system should be active or not. 
@@ -46,7 +46,7 @@ class AirBrakes
 
 	private:
 
-    Servo * linearActuator;
+    	Servo * linearActuator;
 
 		/**
 		* The goal we are trying to hit with the actuators.
@@ -55,14 +55,14 @@ class AirBrakes
 
 		bool active = false;
 
-    bool newPos = false;
+	    bool newPos = false;
 
-    int currentSet;
+    	int currentSet;
 
-    //These will have to be correctly set up.
-    static const int MAX_ACTUATE = 2000;
+    	//These will have to be correctly set up.
+    	static const int MAX_ACTUATE = 2000;
                 
-    static const int MIN_ACTUATE = 1000;
+    	static const int MIN_ACTUATE = 1000;
 
 };
 
