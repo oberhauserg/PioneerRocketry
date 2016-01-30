@@ -7,17 +7,24 @@
 // int getDisStrato()
 // float getVelStrato(int deltaTime, int deltaDis)
 // void initializeStrato()
+// void initializePito()
 // -----------------------------------------------------------------------------------
 
 // needs to be implemented.......................................................................
+int MAX_12_INT = 1024;//4096;
+int pitoAnalogPin = A0;
+
 float getVelocityPito()
 {
-  float ratio = 1.0f;
-  if(mpuWorking)
-    ratio = getRatioVertical();
-    
-  havePitoData = false;
-  return 0.0f;
+  //analogReadResolution(12);
+  int sensorValue = analogRead(pitoAnalogPin);
+  float pinRatio = (float) sensorValue / (float) MAX_12_INT;
+  havePitoData = true;
+  //float ratio = 1.0f;
+  //if(mpuWorking)
+  //   ratio = getRatioVertical();
+  //havePitoData = false;
+  return pinRatio;
 }
 
 float localPitoDisplacement = 0.0f;

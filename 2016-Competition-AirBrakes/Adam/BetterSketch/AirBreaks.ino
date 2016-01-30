@@ -10,12 +10,12 @@
 #include "AirBrakes.h"
 #include "Controller.h"
 
+
 // -----------------------------------------------------------------------------------
 // This function initializes the Air Brakes. 
 // -----------------------------------------------------------------------------------
 int initialPercent = 0;
 AirBrakes * brakes;
-//Controller * cont;
 
 void initializeAirBreak()
 {
@@ -23,15 +23,18 @@ void initializeAirBreak()
   brakes = new AirBrakes();
 
   brakes->setDeploymentPercentage(initialPercent);
+  brakes->update();
 
   //Initialize controller module
   //cont = new Controller(*brakes); // Kills program!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 }
 
-boolean on = true;
-int count = 0;
+void updateAirBrakes()
+{
+  brakes->update();
+}
+
 int finalPercent = 100;
-int max_count = 1000;
 
 void openAirBreaks()
 {
@@ -42,11 +45,6 @@ void openAirBreaks()
     sendMessage("Opening Air Brakes\n");
   else
     sendMessage( String(millis()) + " Air Brake Point\n");
-}
-
-void updateAirBreaks()
-{
-  brakes->update();
 }
 
 // -----------------------------------------------------------------------------------

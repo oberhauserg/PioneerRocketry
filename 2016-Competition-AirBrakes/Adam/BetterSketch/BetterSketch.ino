@@ -102,11 +102,10 @@ int numMillisecondsInSecond = 1000;
 
 void loop() 
 {
+  updateAirBrakes();
   // time controlled airbrake is used in first test only
-  if(millis() >= timeToTriggerAirbreak)
-    openAirBreaks();
-  if(airBreaking)
-    updateAirBreaks();
+  //if(millis() >= timeToTriggerAirbreak)
+  //  openAirBreaks();
   // end timed airbrake control
   haveStratoData = havePitoData = false;
   if( airBreaking &&  midLaunch)
@@ -219,7 +218,7 @@ void loop()
     {
       combineValues(&combinedVel, &combinedDis, pitoVel, pitoDis, stratoVel, stratoDis, (float) deltaTime / numMillisecondsInSecond);
       sendData(combinedVel, combinedDis, lastTimeRecorded);
-      checkForLiftoff(pitoVel, stratoVel, combinedDis);
+      checkForLiftoff(combinedVel, combinedDis);
       writeToSD(deltaTime, stratoDis, pitoVel);
     }
     
@@ -246,8 +245,8 @@ void combineValues(float *combinedVel, int *combinedDis, float pitoVel, int pito
 {
     if(haveStratoData && havePitoData)
     {
-      *combinedVel = RATIO_PITO_VEL * pitoVel + RATIO_STRATO_VEL * stratoVel;
-      *combinedDis = RATIO_PITO_DIS * pitoDis + RATIO_STRATO_DIS * stratoDis;
+      *combinedVel = pitoVel; //RATIO_PITO_VEL * pitoVel + RATIO_STRATO_VEL * stratoVel;
+      *combinedDis = stratoVel; //RATIO_PITO_DIS * pitoDis + RATIO_STRATO_DIS * stratoDis;
       //kalmanFilter(&combinedVel, &combinedDis, deltaTime);
       // we will not be using kalman filter during the first test flight
     }
