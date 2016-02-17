@@ -14,7 +14,7 @@
 // It prints a message indicating whether it was successful or not.
 // -----------------------------------------------------------------------------------
 File dataFromLaunch;
-int csPin = 4;
+int csPin = 48;
 
 void initializeSDCard()
 {
