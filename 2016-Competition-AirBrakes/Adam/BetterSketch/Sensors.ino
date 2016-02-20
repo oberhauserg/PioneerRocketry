@@ -14,6 +14,7 @@
 int MAX_12_INT = 1024;//4096;
 int pitoAnalogPin = A5;
 
+//In SensorHub
 float getVelocityPito()
 {
   //analogReadResolution(12);
@@ -39,6 +40,7 @@ int getDisPito(int deltaTime, float pitoVel)
 // This function reads altitude data from the Strattologger. 
 // If no data is available, then 0 is returned and haveStratoData is set to false;
 // -----------------------------------------------------------------------------------
+//In SensorHub
 int getDisStrato()
 {
   if(Serial2.available() > 0)
@@ -60,12 +62,15 @@ int getDisStrato()
 // The deltaTime is given in milliseconds, so it will need to be converted to seconds
 // before feet per second can be calculated. 
 // -----------------------------------------------------------------------------------
+//
 float getVelStrato(int deltaTime, int deltaDis)
 {
   return ((float)deltaDis)* numMillisecondsInSecond / ((float)deltaTime);
 }
 
 long DELAY_FOR_STRATO = 120000; // 2 minutes
+
+//In SensorHub
 void initializeStrato()
 {
   sendMessage("Waiting for Strattologger to begin transmitting\nContinues without data if this exceeds 2 minutes\n");
