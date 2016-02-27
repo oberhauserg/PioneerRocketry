@@ -15,12 +15,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\Kalman.h">
+    <ClInclude Include="Kalman.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\Kalman.cpp">
+    <ClCompile Include="Kalman.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
