@@ -38,15 +38,4 @@ class Constants
   */
   static float NOMINAL_K_VALUE;
 
-  /**
-  * Constants for calculating sensor measurements from raw data
-  */
-  static constexpr float PITOT_GAIN = 1;
-
-  static constexpr float PITOT_ZERO = 0;
-
-  static constexpr int MAX_12_INT = 1024;
-
-  static constexpr int DELAY_FOR_STRATO = 120000;
-
 };
