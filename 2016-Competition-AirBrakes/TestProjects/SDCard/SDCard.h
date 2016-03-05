@@ -2,8 +2,8 @@
 #define _SDCARD_H
 
 #include <string>
-#include <Arduino.cpp>
-#include "SD.h"
+#include "SD/src/utility"
+#include "SD/src/SD.h"
 
 using namespace std;
 
