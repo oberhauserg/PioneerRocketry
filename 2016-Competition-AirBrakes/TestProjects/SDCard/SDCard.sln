@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDCard", "SDCard.vcxproj", "{6EBD827B-5662-4356-B1B4-9BB0B86450EF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6EBD827B-5662-4356-B1B4-9BB0B86450EF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6EBD827B-5662-4356-B1B4-9BB0B86450EF}.Debug|Win32.Build.0 = Debug|Win32
+		{6EBD827B-5662-4356-B1B4-9BB0B86450EF}.Release|Win32.ActiveCfg = Release|Win32
+		{6EBD827B-5662-4356-B1B4-9BB0B86450EF}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
