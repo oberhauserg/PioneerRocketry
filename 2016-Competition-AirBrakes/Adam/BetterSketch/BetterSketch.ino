@@ -16,6 +16,8 @@
 #include <Wire.h>
 #include "I2Cdev.h"
 #include "MPU6050_9Axis_MotionApps41.h"
+#include <Adafruit_BNO055.h>
+#include <Adafruit_Sensor.h>
 #include <SPI.h>
 #include <SD.h>
 // Note: You can only have one software serial running 
