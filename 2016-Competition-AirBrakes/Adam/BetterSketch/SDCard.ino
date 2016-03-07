@@ -36,7 +36,7 @@ void initDataFile()
   
   if(data)
   {
-    data.println("Time(milliSec), PitoVelocity, StratoDisplacement, acceleration, RatioToVertical");
+    data.println("Time(milliSec), PitoVelocity, StratoDisplacement, acceleration");
     data.flush();
   }
 }
@@ -60,10 +60,8 @@ void writeToSD(int deltaTime, int stratoDis, float pitoVel)
   
   String info;
   String accel = String(ay,3);
-  float ratioUp = getRatioVertical();
-  String ratio = String(ratioUp);
-  
-  info = String(deltaTime) + "," + String(pitoVel) + "," + String(stratoDis) + "," + accel + "," + ratio + "\n";
+
+  info = String(deltaTime) + "," + String(pitoVel) + "," + String(stratoDis) + "," + accel + "\n";
   
   //data = SD.open("data.txt", FILE_WRITE);
   // if the file opened okay, write to it:

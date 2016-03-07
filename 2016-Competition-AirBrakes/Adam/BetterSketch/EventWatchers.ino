@@ -50,9 +50,9 @@ void checkForLiftoff(float vel1, int dis)
     engineBurning = true;
     
     // timed airbreak deployment used for first flight only
-    //timeToTriggerAirbreak = millis() + timeToBurnOut;
-    //if(airBreaking)
-    openAirBreaks();
+   if(airBreaking)
+      timeToTriggerAirbreak = millis() + timeToBurnOut;
+    //openAirBreaks();
     
     
   }

@@ -106,8 +106,8 @@ void loop()
 {
   updateAirBrakes();
   // time controlled airbrake is used in first test only
-  //if(millis() >= timeToTriggerAirbreak)
-  //  openAirBreaks();
+  if(millis() >= timeToTriggerAirbreak)
+    openAirBreaks();
   // end timed airbrake control
   haveStratoData = havePitoData = false;
   if( airBreaking &&  midLaunch)
@@ -168,8 +168,12 @@ void loop()
       combineValues(&combinedVel, &combinedDis, pitoVel, pitoDis, stratoVel, stratoDis, (float)deltaTime / numMillisecondsInSecond);
       
       sendData(combinedVel, combinedDis, lastTimeRecorded);
+
+
+      /* Removed for Test flight. Want to continue to send all data throughout flight
       if(!checkForBurnout(combinedVel,deltaTime))
         checkForApogee(stratoVel, combinedDis); // pitot tube will stop working after apogee
+      */
       
       writeToSD(deltaTime, stratoDis, pitoVel);
     }

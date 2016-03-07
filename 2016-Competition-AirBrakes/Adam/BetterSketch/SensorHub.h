@@ -17,12 +17,20 @@ public:
 
 	int static getAltitude(){return 0;}
 
-	int static getPitotTubeVelocity(){return 0;}
+	int static getPitotTubeVelocity(){return pitoVel;}
+
+	int static getVelocityRedundant(){return redundantVel;};
 
 	/**
 	* Makes the sensor hub update all of the sensor readings again
 	*/
 	void static update();
+
+	/**
+	* Sets up anything that needs to be setup. 
+	* Call this right at the start
+	*/
+	bool static setup();
 
 private: 
 
@@ -40,6 +48,25 @@ private:
 	* Mapped as: x, y, z
 	*/
 	static int accelArray[3];
+
+	static float redundantVel;
+
+	static float pitoVel; 
+
+	static float lastPitoVel;
+
+	static int stratoAlt; 
+
+	static int lastStratoAlt;
+
+	static int stratoZero;
+
+	//Time since last loop;
+ 
+	int deltaTime = 0;
+
+	int lastLoopTime = 0;
+
 
 
 
