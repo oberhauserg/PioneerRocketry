@@ -15,7 +15,6 @@
 
 #include <Wire.h>
 #include "I2Cdev.h"
-#include "MPU6050_9Axis_MotionApps41.h"
 #include <Adafruit_BNO055.h>
 #include <Adafruit_Sensor.h>
 #include <SPI.h>
@@ -24,7 +23,7 @@
 // at one time
 //SoftwareSerial Strato(10, 11); //RX, TX
 
-MPU6050 mpu;
+Adafruit_BNO055 bno;
 int16_t a1, a2, a3, g1, g2, g3, m1, m2, m3;     // raw data arrays reading
 float ax, ay, az, gx, gy, gz, mx, my, mz; // variables to hold latest sensor data values 
 
@@ -43,38 +42,41 @@ long timeToTriggerAirbreak = 2147483647; // max long
 
 void setup() 
 {
-  Wire.begin(); // used for 9DOF 
-  Serial1.begin(9600);
-  Serial2.begin(9600); 
-  
-  delay(1000); // gives serial time to open up
+	Wire.begin(); // used for 9DOF 
+	Serial1.begin(9600);
+	Serial2.begin(9600); 
 
-  // initialize SD Card Reader/Writer
-  initializeSDCard();
+	delay(1000); // gives serial time to open up
 
-  // 9DOF initialization
-  initializeGyro();
+	// initialize SD Card Reader/Writer
+	initializeSDCard();
 
-  // initialize air Brakes
-  initializeAirBreak();
+	// 9DOF initialization
+	initializeGyro();
 
-  // initialize Strattologger
-  initializeStrato();
-  
+	// initialize air Brakes
+	initializeAirBreak();
 
-  checkAirBreaks();
-  if(airBreaking)
-    sendMessage("Air Brakes are on.\n\n");
-  else
-    sendMessage("AirBreaks are off.\n\n");
+	// initialize Strattologger
+	initializeStrato();
 
-  // initialize apogee
-  initializeApogee(); 
-    
-  sendMessage("SequenceNumber,Time(milliSec),Altitude(feet),Velocity(fps)\n");
-  lastTimeRecorded = millis();
-  
-  initDataFile();
+	// initialize BNO055
+	initBno();
+
+
+	checkAirBreaks();
+	if(airBreaking)
+		sendMessage("Air Brakes are on.\n\n");
+	else
+		sendMessage("AirBreaks are off.\n\n");
+
+	// initialize apogee
+	initializeApogee(); 
+
+	sendMessage("SequenceNumber,Time(milliSec),Altitude(feet),Velocity(fps)\n");
+	lastTimeRecorded = millis();
+
+	initDataFile();
 } // end setup
 
 // -----------------------------------------------------------------------------------
@@ -104,135 +106,141 @@ int numMillisecondsInSecond = 1000;
 
 void loop() 
 {
-  updateAirBrakes();
-  // time controlled airbrake is used in first test only
-  if(millis() >= timeToTriggerAirbreak)
-    openAirBreaks();
-  // end timed airbrake control
-  haveStratoData = havePitoData = false;
-  if( airBreaking &&  midLaunch)
-  {
-    // resetting time variables
-    int deltaTime = (int)(millis() - lastTimeRecorded);
-    lastTimeRecorded = millis();
-     
-    // get pitot tube values
-    pitoVel = getVelocityPito();
-    pitoDis = getDisPito(deltaTime, pitoVel);
+	updateAirBrakes();
+	// time controlled airbrake is used in first test only
+	if(millis() >= timeToTriggerAirbreak)
+		openAirBreaks();
+	// end timed airbrake control
+	haveStratoData = havePitoData = false;
+	if( airBreaking &&  midLaunch)
+	{
+		// resetting time variables
+		int deltaTime = (int)(millis() - lastTimeRecorded);
+		lastTimeRecorded = millis();
 
-    // get stratologger values
-    stratoDis = getDisStrato();
-    int deltaDis = stratoDis - prevStratoDis;
-    prevStratoDis = stratoDis;
-    stratoVel = getVelStrato(deltaTime, deltaDis);
+		// get accel values
+		getAccel(ax, ay, az);
 
-    // combine values
-    if(!haveStratoData && !havePitoData)
-      sendData("No Data");
-    else
-    {
-      combineValues(&combinedVel, &combinedDis, pitoVel, pitoDis, stratoVel, stratoDis, (float) deltaTime / numMillisecondsInSecond);
+		// get pitot tube values
+		pitoVel = getVelocityPito();
+		pitoDis = getDisPito(deltaTime, pitoVel);
 
-      sendData(combinedVel, combinedDis, lastTimeRecorded);
+		// get stratologger values
+		stratoDis = getDisStrato();
+		int deltaDis = stratoDis - prevStratoDis;
+		prevStratoDis = stratoDis;
+		stratoVel = getVelStrato(deltaTime, deltaDis);
 
-      controlAirBreaks();
+		// combine values
+		if(!haveStratoData && !havePitoData)
+			sendData("No Data");
+		else
+		{
+			combineValues(&combinedVel, &combinedDis, pitoVel, pitoDis, stratoVel, stratoDis, (float) deltaTime / numMillisecondsInSecond);
 
-      // check for state change
-      checkForApogee(combinedVel,combinedDis);
-    
-      writeToSD(deltaTime, stratoDis, pitoVel);
-    }
-  }
-  else if((!airBreaking && midLaunch) || engineBurning)
-  {
-    // resetting time variables
-    int deltaTime = (int)(millis() - lastTimeRecorded);
-    lastTimeRecorded = millis();
-     
-    // get pitot tube values
-    pitoVel = getVelocityPito();
-    if(havePitoData)
-      pitoDis = getDisPito(deltaTime, pitoVel);
+			sendData(combinedVel, combinedDis, lastTimeRecorded);
 
-    // get stratologger values
-    stratoDis = getDisStrato();
-    int deltaDis = stratoDis - prevStratoDis;
-    prevStratoDis = stratoDis;
-    stratoVel = getVelStrato(deltaTime, deltaDis);
+			controlAirBreaks();
 
-    // combine values
-    if(!haveStratoData && !havePitoData)
-      sendData("No Data");
-    else
-    {
-      combineValues(&combinedVel, &combinedDis, pitoVel, pitoDis, stratoVel, stratoDis, (float)deltaTime / numMillisecondsInSecond);
-      
-      sendData(combinedVel, combinedDis, lastTimeRecorded);
+			// check for state change
+			checkForApogee(combinedVel,combinedDis);
+
+			writeToSD(deltaTime, stratoDis, pitoVel);
+		}
+	}
+	else if((!airBreaking && midLaunch) || engineBurning)
+	{
+		// resetting time variables
+		int deltaTime = (int)(millis() - lastTimeRecorded);
+		lastTimeRecorded = millis();
+
+		// get accel values
+		getAccel(ax, ay, az);
+
+		// get pitot tube values
+		pitoVel = getVelocityPito();
+		if(havePitoData)
+			pitoDis = getDisPito(deltaTime, pitoVel);
+
+		// get stratologger values
+		stratoDis = getDisStrato();
+		int deltaDis = stratoDis - prevStratoDis;
+		prevStratoDis = stratoDis;
+		stratoVel = getVelStrato(deltaTime, deltaDis);
+
+		// combine values
+		if(!haveStratoData && !havePitoData)
+			sendData("No Data");
+		else
+		{
+			combineValues(&combinedVel, &combinedDis, pitoVel, pitoDis, stratoVel, stratoDis, (float)deltaTime / numMillisecondsInSecond);
+
+			sendData(combinedVel, combinedDis, lastTimeRecorded);
 
 
-      /* Removed for Test flight. Want to continue to send all data throughout flight
-      if(!checkForBurnout(combinedVel,deltaTime))
-        checkForApogee(stratoVel, combinedDis); // pitot tube will stop working after apogee
-      */
-      
-      writeToSD(deltaTime, stratoDis, pitoVel);
-    }
-  }
-  else if(descending) // assume pitot tube no longer functioning
-  {
-    havePitoData = false;
-     // resetting time variables
-    int deltaTime = (int)(millis() - lastTimeRecorded);
-    lastTimeRecorded = millis();
-    
-    stratoDis = getDisStrato();
-    int deltaDis = stratoDis - prevStratoDis;
-    prevStratoDis = stratoDis;
-    stratoVel = getVelStrato(deltaTime, deltaDis);
+			/* Removed for Test flight. Want to continue to send all data throughout flight
+			if(!checkForBurnout(combinedVel,deltaTime))
+			checkForApogee(stratoVel, combinedDis); // pitot tube will stop working after apogee
+			*/
 
-    if(haveStratoData)
-    {
-      combineValues(&combinedVel, &combinedDis, 0, 0, stratoVel, stratoDis, (float) deltaTime / numMillisecondsInSecond);
-      sendData(stratoVel, stratoDis, lastTimeRecorded );
-      checkForLanding(combinedDis);
-      writeToSD(deltaTime, stratoDis, pitoVel);
-    }
-    else
-    {
-      sendData("No Data");
-    }
-  }
-  else // preLaunch or grounded
-  {
-    // resetting time variables
-    int deltaTime = (int)(millis() - lastTimeRecorded);
-    lastTimeRecorded = millis();
-     
-    // get pitot tube values
-    pitoVel = getVelocityPito();
-    if(havePitoData)
-      pitoDis = getDisPito(deltaTime, pitoVel);
+			writeToSD(deltaTime, stratoDis, pitoVel);
+		}
+	}
+	else if(descending) // assume pitot tube no longer functioning
+	{
+		havePitoData = false;
+		// resetting time variables
+		int deltaTime = (int)(millis() - lastTimeRecorded);
+		lastTimeRecorded = millis();
 
-    // get stratologger values
-    stratoDis = getDisStrato();
-    int deltaDis = stratoDis - prevStratoDis;
-    prevStratoDis = stratoDis;
-    stratoVel = getVelStrato(deltaTime, deltaDis);
-    
-    if(!haveStratoData && !havePitoData)
-      sendData("No Data");
-    else
-    {
-      combineValues(&combinedVel, &combinedDis, pitoVel, pitoDis, stratoVel, stratoDis, (float) deltaTime / numMillisecondsInSecond);
-      sendData(combinedVel, combinedDis, lastTimeRecorded);
-      checkForLiftoff(combinedVel, combinedDis);
-      writeToSD(deltaTime, stratoDis, pitoVel);
-    }
-    
-    
-    
-    //data.close();
-  }
+		stratoDis = getDisStrato();
+		int deltaDis = stratoDis - prevStratoDis;
+		prevStratoDis = stratoDis;
+		stratoVel = getVelStrato(deltaTime, deltaDis);
+
+		if(haveStratoData)
+		{
+			combineValues(&combinedVel, &combinedDis, 0, 0, stratoVel, stratoDis, (float) deltaTime / numMillisecondsInSecond);
+			sendData(stratoVel, stratoDis, lastTimeRecorded );
+			checkForLanding(combinedDis);
+			writeToSD(deltaTime, stratoDis, pitoVel);
+		}
+		else
+		{
+			sendData("No Data");
+		}
+	}
+	else // preLaunch or grounded
+	{
+		// resetting time variables
+		int deltaTime = (int)(millis() - lastTimeRecorded);
+		lastTimeRecorded = millis();
+
+		// get pitot tube values
+		pitoVel = getVelocityPito();
+		if(havePitoData)
+			pitoDis = getDisPito(deltaTime, pitoVel);
+
+		// get stratologger values
+		stratoDis = getDisStrato();
+		int deltaDis = stratoDis - prevStratoDis;
+		prevStratoDis = stratoDis;
+		stratoVel = getVelStrato(deltaTime, deltaDis);
+
+		if(!haveStratoData && !havePitoData)
+			sendData("No Data");
+		else
+		{
+			combineValues(&combinedVel, &combinedDis, pitoVel, pitoDis, stratoVel, stratoDis, (float) deltaTime / numMillisecondsInSecond);
+			sendData(combinedVel, combinedDis, lastTimeRecorded);
+			checkForLiftoff(combinedVel, combinedDis);
+			writeToSD(deltaTime, stratoDis, pitoVel);
+		}
+
+
+
+		//data.close();
+	}
 }
 
 // -----------------------------------------------------------------------------------
@@ -250,28 +258,51 @@ float RATIO_STRATO_DIS = 0.7f;
 
 void combineValues(float *combinedVel, int *combinedDis, float pitoVel, int pitoDis, float stratoVel, int stratoDis, float deltaTime)
 {
-    if(haveStratoData && havePitoData)
-    {
-      *combinedVel = pitoVel; //RATIO_PITO_VEL * pitoVel + RATIO_STRATO_VEL * stratoVel;
-      *combinedDis = stratoDis; //RATIO_PITO_DIS * pitoDis + RATIO_STRATO_DIS * stratoDis;
-      //kalmanFilter(&combinedVel, &combinedDis, deltaTime);
-      // we will not be using kalman filter during the first test flight
-    }
-    else if(haveStratoData)
-    {
-      *combinedVel = stratoVel;
-      *combinedDis = stratoDis;
-      //kalmanFilter(&combinedVel, &combinedDis, deltaTime);
-      // we will not be using kalman filter during the first test flight
-    }
-    else
-    {
-      *combinedVel = pitoVel;
-      *combinedDis = pitoDis;
-      //kalmanFilter(&combinedVel, &combinedDis, deltaTime);
-      // we will not be using kalman filter during the first test flight
-    }
+	if(haveStratoData && havePitoData)
+	{
+		*combinedVel = pitoVel; //RATIO_PITO_VEL * pitoVel + RATIO_STRATO_VEL * stratoVel;
+		*combinedDis = stratoDis; //RATIO_PITO_DIS * pitoDis + RATIO_STRATO_DIS * stratoDis;
+		//kalmanFilter(&combinedVel, &combinedDis, deltaTime);
+		// we will not be using kalman filter during the first test flight
+	}
+	else if(haveStratoData)
+	{
+		*combinedVel = stratoVel;
+		*combinedDis = stratoDis;
+		//kalmanFilter(&combinedVel, &combinedDis, deltaTime);
+		// we will not be using kalman filter during the first test flight
+	}
+	else
+	{
+		*combinedVel = pitoVel;
+		*combinedDis = pitoDis;
+		//kalmanFilter(&combinedVel, &combinedDis, deltaTime);
+		// we will not be using kalman filter during the first test flight
+	}
 }
 
+void initBno()
+{
+	/* Initialise the sensor */
+	if(!bno.begin())
+	{
+		/* There was a problem detecting the BNO055 ... check your connections */
+		Serial.print("Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!");
+		while(1);
+	}
+
+	delay(1000);
+
+	bno.setExtCrystalUse(true);
+}
+
+void getAccel(float & aX, float & aY, float & aZ)
+{
+	imu::Vector<3> accel = bno.getVector(Adafruit_BNO055::VECTOR_ACCELEROMETER);
+
+	aX = accel.x;
+	aY = accel.y;
+	aZ = accel.z;
+}
 
 
