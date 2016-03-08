@@ -36,13 +36,14 @@ void initDataFile()
   
   if(data)
   {
-    data.println("Time(milliSec), PitoVelocity, StratoDisplacement, acceleration");
+    data.println("Time(milliSec), PitoVelocity, StratoDisplacement, accel X, accel Y, accel Z");
     data.flush();
   }
 }
 
 void writeToSD(int deltaTime, int stratoDis, float pitoVel)
 {
+  /*
   mpu.getAcceleration  ( &a1, &a2, &a3  );
   ax = a1*16.0f/32768.0f;
   ay = a2 *16.0f/32768.0f;
@@ -57,9 +58,11 @@ void writeToSD(int deltaTime, int stratoDis, float pitoVel)
   mx = m1*10.0f*1229.0f/4096.0f + 18.0f; // milliGauss (1229 microTesla per 2^12 bits, 10 mG per microTesla)
   my = m2*10.0f*1229.0f/4096.0f + 70.0f; // apply calibration offsets in mG that correspond to your environment and magnetometer
   mz = m3*10.0f*1229.0f/4096.0f + 270.0f;
-  
+  */
+  float ax,ay,az;
+  getAccel(ax,ay,az);
   String info;
-  String accel = String(ay,3);
+  String accel = String(ax,3) + "," + String(ay,3) + "," + String(az,3);
 
   info = String(deltaTime) + "," + String(pitoVel) + "," + String(stratoDis) + "," + accel + "\n";
   

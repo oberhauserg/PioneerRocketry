@@ -81,3 +81,31 @@ void initializeStrato()
     sendMessage("Initial Altitude above sea level is " + String(temp) + "\n");
   } 
 }
+// -----------------------------------------------------------------------------------
+// This function initializes the BNO sensor. 
+// Initialization result (failed/succeeded) are output to the sendMessage function.
+// -----------------------------------------------------------------------------------
+void initBno()
+{
+  /* Initialise the sensor */
+  if(!bno.begin())
+    sendMessage("Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!\n");
+  else
+    sendMessage("BNO055 working!\n");
+
+  delay(1000);
+
+  bno.setExtCrystalUse(true);
+}
+
+// -----------------------------------------------------------------------------------
+// This function returns the acceleration from the BNO055 acceleromter.
+// -----------------------------------------------------------------------------------
+void getAccel(float & aX, float & aY, float & aZ)
+{
+  imu::Vector<3> accel = bno.getVector(Adafruit_BNO055::VECTOR_LINEARACCEL);
+
+  ax = accel.x;
+  aY = accel.y;
+  aZ = accel.z;
+}

@@ -52,7 +52,7 @@ void setup()
 	initializeSDCard();
 
 	// 9DOF initialization
-	initializeGyro();
+	//initializeGyro();
 
 	// initialize air Brakes
 	initializeAirBreak();
@@ -281,28 +281,6 @@ void combineValues(float *combinedVel, int *combinedDis, float pitoVel, int pito
 	}
 }
 
-void initBno()
-{
-	/* Initialise the sensor */
-	if(!bno.begin())
-	{
-		/* There was a problem detecting the BNO055 ... check your connections */
-		Serial.print("Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!");
-		while(1);
-	}
 
-	delay(1000);
-
-	bno.setExtCrystalUse(true);
-}
-
-void getAccel(float & aX, float & aY, float & aZ)
-{
-	imu::Vector<3> accel = bno.getVector(Adafruit_BNO055::VECTOR_ACCELEROMETER);
-
-	aX = accel.x;
-	aY = accel.y;
-	aZ = accel.z;
-}
 
 
