@@ -32,13 +32,28 @@ void initializeSDCard()
 // -----------------------------------------------------------------------------------
 void initDataFile()
 {
-  data = SD.open("data.txt", FILE_WRITE);
+  
+  for(int i=1;;i++)
+  {
+    String temp = "data";
+    temp.concat(i);
+    temp.concat(".csv");
+    char filename[temp.length()+1];
+    temp.toCharArray(filename, sizeof(filename));
+    if(!SD.exists(filename))
+    {
+      sendMessage("Open file:" + temp + "\n");
+        data = SD.open(filename,FILE_WRITE);
+        break;
+    }
+  }
   
   if(data)
   {
     data.println("Time(milliSec), PitoVelocity, StratoDisplacement, accel X, accel Y, accel Z");
     data.flush();
   }
+  
 }
 
 void writeToSD(int deltaTime, int stratoDis, float pitoVel)

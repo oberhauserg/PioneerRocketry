@@ -105,7 +105,7 @@ void getAccel(float & aX, float & aY, float & aZ)
 {
   imu::Vector<3> accel = bno.getVector(Adafruit_BNO055::VECTOR_LINEARACCEL);
 
-  ax = accel.x;
-  aY = accel.y;
-  aZ = accel.z;
+  aX = accel.x();
+  aY = accel.y();
+  aZ = accel.z();
 }

@@ -51,8 +51,8 @@ void checkForLiftoff(float vel1, int dis)
     
     // timed airbreak deployment used for first flight only
    if(airBreaking)
-      timeToTriggerAirbreak = millis() + timeToBurnOut;
-    //openAirBreaks();
+   //   timeToTriggerAirbreak = millis() + timeToBurnOut;
+    openAirBreaks();
     
     
   }

@@ -27,6 +27,9 @@ Adafruit_BNO055 bno;
 int16_t a1, a2, a3, g1, g2, g3, m1, m2, m3;     // raw data arrays reading
 float ax, ay, az, gx, gy, gz, mx, my, mz; // variables to hold latest sensor data values 
 
+int brakesLED = 53;
+int loopLED = 52;
+
 long lastTimeRecorded;
 bool mpuWorking = true;
 bool airBreaking = false;
@@ -42,6 +45,12 @@ long timeToTriggerAirbreak = 2147483647; // max long
 
 void setup() 
 {
+  pinMode(brakesLED, OUTPUT);
+  pinMode(loopLED, OUTPUT);
+
+  digitalWrite(brakesLED, LOW);  
+  digitalWrite(loopLED, LOW);
+  
 	Wire.begin(); // used for 9DOF 
 	Serial1.begin(9600);
 	Serial2.begin(9600); 
@@ -66,10 +75,15 @@ void setup()
 
 	checkAirBreaks();
 	if(airBreaking)
+  {
 		sendMessage("Air Brakes are on.\n\n");
+    digitalWrite(brakesLED, HIGH);
+  }
 	else
+  {
 		sendMessage("AirBreaks are off.\n\n");
-
+    digitalWrite(brakesLED, LOW);
+  }
 	// initialize apogee
 	initializeApogee(); 
 
@@ -104,12 +118,23 @@ bool havePitoData = false;
 
 int numMillisecondsInSecond = 1000;
 
+bool light = true;
+
 void loop() 
 {
+  //Blink our blinky light
+  if(millis() % 1000 <= 500)
+    digitalWrite(loopLED, HIGH);
+  else
+    digitalWrite(loopLED, LOW);
+  
+    
+  
+  
 	updateAirBrakes();
 	// time controlled airbrake is used in first test only
-	if(millis() >= timeToTriggerAirbreak)
-		openAirBreaks();
+	//if(millis() >= timeToTriggerAirbreak)
+	//	openAirBreaks();
 	// end timed airbrake control
 	haveStratoData = havePitoData = false;
 	if( airBreaking &&  midLaunch)
