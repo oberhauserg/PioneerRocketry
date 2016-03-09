@@ -203,7 +203,7 @@ void loop()
 			sendData(combinedVel, combinedDis, lastTimeRecorded);
 
       // Added for Test Flight
-      checkForApogee(combinedVel, combinedDis);
+      checkForApogee(combinedVel, stratoVel);
       
 			/* Removed for Test flight. Want to continue to send all data throughout flight
 			if(!checkForBurnout(combinedVel,deltaTime))
@@ -307,7 +307,3 @@ void combineValues(float *combinedVel, int *combinedDis, float pitoVel, int pito
 		// we will not be using kalman filter during the first test flight
 	}
 }
-
-
-
-

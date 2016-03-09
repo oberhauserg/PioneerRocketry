@@ -8,6 +8,9 @@
 // void initializeApogee()
 // -----------------------------------------------------------------------------------
 
+// switches from sending to XBee to sending to Serial Monitor
+//#define USING_SERIAL_MONITOR
+
 // -----------------------------------------------------------------------------------
 // This function sends a message to the XBee. 
 // It allows the user to change the serial port the XBee is connected with a minimal
@@ -16,7 +19,11 @@
 // -----------------------------------------------------------------------------------
 void sendMessage(String msg)
 {
+#ifdef USING_SERIAL_MONITOR
+  Serial.print(msg);
+#else // using XBee
   Serial1.print(msg);
+#endif
 }
 
 // -----------------------------------------------------------------------------------
@@ -31,6 +38,20 @@ String receiveMessage()
 {
   long endTime = millis();
   endTime += timeDelay;
+// used for if you don't want to use XBee
+#ifdef USING_SERIAL_MONITOR
+  while(Serial.available() <= 0 && (millis() <= endTime) );
+  if(Serial.available() > 0)
+  {
+    String message = Serial.readString();
+    return message;
+  }
+  else
+  {
+    sendMessage("\nTimeout occured! Did not recieve you message.\n");
+    return "TIME OUT";
+  }
+#else // using XBee
   while(Serial1.available() <= 0 && (millis() <= endTime) );
   if(Serial1.available() > 0)
   {
@@ -42,6 +63,7 @@ String receiveMessage()
     sendMessage("\nTimeout occured! Did not recieve you message.\n");
     return "TIME OUT";
   }
+#endif
 }
 
 // -----------------------------------------------------------------------------------

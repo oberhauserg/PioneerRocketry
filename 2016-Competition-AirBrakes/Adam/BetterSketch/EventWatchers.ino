@@ -31,17 +31,22 @@ void checkForLiftoff(float vel1, int dis)
   else
     velocity[liftoffPnt++] = vel2;
     */
-  velocity[liftoffPnt++] = vel1;
+    
+  // not used for current test iteration
+  //velocity[liftoffPnt++] = vel1;
+  
   if(liftoffPnt == LIFTOFF_NUM_AVE)
     liftoffPnt = 0;
   float sum = 0;
   int sumDis = 0;
   for(int i = 0; i < LIFTOFF_NUM_AVE; i++)
   {
-    sum += velocity[i];
+    // not used in this current test iteration
+    //sum += velocity[i];
+    
     sumDis += disArray[i];
   }
-  float average = ((int)sum)/LIFTOFF_NUM_AVE; // convert to int for faster math
+  //float average = ((int)sum)/LIFTOFF_NUM_AVE; // convert to int for faster math
   float aveDis = (float)sumDis / (float) LIFTOFF_NUM_AVE;
   if(aveDis >=  LIFTOFF_ALT)
   {
@@ -50,11 +55,11 @@ void checkForLiftoff(float vel1, int dis)
     engineBurning = true;
     
     // timed airbreak deployment used for first flight only
-   if(airBreaking)
-   //   timeToTriggerAirbreak = millis() + timeToBurnOut;
+    if(airBreaking)
+    {
+    //timeToTriggerAirbreak = millis() + timeToBurnOut;
     openAirBreaks();
-    
-    
+    }
   }
 }
 
@@ -106,9 +111,10 @@ bool checkForBurnout(float vel, int deltaT)
 // value for the apogee is recorded as apogee.
 // -----------------------------------------------------------------------------------
 int NUM_APOGEE_AVE = 12;
-float apogeeVel[] = {0.0f,0.0f,0.0f,0.0f,0.0f,0.0f};;
-int apogeeDis[] = {0,0,0};
+float apogeeVel[] = {0,0,0,0,0,0,0,0,0,0,0,0};
+int apogeeDis[] = {0,0,0,0,0,0,0,0,0,0,0,0};
 int apogeePnt = 0;
+bool reachedApogee = false;
 
 void checkForApogee(float vel, int dis)
 {
@@ -122,8 +128,9 @@ void checkForApogee(float vel, int dis)
     sum += apogeeVel[i];
   }
   int ave = sum / NUM_APOGEE_AVE;
-  if(ave < 0)
+  if(!reachedApogee && ave < 0)
   {
+    reachedApogee = true;
     // Added this segment of code to open breaks after apogee
     if(airBreaking)
       closeAirBreaks();
