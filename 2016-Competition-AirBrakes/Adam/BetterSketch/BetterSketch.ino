@@ -202,7 +202,9 @@ void loop()
 
 			sendData(combinedVel, combinedDis, lastTimeRecorded);
 
-
+      // Added for Test Flight
+      checkForApogee(combinedVel, combinedDis);
+      
 			/* Removed for Test flight. Want to continue to send all data throughout flight
 			if(!checkForBurnout(combinedVel,deltaTime))
 			checkForApogee(stratoVel, combinedDis); // pitot tube will stop working after apogee

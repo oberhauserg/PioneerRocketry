@@ -105,7 +105,7 @@ bool checkForBurnout(float vel, int deltaT)
 // Also, the displacements are recorded, so that once apogee is reached, the largest
 // value for the apogee is recorded as apogee.
 // -----------------------------------------------------------------------------------
-int NUM_APOGEE_AVE = 6;
+int NUM_APOGEE_AVE = 12;
 float apogeeVel[] = {0.0f,0.0f,0.0f,0.0f,0.0f,0.0f};;
 int apogeeDis[] = {0,0,0};
 int apogeePnt = 0;
@@ -124,9 +124,16 @@ void checkForApogee(float vel, int dis)
   int ave = sum / NUM_APOGEE_AVE;
   if(ave < 0)
   {
+    // Added this segment of code to open breaks after apogee
+    if(airBreaking)
+      closeAirBreaks();
+
+    // commenting out for test launch
+    /*
     midLaunch = false;
     descending = true;
     havePitoData = false;
+    */
     int maxApogee = 0;
     // find largest apogee in array
     for(int i = 0; i < NUM_APOGEE_AVE; i++)
@@ -137,7 +144,8 @@ void checkForApogee(float vel, int dis)
     apogee = maxApogee;
     String apogeeString = String(maxApogee);
     sendMessage("Apogee is : " + apogeeString + "\n");
-    writeApogeeToSD(apogee); 
+    writeApogeeToSD(apogee);
+
   }
 }
 
