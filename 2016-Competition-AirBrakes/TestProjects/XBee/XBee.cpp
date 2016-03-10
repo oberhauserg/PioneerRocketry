@@ -5,7 +5,7 @@
 // ammount of modified code. Does not include newline, so user will have to hardcode 
 // those in.
 // -----------------------------------------------------------------------------------
-void XBee::sendMessage(String msg)
+void XBee::SendMessage(String msg)
 {
 #ifdef USING_SERIAL_MONITOR
 	Serial.print(msg);
@@ -18,7 +18,7 @@ void XBee::sendMessage(String msg)
 // If the USING_SERIAL_MONITOR is uncommnted, then the method initializes Serial.
 // at a 9600 baud rate. Otherwise, the method initializes Serial1 at a 9600 baud rate.
 // -----------------------------------------------------------------------------------
-void XBee::initializeXBee()
+void XBee::InitializeXBee()
 {
 #ifdef USING_SERIAL_MONITOR
 	Serial.begin(9600);
@@ -34,13 +34,13 @@ void XBee::initializeXBee()
 // apogee. Then they verify that it was correctly input. It returns the apogee 
 // corrected by the user. If no apogee is entered, then it returns the initial value.
 // -----------------------------------------------------------------------------------
-int XBee::initializeApogee(int apogee)
+int XBee::InitializeApogee(int apogee)
 {
 	// get apogee from XBee
-	sendMessage("Current apogee is set at : " + String(apogee) +
+	SendMessage("Current apogee is set at : " + String(apogee) +
 				"\nDo you want to change this. \"Y\" -> change. "
 				+ "\"N\" -> leave as is\n");
-	String response = receiveMessage();
+	String response = ReceiveMessage();
 	response.toUpperCase();
 	if (response.equals("Y") || response.equals("Y\n") || response.equals("Y\r")) 
 	{
@@ -49,11 +49,11 @@ int XBee::initializeApogee(int apogee)
 		int maxTimesInLoop = 10; // makes sure you don't have infinite loop without XBee
 		while (badMessage && (numTimesInLoop++ != maxTimesInLoop))
 		{
-			sendMessage("\nPlease input your altitude as an integer. (No Periods, Spaces, Commas, or \\n).\n");
-			response = receiveMessage();
-			sendMessage("\nCurrent apogee is set at : " + response +      
+			SendMessage("\nPlease input your altitude as an integer. (No Periods, Spaces, Commas, or \\n).\n");
+			response = ReceiveMessage();
+			SendMessage("\nCurrent apogee is set at : " + response +      
 				"\nIs this correct.  \"Y\" -> correct. \"N\" -> try again\n");
-			String response2 = receiveMessage();
+			String response2 = ReceiveMessage();
 			response2.toUpperCase();
 			if (response2.equals("Y") || response2.equals("Y\n") || response2.equals("Y\r"))
 			{
@@ -65,10 +65,10 @@ int XBee::initializeApogee(int apogee)
 		}
 		if (numTimesInLoop == maxTimesInLoop)
 		{
-			sendMessage("\nExceeded max number of attemps!\n");
+			SendMessage("\nExceeded max number of attemps!\n");
 		}
 	}
-	sendMessage("Apogee set at :" + String(apogee) + "\n");
+	SendMessage("Apogee set at :" + String(apogee) + "\n");
 	return apogee;
 }
 // -----------------------------------------------------------------------------------
@@ -77,7 +77,7 @@ int XBee::initializeApogee(int apogee)
 // recieved in that time, an error message is sent to the XBee and the String
 // "TIME OUT" is returned. Otherwise, the String is read from the XBee returned.
 // -----------------------------------------------------------------------------------
-String XBee::receiveMessage()
+String XBee::ReceiveMessage()
 {
 	long endTime = millis() + TIME_DELAY;
 	// used for if you don't want to use XBee
@@ -90,7 +90,7 @@ String XBee::receiveMessage()
 	}
 	else
 	{
-		sendMessage("\nTimeout occured! Did not recieve you message.\n");
+		SendMessage("\nTimeout occured! Did not recieve you message.\n");
 		return "TIME OUT";
 	}
 #else // using XBee
@@ -102,7 +102,7 @@ String XBee::receiveMessage()
 	}
 	else
 	{
-		sendMessage("\nTimeout occured! Did not recieve you message.\n");
+		SendMessage("\nTimeout occured! Did not recieve you message.\n");
 		return "TIME OUT";
 	}
 #endif
@@ -113,7 +113,7 @@ String XBee::receiveMessage()
 // It sends a data sequence number. Plus the given time data, and displacement data.
 // it sends "None" for the velocity data.
 // -----------------------------------------------------------------------------------
-void XBee::sendData(int combinedDis, long timeData)
+void XBee::SendData(int combinedDis, long timeData)
 {
 	if (seqNum == MAX_SEQ_NUM)
 		seqNum = 0;
@@ -123,7 +123,7 @@ void XBee::sendData(int combinedDis, long timeData)
 	String vel = "None";
 	String dis = String(combinedDis);
 	String temp = num + ',' + msgTime + ',' + dis + "," + vel + '\n';
-	sendMessage(temp);
+	SendMessage(temp);
 }
 
 // -----------------------------------------------------------------------------------
@@ -131,7 +131,7 @@ void XBee::sendData(int combinedDis, long timeData)
 // It sends a data sequence number. Plus the given time data, velocity data, 
 // displacement data.
 // -----------------------------------------------------------------------------------
-void XBee::sendData(int combinedDis, float combinedVel,  long timeData)
+void XBee::SendData(int combinedDis, float combinedVel,  long timeData)
 {
 	if (seqNum++ == MAX_SEQ_NUM)
 		seqNum = 0;
@@ -140,10 +140,10 @@ void XBee::sendData(int combinedDis, float combinedVel,  long timeData)
 	String vel = String(combinedVel, 3);
 	String dis = String(combinedDis);
 	String temp = num + ',' + msgTime + ',' + dis + "," + vel + "\n";
-	sendMessage(temp);
+	SendMessage(temp);
 }
 
-void XBee::sendData(String msg)
+void XBee::SendData(String msg)
 {
 	if (seqNum++ == MAX_SEQ_NUM)
 		seqNum = 0;
@@ -151,7 +151,7 @@ void XBee::sendData(String msg)
 	String num = String(seqNum);
 	String msgTime = String(millis());
 	String temp = num + "," + msgTime + "," + msg + "\n";
-	sendMessage(temp);
+	SendMessage(temp);
 }
 
 // -----------------------------------------------------------------------------------
@@ -159,7 +159,7 @@ void XBee::sendData(String msg)
 // It sends a data sequence number. Plus the given time data, velocity data, 
 // displacement data, and acceleration.
 // -----------------------------------------------------------------------------------
-void XBee::sendData(int Dis, float vel, float acc, long timeData)
+void XBee::SendData(int Dis, float vel, float acc, long timeData)
 {
 	if (seqNum++ == MAX_SEQ_NUM)
 		seqNum = 0;
@@ -170,6 +170,6 @@ void XBee::sendData(int Dis, float vel, float acc, long timeData)
 	String acceleration = String(acc, 3);
 	String temp = num + ',' + msgTime + ',' + displacment + "," 
 				  + velocity + acceleration + "\n";
-	sendMessage(temp);
+	SendMessage(temp);
 }
 }
