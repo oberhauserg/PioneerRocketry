@@ -3,7 +3,7 @@
 // This method is called to update initialize the SD card reader/writer. 
 // It prints a message indicating whether it was successful or not.
 // -----------------------------------------------------------------------------------
-bool SDCard::initializeSDCard()
+bool SDCard::InitializeSDCard()
 {
 	return SD.begin(CS_PIN);
 }
@@ -14,7 +14,7 @@ bool SDCard::initializeSDCard()
 // deleting old files or having mulitple concatination onto the same data file.
 // It inserts a header with all the varaible types on the top  of the file.
 // -----------------------------------------------------------------------------------
-String SDCard::initializeDataFile()
+String SDCard::InitializeDataFile()
 {
 	String fileName;
 	int count = 1;
@@ -39,7 +39,7 @@ String SDCard::initializeDataFile()
 // If an old apogee file is recorded, the file is erased. A new apogee file is then 
 // created containing the new apogee.
 // -----------------------------------------------------------------------------------
-bool SDCard::writeApogeeToSD(int height)
+bool SDCard::WriteApogeeToSD(int height)
 {
 	// delete old apogee
 	SD.remove("apogee.txt");
@@ -55,7 +55,7 @@ bool SDCard::writeApogeeToSD(int height)
 // -----------------------------------------------------------------------------------
 // This methods writes data to the SD card data file.
 // -----------------------------------------------------------------------------------
-void SDCard::writeToSD(int deltaTime, float dis, float vel, float acc)
+void SDCard::WriteToSD(int deltaTime, float dis, float vel, float acc)
 {
 	String info = String(deltaTime) + "," + String(vel) + ","
 						 + String(dis) + "," + String(acc) + "\n";
@@ -73,7 +73,7 @@ void SDCard::writeToSD(int deltaTime, float dis, float vel, float acc)
 // the entire file into a String. Then it returns the String to an integer using the
 // String.ToInt() method.
 // -----------------------------------------------------------------------------------
-int SDCard::readApogeeFromSDCard()
+int SDCard::ReadApogeeFromSDCard()
 {
 	apogeeFile = SD.open("apogee.txt");
 	if (apogeeFile)
