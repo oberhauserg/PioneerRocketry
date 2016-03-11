@@ -49,9 +49,10 @@ void setup()
   pinMode(loopLED, OUTPUT);
 
   digitalWrite(brakesLED, LOW);  
-  digitalWrite(loopLED, LOW);
+  digitalWrite(loopLED, HIGH);
   
 	Wire.begin(); // used for 9DOF 
+  Serial.begin(9600);
 	Serial1.begin(9600);
 	Serial2.begin(9600); 
 
@@ -67,7 +68,7 @@ void setup()
 	initializeAirBreak();
 
 	// initialize Strattologger
-	//initializeStrato();
+	initializeStrato();
 
 	// initialize BNO055
 	initBno();
@@ -77,12 +78,12 @@ void setup()
 	if(airBreaking)
   {
 		sendMessage("Air Brakes are on.\n\n");
-    //digitalWrite(brakesLED, HIGH);
+    digitalWrite(brakesLED, HIGH);
   }
 	else
   {
 		sendMessage("AirBreaks are off.\n\n");
-    //digitalWrite(brakesLED, LOW);
+    digitalWrite(brakesLED, LOW);
   }
 	// initialize apogee
 	initializeApogee(); 
@@ -134,7 +135,7 @@ void loop()
     //closeAirBreaks();
   }
 
-  closeAirBreaks();
+  //closeAirBreaks();
   
 	updateAirBrakes();
 	// time controlled airbrake is used in first test only

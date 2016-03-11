@@ -43,12 +43,15 @@ void openAirBreaks()
                                       // more than once.
   brakes->setDeploymentPercentage(finalPercent);
   if(airBreaking)
+  {
     sendMessage("Opening Air Brakes\n");
+    digitalWrite(brakesLED, LOW);
+    delay(100);
+  }
   else
     sendMessage( String(millis()) + " Air Brake Point\n");
 
 
-  digitalWrite(brakesLED, HIGH);
 }
 
 void closeAirBreaks()
@@ -56,7 +59,7 @@ void closeAirBreaks()
   brakes->setDeploymentPercentage(closePercent);
   sendMessage("Closing Air Breaks\n");
 
-  digitalWrite(brakesLED, LOW);
+  digitalWrite(brakesLED, HIGH);
   
 }
 

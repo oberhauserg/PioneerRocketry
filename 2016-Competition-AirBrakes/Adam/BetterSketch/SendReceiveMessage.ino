@@ -9,7 +9,7 @@
 // -----------------------------------------------------------------------------------
 
 // switches from sending to XBee to sending to Serial Monitor
-//#define USING_SERIAL_MONITOR
+#define USING_SERIAL_MONITOR
 
 // -----------------------------------------------------------------------------------
 // This function sends a message to the XBee. 
@@ -21,9 +21,9 @@ void sendMessage(String msg)
 {
 #ifdef USING_SERIAL_MONITOR
   Serial.print(msg);
-#else // using XBee
+#endif 
   Serial1.print(msg);
-#endif
+
 }
 
 // -----------------------------------------------------------------------------------
@@ -51,7 +51,7 @@ String receiveMessage()
     sendMessage("\nTimeout occured! Did not recieve you message.\n");
     return "TIME OUT";
   }
-#else // using XBee
+#endif // using XBee
   while(Serial1.available() <= 0 && (millis() <= endTime) );
   if(Serial1.available() > 0)
   {
@@ -63,7 +63,7 @@ String receiveMessage()
     sendMessage("\nTimeout occured! Did not recieve you message.\n");
     return "TIME OUT";
   }
-#endif
+
 }
 
 // -----------------------------------------------------------------------------------
