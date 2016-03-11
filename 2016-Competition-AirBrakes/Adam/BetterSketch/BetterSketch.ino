@@ -67,7 +67,7 @@ void setup()
 	initializeAirBreak();
 
 	// initialize Strattologger
-	initializeStrato();
+	//initializeStrato();
 
 	// initialize BNO055
 	initBno();
@@ -77,12 +77,12 @@ void setup()
 	if(airBreaking)
   {
 		sendMessage("Air Brakes are on.\n\n");
-    digitalWrite(brakesLED, HIGH);
+    //digitalWrite(brakesLED, HIGH);
   }
 	else
   {
 		sendMessage("AirBreaks are off.\n\n");
-    digitalWrite(brakesLED, LOW);
+    //digitalWrite(brakesLED, LOW);
   }
 	// initialize apogee
 	initializeApogee(); 
@@ -123,13 +123,18 @@ bool light = true;
 void loop() 
 {
   //Blink our blinky light
-  if(millis() % 1000 <= 500)
+  if(millis() % 2000 <= 1000)
+  {
     digitalWrite(loopLED, HIGH);
+    //openAirBreaks();
+  }
   else
+  {
     digitalWrite(loopLED, LOW);
-  
-    
-  
+    //closeAirBreaks();
+  }
+
+  closeAirBreaks();
   
 	updateAirBrakes();
 	// time controlled airbrake is used in first test only
@@ -203,7 +208,7 @@ void loop()
 			sendData(combinedVel, combinedDis, lastTimeRecorded);
 
       // Added for Test Flight
-      checkForApogee(combinedVel, stratoVel);
+      checkForApogee(stratoVel, combinedDis);
       
 			/* Removed for Test flight. Want to continue to send all data throughout flight
 			if(!checkForBurnout(combinedVel,deltaTime))

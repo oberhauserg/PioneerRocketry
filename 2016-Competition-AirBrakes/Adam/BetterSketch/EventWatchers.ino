@@ -24,7 +24,7 @@ int liftoffPnt = 0;
 
 void checkForLiftoff(float vel1, int dis)
 { 
-  disArray[liftoffPnt] = dis;
+  disArray[liftoffPnt++] = dis;
   /**
   if(vel1 > vel2)
     velocity[liftoffPnt++] = vel1;
@@ -48,6 +48,7 @@ void checkForLiftoff(float vel1, int dis)
   }
   //float average = ((int)sum)/LIFTOFF_NUM_AVE; // convert to int for faster math
   float aveDis = (float)sumDis / (float) LIFTOFF_NUM_AVE;
+  
   if(aveDis >=  LIFTOFF_ALT)
   {
     //sendMessage("Lift Off\n");

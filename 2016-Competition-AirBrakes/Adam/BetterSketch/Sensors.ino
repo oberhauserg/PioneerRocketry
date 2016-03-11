@@ -31,6 +31,7 @@ float localPitoDisplacement = 0.0f;
 
 int getDisPito(int deltaTime, float pitoVel)
 {
+  havePitoData = false;
   localPitoDisplacement = localPitoDisplacement + deltaTime * pitoVel / numMillisecondsInSecond;
   return (int)localPitoDisplacement;
 }

@@ -35,7 +35,7 @@ void updateAirBrakes()
 }
 
 int finalPercent = 100;
-int closePercent = 0;
+int closePercent = 0;//100;
 
 void openAirBreaks()
 {
@@ -46,12 +46,18 @@ void openAirBreaks()
     sendMessage("Opening Air Brakes\n");
   else
     sendMessage( String(millis()) + " Air Brake Point\n");
+
+
+  digitalWrite(brakesLED, HIGH);
 }
 
 void closeAirBreaks()
 {
   brakes->setDeploymentPercentage(closePercent);
   sendMessage("Closing Air Breaks\n");
+
+  digitalWrite(brakesLED, LOW);
+  
 }
 
 // -----------------------------------------------------------------------------------
