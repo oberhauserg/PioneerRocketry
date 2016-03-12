@@ -164,7 +164,10 @@ void loop()
 
 		// combine values
 		if(!haveStratoData && !havePitoData)
+    {
 			sendData("No Data");
+      closeAirBreaks();
+    }
 		else
 		{
 			combineValues(&combinedVel, &combinedDis, pitoVel, pitoDis, stratoVel, stratoDis, (float) deltaTime / numMillisecondsInSecond);
@@ -181,6 +184,7 @@ void loop()
 	}
 	else if((!airBreaking && midLaunch) || engineBurning)
 	{
+    
 		// resetting time variables
 		int deltaTime = (int)(millis() - lastTimeRecorded);
 		lastTimeRecorded = millis();
@@ -201,7 +205,10 @@ void loop()
 
 		// combine values
 		if(!haveStratoData && !havePitoData)
+    {
 			sendData("No Data");
+      closeAirBreaks();
+    }
 		else
 		{
 			combineValues(&combinedVel, &combinedDis, pitoVel, pitoDis, stratoVel, stratoDis, (float)deltaTime / numMillisecondsInSecond);
@@ -241,6 +248,7 @@ void loop()
 		else
 		{
 			sendData("No Data");
+      closeAirBreaks();
 		}
 	}
 	else // preLaunch or grounded

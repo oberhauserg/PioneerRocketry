@@ -14,7 +14,7 @@
 // -----------------------------------------------------------------------------------
 // This function initializes the Air Brakes. 
 // -----------------------------------------------------------------------------------
-int initialPercent = 0;
+int initialPercent = 1000;
 AirBrakes * brakes;
 
 void initializeAirBreak()
@@ -42,11 +42,15 @@ void openAirBreaks()
   //timeToTriggerAirbreak = 2147483647; // Max long prevents being triggered
                                       // more than once.
   brakes->setDeploymentPercentage(finalPercent);
+  Servo myServo;
+  myServo.attach(13);
+  myServo.writeMicroseconds(2000);
+  updateAirBrakes();
   if(airBreaking)
   {
     sendMessage("Opening Air Brakes\n");
     digitalWrite(brakesLED, LOW);
-    delay(100);
+    //delay(100);
   }
   else
     sendMessage( String(millis()) + " Air Brake Point\n");
@@ -57,6 +61,10 @@ void openAirBreaks()
 void closeAirBreaks()
 {
   brakes->setDeploymentPercentage(closePercent);
+  Servo myServo;
+  myServo.attach(13);
+  myServo.writeMicroseconds(1000);
+  updateAirBrakes();
   sendMessage("Closing Air Breaks\n");
 
   digitalWrite(brakesLED, HIGH);

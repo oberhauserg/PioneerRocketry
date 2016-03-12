@@ -9,7 +9,7 @@
 // -----------------------------------------------------------------------------------
 
 // switches from sending to XBee to sending to Serial Monitor
-#define USING_SERIAL_MONITOR
+//#define USING_SERIAL_MONITOR
 
 // -----------------------------------------------------------------------------------
 // This function sends a message to the XBee. 
