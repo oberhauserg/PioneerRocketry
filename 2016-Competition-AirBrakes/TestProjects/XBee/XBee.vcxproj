@@ -47,10 +47,10 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <ForcedIncludeFiles>%(ForcedIncludeFiles)</ForcedIncludeFiles>
-      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\Jacob\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.6\cores\arduino;C:\Users\Jacob\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.6\variants\arduino_due_x;C:\Users\Jacob\Desktop\PioneerRocketry\trunk\2016-Competition-AirBrakes\TestProjects\XBee;C:\Program Files (x86)\Arduino\libraries;C:\Users\Jacob\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.6\libraries;C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\mkvp3jzg.ihq\Micro Platforms\default\debuggers;C:\Users\Jacob\Documents\Arduino\libraries;C:\Users\Jacob\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.6\system/libsam;C:\Users\Jacob\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.6\system/CMSIS/CMSIS/Include/;C:\Users\Jacob\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.6\system/CMSIS/Device/ATMEL/;C:\Users\Jacob\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.6\cores\arduino;C:\Users\Jacob\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.6\variants\arduino_due_x;C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\mkvp3jzg.ihq\Micro Platforms\default\debuggers\VM_DBG;C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\mkvp3jzg.ihq\Micro Platforms\default\debuggers;C:\Program Files (x86)\Arduino\libraries\SD\src;C:\Users\Jacob\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.6\libraries\SPI;C:\Program Files (x86)\Arduino\libraries;C:\Users\Jacob\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.6\libraries;C:\Users\Jacob\Documents\Arduino\libraries;C:\Users\Jacob\AppData\Local\arduino15\packages\arduino\tools\arm-none-eabi-gcc\4.8.3-2014q1/arm-none-eabi\include\c++\4.8.3;C:\Users\Jacob\AppData\Local\arduino15\packages\arduino\tools\arm-none-eabi-gcc\4.8.3-2014q1/arm-none-eabi/include/c++/4.8.3/arm-none-eabi/;C:\Users\Jacob\AppData\Local\arduino15\packages\arduino\tools\arm-none-eabi-gcc\4.8.3-2014q1/arm-none-eabi/include/;C:\Users\Jacob\AppData\Local\arduino15\packages\arduino\tools\arm-none-eabi-gcc\4.8.3-2014q1\lib\gcc\arm-none-eabi\4.8.3\include;C:\Users\Jacob\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.6\system\CMSIS\Device\ATMEL\;C:\Users\Jacob\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.6\system\libsam;C:\Users\Jacob\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.6\system\libsam\include;C:\Users\Jacob\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.6\system\CMSIS\CMSIS\Include\;C:\Users\Jacob\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.6\system\CMSIS\CMSIS\Include\;C:\Users\Jacob\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.6\system\CMSIS\Device\ATMEL\;C:\Users\Jacob\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.6\system\libsam;C:\Users\Jacob\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.6\system\libsam\include;C:\Program Files (x86)\Arduino/hardware/tools/g++_arm_none_eabi\arm-none-eabi\include;C:\Program Files (x86)\Arduino/hardware/tools/g++_arm_none_eabi\arm_none_eabi\include\;C:\Program Files (x86)\Arduino/hardware/tools/g++_arm_none_eabi\lib\gcc\arm-none-eabi\4.4.1\include;C:\Program Files (x86)\Arduino/hardware/tools/g++_arm_none_eabi\lib\gcc\arm-none-eabi\4.4.1\include\;C:\Users\Jacob\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.6/system/CMSIS/Device/ATMEL/sam3xa/include/pio;C:\Users\Jacob\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.6/system/libsam/include;C:\Users\Jacob\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.6/CMSIS/CMSIS/Include/;C:\Users\Jacob\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.6/system/CMSIS/Device/ATMEL/sam3xa/include;C:\Users\Jacob\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.6\system/libsam;C:\Users\Jacob\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.6\system/CMSIS/Device/ATMEL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>C:\Users\Jacob\Desktop\PioneerRocketry\trunk\2016-Competition-AirBrakes\TestProjects\XBee\__vm\.XBee.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <PreprocessorDefinitions>printf=iprintf;F_CPU=84000000L;ARDUINO=10607;ARDUINO_SAM_DUE;ARDUINO_ARCH_SAM;__SAM3X8E__;USB_VID=0x2341;USB_PID=0x003e;USBCON;__cplusplus=201103L;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -74,6 +74,13 @@
     <None Include="XBee.ino">
       <FileType>CppCode</FileType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="XBee.h" />
+    <ClInclude Include="__vm\.XBee.vsarduino.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="XBee.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

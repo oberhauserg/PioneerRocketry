@@ -42,39 +42,7 @@ public:
 	// apogee. Then they verify that it was correctly input. It returns the apogee 
 	// corrected by the user. If no apogee is entered, then it returns the initial value.
 	// -----------------------------------------------------------------------------------
-	int InitializeApogee(int apogee);
-
-	// -----------------------------------------------------------------------------------
-	// This method sends data via the XBee.
-	// It sends a data sequence number. Plus the given time data, velocity data, 
-	// displacement data, and acceleration.
-	// -----------------------------------------------------------------------------------
-	void SendData(int Dis, float vel, float acc, long timeData);
-
-	// -----------------------------------------------------------------------------------
-	// This method sends data via the XBee.
-	// It sends a data sequence number. Plus the given time data, velocity data, 
-	// displacement data.
-	// -----------------------------------------------------------------------------------
-	void SendData(int combinedDis, float combinedVel,  long timeData);
-
-	// -----------------------------------------------------------------------------------
-	// This method sends data via the XBee.
-	// It sends a data sequence number. Plus the given time data, and displacement data.
-	// it sends "None" for the velocity data.
-	// -----------------------------------------------------------------------------------
-	void SendData(int combinedDis, long timeData);
 	
-	// -----------------------------------------------------------------------------------
-	// This method sends data via the XBee.
-	// It sends a data sequence number plus the input string value.
-	// -----------------------------------------------------------------------------------
-	void SendData(String msg);
-	
-private:
-	const static long TIME_DELAY = 10000; // time to wait for response in milliseconds
-	const static int MAX_SEQ_NUM = 1000; // capped to decrease message length
-	int seqNum = 0; // current sequence number
 };
 
 #endif
