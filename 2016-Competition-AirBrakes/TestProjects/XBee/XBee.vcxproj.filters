@@ -24,9 +24,15 @@
     <ClInclude Include="XBee.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="XBeeData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="XBee.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XBeeData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

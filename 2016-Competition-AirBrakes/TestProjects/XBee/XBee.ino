@@ -1,3 +1,4 @@
+#include <String.h>
 /*
  Name:		XBee.ino
  Created:	3/9/2016 22:05:18

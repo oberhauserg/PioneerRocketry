@@ -103,4 +103,6 @@ extern "C" void __cxa_pure_virtual() {;}
 #define portInputRegister(P)
 #define portModeRegister(P)
 #include <..\XBee\XBee.ino>
+#include <..\XBee\XBee.cpp>
+#include <..\XBee\XBee.h>
 #endif

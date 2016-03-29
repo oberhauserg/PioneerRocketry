@@ -1,6 +1,9 @@
 #ifndef _XBEE_H
 #define _XBEE_H
 
+#include <Arduino.h>
+#include <Wire.h>
+
 // -----------------------------------------------------------------------------------
 // This Class provides features of providing feedback from the Arduino.
 // It can send data either to the XBee or to the Serial port to be read by the 
