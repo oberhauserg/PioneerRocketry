@@ -1,0 +1,6 @@
+SensorHub	KEYWORD1
+update	KEYWORD2
+initialize	KEYWORD2
+getAccel	KEYWORD2
+getVelocity	KEYWORD2
+getDisp	KEYWORD2
