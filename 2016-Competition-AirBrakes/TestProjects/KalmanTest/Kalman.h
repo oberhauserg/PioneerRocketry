@@ -1,11 +1,15 @@
 #ifndef _KALMAN_H
 #define _KALMAN_H
 
+#define DEBUG_KALMAN
+#ifdef DEBUG_KALMAN
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <Eigen/Dense>
 #include "Tokenizer.cpp"
+#endif
+#include "Eigen/Dense"
+
 
 using namespace Eigen;
 
@@ -35,12 +39,6 @@ private:
 	Vector3f Y = Vector3f(3);
 	
 	float processError = 8.0f;
-
-	
-	
-	
-	
-
 };
 
 #endif

@@ -75,7 +75,7 @@ void Kalman::update(int * displacement, float * velocity, float * acceleration, 
 	*velocity = X(1);
 	*acceleration = X(2);
 }
-
+#ifdef DEBUG_KALMAN
 int main()
 {
 	Kalman kal;
@@ -138,3 +138,5 @@ int main()
 	return 0;
 	
 }
+
+#endif

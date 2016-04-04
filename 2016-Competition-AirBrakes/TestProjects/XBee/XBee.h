@@ -45,7 +45,8 @@ public:
 	// apogee. Then they verify that it was correctly input. It returns the apogee 
 	// corrected by the user. If no apogee is entered, then it returns the initial value.
 	// -----------------------------------------------------------------------------------
-	
+private:
+	static const long TIME_DELAY = 10000;
 };
 
 #endif
