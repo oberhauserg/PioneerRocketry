@@ -44,7 +44,7 @@ void openAirBreaks()
   brakes->setDeploymentPercentage(finalPercent);
   Servo myServo;
   myServo.attach(13);
-  myServo.writeMicroseconds(2000);
+  myServo.writeMicroseconds(1920);
   updateAirBrakes();
   if(airBreaking)
   {
@@ -63,7 +63,7 @@ void closeAirBreaks()
   brakes->setDeploymentPercentage(closePercent);
   Servo myServo;
   myServo.attach(13);
-  myServo.writeMicroseconds(1000);
+  myServo.writeMicroseconds(800);
   updateAirBrakes();
   sendMessage("Closing Air Breaks\n");
 

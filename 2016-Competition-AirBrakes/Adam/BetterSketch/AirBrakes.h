@@ -60,9 +60,9 @@ class AirBrakes
     	int currentSet;
 
     	//These will have to be correctly set up.
-    	static const int MAX_ACTUATE = 2000;
+    	static const int MAX_ACTUATE = 1920;
                 
-    	static const int MIN_ACTUATE = 1000;
+    	static const int MIN_ACTUATE = 800;
 
 };
 

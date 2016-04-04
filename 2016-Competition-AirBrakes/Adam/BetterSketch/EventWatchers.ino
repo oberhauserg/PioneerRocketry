@@ -17,7 +17,7 @@
 // -----------------------------------------------------------------------------------
 float LIFTOFF_THRESHHOLD = 0.12f;
 int LIFTOFF_NUM_AVE = 6;
-int LIFTOFF_ALT = 250;
+int LIFTOFF_ALT = 200;
 float velocity[] = {0.0f,0.0f,0.0f,0.0f,0.0f,0.0f};
 int disArray[] = {0.0f,0.0f,0.0f,0.0f,0.0f,0.0f};
 int liftoffPnt = 0;
@@ -129,7 +129,7 @@ void checkForApogee(float vel, int dis)
     sum += apogeeVel[i];
   }
   int ave = sum / NUM_APOGEE_AVE;
-  if(!reachedApogee && ave < 0)
+  if(!reachedApogee && ave < -40)
   {
     reachedApogee = true;
     // Added this segment of code to open breaks after apogee
