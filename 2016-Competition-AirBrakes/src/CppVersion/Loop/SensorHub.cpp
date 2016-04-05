@@ -1,5 +1,5 @@
 #include "SensorHub.h"
-
+/*
 void SensorHub::update()
 {
 
@@ -47,4 +47,4 @@ bool SensorHub::setup()
   		stratoZero = -1;
   		return false;
   	}
-}
+}*/

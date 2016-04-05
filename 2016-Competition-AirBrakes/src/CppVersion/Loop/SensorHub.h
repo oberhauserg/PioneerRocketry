@@ -1,18 +1,19 @@
-#include "Sensor.h"
+//#include "Sensor.h"
 
 /**
 * This class organizes all of the sensors we have 
 * on the rocket into one neat place. 
 * Author: Grant Oberhauser
 */
+/*
 class SensorHub
 {
 	
 public:
 
-	/**
-	* Return a value to a pointer 
-	*/
+	
+	// Return a value to a pointer 
+	
 	int* static getGyroMeasurements();
 
 	int* static getAccelMeasurements();
@@ -21,9 +22,9 @@ public:
 
 	int static getPitotTubeVelocity();
 
-	/**
-	* Makes the sensor hub update all of the sensor readings again
-	*/
+	
+	// Makes the sensor hub update all of the sensor readings again
+	
 	void static update();
 
 private: 
@@ -43,4 +44,4 @@ private:
 
 
 
-};
+};*/
