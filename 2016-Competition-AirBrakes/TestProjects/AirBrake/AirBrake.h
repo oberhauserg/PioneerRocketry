@@ -23,28 +23,23 @@ public:
 	void SetActive(bool _isActive) { isActive = _isActive; }
 	// -----------------------------------------------------------------------------------
 	// This method is called to open the Air Brakes to the BRAKE_OPEN amount. 
-	// This method will not execute unless the Air Brakes have been set active by the
-	// SetActive method. 
 	// -----------------------------------------------------------------------------------
-	void OpenBrakes();
+	void OpenBrakes() { myServo.writeMicroseconds(BRAKE_OPEN); }
 	// -----------------------------------------------------------------------------------
 	// This method is called to close the Air Brakes to the BRAKE_CLOSED amount. 
-	// This method will not execute unless the Air Brakes have been set active by the
-	// SetActive method. 
 	// -----------------------------------------------------------------------------------
-	void CloseBrakes();
+	void CloseBrakes() { myServo.writeMicroseconds(BRAKE_CLOSED); }
 	// -----------------------------------------------------------------------------------
 	// This method is called to open the Air Brakes a set amount. 
-	// This method will not execute unless the Air Brakes have been set active by the
-	// SetActive method. The num is an integer for the precentage the airbrakes need 
-	// to be opened. 
+	// The num is an integer for the precentage the airbrakes need  to be opened. 
 	// -----------------------------------------------------------------------------------
 	void AirBrakePercent(int num); 
 private:
-	const static int BRAKE_OPEN = 2000;
-	const static int BRAKE_CLOSED = 1000;
-	const static int PIN_NUM = 13;
+	const static int BRAKE_OPEN = 2000; // for use with writeMicroseconds
+	const static int BRAKE_CLOSED = 1000; // for use with writeMicroseconds
+	const static int PIN_NUM = 13; // pin num for arduino
 	const static int BASE_OF_PERCENT = 100;
+
 	Servo myServo;
 	bool isActive;
 };
