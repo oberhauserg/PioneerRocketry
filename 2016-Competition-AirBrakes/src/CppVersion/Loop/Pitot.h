@@ -1,6 +1,6 @@
 #ifndef _PITOT_H
 #define _PITOT_H
-#include "../Sensor/Sensor.h"
+#include "Sensor.h"
 
 // --------------------------------------------------------------------------------------
 // This class holds all the values and methods for the Pitot Tube.

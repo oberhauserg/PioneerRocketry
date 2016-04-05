@@ -19,6 +19,8 @@ void Stratologger::Update()
 {
 	if (Serial2.available() > 0)
 	{
+    prevTime = currTime;
+    currTime = millis();
 		dis = Serial2.parseInt();
 		vel = CalcVel();
 		haveStratoData = true;
@@ -40,7 +42,6 @@ float Stratologger::CalcVel()
 
 float Stratologger::CalcDeltaT()
 {
-	prevTime = currTime;
-	currTime = millis();
+	
 	return (float)(currTime - prevTime) / MILLISEC_IN_SEC;
 }
