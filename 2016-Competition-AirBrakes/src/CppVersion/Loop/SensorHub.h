@@ -39,7 +39,7 @@ public:
 	float GetAcc() { return ax; }
 	float GetAccRaw() { return axRaw; }
 
-	float CalcDeltaT(){return (float)(currTime - prevTime) / MILLISEC_IN_SEC;}
+	float CalcDeltaT(){return (float)(currT - prevT) / MILLISEC_IN_SEC;}
 
 	
 	void Update();
@@ -50,14 +50,16 @@ private:
 	const static int MILLISEC_IN_SEC = 1000;
 
 	Sensor * sensors[NUM_SENSORS];
+  Stratologger st;
+  Pitot pt;
+  BNO bno;
 
-	Kalman kal;
 	float ax,ay,az, axRaw;
 	float velPito, velStrato, velRaw;
 	int disPito, disStrato, disRaw;
    
 	float deltaT;
-    long prevT, currT;
+  long prevT, currT;
 	Kalman kal;
 
 #ifdef DEBUG_SENSORS

@@ -6,14 +6,14 @@ SensorHub::SensorHub()
 {
 	deltaT = 0;
 	prevT = currT = millis();
-	sensors[0] = dynamic_cast<Sensor*>(&Stratologger());
-	sensors[1] = dynamic_cast<Sensor*>(&Pitot());
-	sensors[2] = dynamic_cast<Sensor*>(&BNO());
+	sensors[0] = dynamic_cast<Sensor*>(&st);
+  sensors[1] = dynamic_cast<Sensor*>(&pt);
+  sensors[2] = dynamic_cast<Sensor*>(&bno);
 	for (int i = 0; i < NUM_SENSORS; i++)
 	{
 		sensors[i]->Initialize();
 	}
-	kal = Kalman();
+	//kal = Kalman();
 }
 void SensorHub::Update()
 {
@@ -40,6 +40,7 @@ void SensorHub::Update()
 	ax = bno->GetAx();
 	ay = bno->GetAy();
 	az = bno->GetAz();
+#endif
 
 #ifndef DEBUG_SENSORS
 
@@ -63,16 +64,7 @@ void SensorHub::Update()
 
 void SensorHub::FilterData()
 {
-	kal.update(&disStrato, &velPito, &ax, deltaT);
-}
-
-float Stratologger::CalcVel()
-{
-  float temp = CalcDeltaT();
-  if (temp == 0.0f)
-    return (float)(dis - prevDis) / temp;
-  else
-    return 0;
+	kal.Update(&disStrato, &velPito, &ax, deltaT);
 }
 
 

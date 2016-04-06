@@ -9,6 +9,7 @@
 class Pitot: public Sensor
 {
 public:
+  bool Initialize(){return true;}
 	// -----------------------------------------------------------------------------------
 	// This method is called to update the vel and dis values of the class.
 	// -----------------------------------------------------------------------------------

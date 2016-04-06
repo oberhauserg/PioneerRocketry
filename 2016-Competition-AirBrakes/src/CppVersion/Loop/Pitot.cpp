@@ -22,6 +22,5 @@ void Pitot::CalcDis()
 
 float Pitot::GetDeltaT()
 {
-	
 	return (float)(currTime - prevTime) / MILLISEC_IN_SEC;
 }
