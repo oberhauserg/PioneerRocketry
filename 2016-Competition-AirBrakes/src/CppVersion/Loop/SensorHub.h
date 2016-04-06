@@ -4,6 +4,8 @@
 #include "BNO.h"
 #include "Kalman.h"
 
+#define DEBUG_SENSORS
+
 /**
 * This class organizes all of the sensors we have 
 * on the rocket into one neat place. 
@@ -36,6 +38,9 @@ public:
 	float GetVelRaw() { return velRaw; }
 	float GetAcc() { return ax; }
 	float GetAccRaw() { return axRaw; }
+
+	float CalcDeltaT(){return (float)(currTime - prevTime) / MILLISEC_IN_SEC;}
+
 	
 	void Update();
 
@@ -54,4 +59,13 @@ private:
 	float deltaT;
     long prevT, currT;
 	Kalman kal;
+
+#ifdef DEBUG_SENSORS
+	SensorTest st;
+	int prevDistStrato;
+
+#endif
+
+
+
 };

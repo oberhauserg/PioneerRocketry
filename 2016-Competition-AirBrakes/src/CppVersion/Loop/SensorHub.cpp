@@ -1,5 +1,7 @@
 #include "SensorHub.h"
 
+
+
 SensorHub::SensorHub()
 {
 	deltaT = 0;
@@ -15,6 +17,11 @@ SensorHub::SensorHub()
 }
 void SensorHub::Update()
 {
+  prevT = currT;
+  currT = millis();
+  deltaT = (float)(currT - prevT) / MILLISEC_IN_SEC;
+
+#ifdef DEBUG_SENSORS
 	for (int i = 0; i < NUM_SENSORS; i++)
 	{
 		sensors[i]->Update();
@@ -22,6 +29,8 @@ void SensorHub::Update()
 	Stratologger * strato = (Stratologger*)(sensors[0]);
 	disStrato = strato->GetDis();
 	velStrato = strato->GetVel();
+
+
 
 	Pitot * pito = (Pitot*)(sensors[1]);
 	velPito = pito->GetVel();
@@ -32,7 +41,23 @@ void SensorHub::Update()
 	ay = bno->GetAy();
 	az = bno->GetAz();
 
-	deltaT = (float)(currT - prevT) / MILLISEC_IN_SEC;
+#ifndef DEBUG_SENSORS
+
+  
+  //Get disStrato here
+  disStrato = st.GetDis();
+  velPito = st.GetVel();
+  ax = st.GetAx();
+  ay = az = 0;
+
+  if (deltaT == 0.0f)
+    velStrato = (float)(disStrato - prevDisStrato) / deltaT;
+  else
+    velStrato = 0;
+
+#endif
+
+
 	FilterData();
 }
 
@@ -40,6 +65,18 @@ void SensorHub::FilterData()
 {
 	kal.update(&disStrato, &velPito, &ax, deltaT);
 }
+
+float Stratologger::CalcVel()
+{
+  float temp = CalcDeltaT();
+  if (temp == 0.0f)
+    return (float)(dis - prevDis) / temp;
+  else
+    return 0;
+}
+
+
+
 /*
 void SensorHub::update()
 {
