@@ -4,6 +4,7 @@
 #include "BNO.h"
 #include "Kalman.h"
 #include "SensorTest.h"
+#include "XBee.h"
 
 #ifndef _SENSOR_HUB
 #define _SENSOR_HUB
@@ -63,8 +64,9 @@ private:
 	int disPito, disStrato, disRaw;
    
 	float deltaT;
-  long prevT, currT;
+	long prevT, currT;
 	Kalman kal;
+	static XBee xb;
 
 #ifdef DEBUG_SENSORS
 	SensorTest senseT;

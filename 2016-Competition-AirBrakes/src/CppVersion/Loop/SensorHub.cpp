@@ -4,16 +4,24 @@
 
 SensorHub::SensorHub()
 {
+	xb.InitializeXBee();
 	deltaT = 0;
 	prevT = currT = millis();
 	sensors[0] = dynamic_cast<Sensor*>(&st);
-  sensors[1] = dynamic_cast<Sensor*>(&pt);
-  sensors[2] = dynamic_cast<Sensor*>(&bno);
+	sensors[1] = dynamic_cast<Sensor*>(&pt);
+	sensors[2] = dynamic_cast<Sensor*>(&bno);
+	sensors[0]->SetID("Stratologger");
+	sensors[1]->SetID("Pitot Sensor");
+	sensors[2]->SetID("BNO055");
 	for (int i = 0; i < NUM_SENSORS; i++)
 	{
-		sensors[i]->Initialize();
+		xb.SendMessage("Attempting to intialize " + sensors[i]->GetID() + "\n");
+		if(sensors[i]->Initialize())
+			xb.SendMessage(sensors[i]->GetID() + " initialized\n");
+		else
+			xb.SendMessage(sensors[i]->GetID() + " failed to initialize\n");
 	}
-	//kal = Kalman();
+	
 }
 void SensorHub::Update()
 {
