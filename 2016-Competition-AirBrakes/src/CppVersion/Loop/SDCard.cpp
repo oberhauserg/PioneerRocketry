@@ -92,3 +92,18 @@ int SDCard::ReadApogeeFromSDCard()
 		return MIN_INT;
 	}
 }
+
+bool AirBrakesActive()
+{
+  File sdFile = SD.open("break.txt");
+  if(sdFile)
+  {
+    char temp = sdFile.read();
+    if(temp == 'Y' || temp == 'y')
+    {
+      return true;
+    }
+  }
+  return false;
+}
+

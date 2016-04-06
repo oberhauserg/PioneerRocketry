@@ -1,10 +1,11 @@
+#include "XBee.h"
 #include "Sensor.h"
 #include "Stratologger.h"
 #include "Pitot.h"
 #include "BNO.h"
 #include "Kalman.h"
 #include "SensorTest.h"
-#include "XBee.h"
+
 
 #ifndef _SENSOR_HUB
 #define _SENSOR_HUB
@@ -22,38 +23,24 @@ class SensorHub
 	
 public:
 	SensorHub();
-	
-	// Return a value to a pointer 
-	
-	//static int* getGyroMeasurements();
-
-	//float*  getAccelMeasurements() { return &acceleration; }
-
-	//int* getAltitude();
-
-	//int* getPitotTubeVelocity();
-
-	
-	// Makes the sensor hub update all of the sensor readings again
-	int GetDis() { return disPito; }
-	int GetDisBackUp() { return disStrato; }
-	int GetDisRaw() { return disRaw; }
-	float GetVel() { return velStrato; }
-	float GetVelBackUp() { return velPito; }
-	float GetVelRaw() { return velRaw; }
-	float GetAcc() { return ax; }
-	float GetAccRaw() { return axRaw; }
-
 	float CalcDeltaT(){return (float)(currT - prevT) / MILLISEC_IN_SEC;}
-
-	
 	void Update();
+
+  int GetDis() { return disPito; }
+  int GetDisBackUp() { return disStrato; }
+  int GetDisRaw() { return disRaw; }
+  float GetVel() { return velStrato; }
+  float GetVelBackUp() { return velPito; }
+  float GetVelRaw() { return velRaw; }
+  float GetAcc() { return ax; }
+  float GetAccRaw() { return axRaw; }
 
 private: 
 	void FilterData();
 	const static int NUM_SENSORS = 3;
 	const static int MILLISEC_IN_SEC = 1000;
 
+  XBee xb;
 	Sensor * sensors[NUM_SENSORS];
   Stratologger st;
   Pitot pt;
@@ -66,7 +53,7 @@ private:
 	float deltaT;
 	long prevT, currT;
 	Kalman kal;
-	static XBee xb;
+	
 
 #ifdef DEBUG_SENSORS
 	SensorTest senseT;
