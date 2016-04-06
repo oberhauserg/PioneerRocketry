@@ -5,8 +5,10 @@
 class Sensor
 {
 public:
-	bool Initialize();
-	void Update();
+  virtual bool Initialize() = 0;
+  virtual void Update() = 0;
+	//bool Initialize();
+	//void Update();
 	String GetID() { return id; }
 	void SetID(String _id) {id = _id;}
 private:

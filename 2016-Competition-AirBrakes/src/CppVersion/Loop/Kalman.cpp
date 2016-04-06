@@ -51,7 +51,7 @@ Kalman::Kalman()
 		 0,0,1;
 }
 
-void Kalman::update(int * displacement, float * velocity, float * acceleration, int deltaTime)
+void Kalman::Update(int * displacement, float * velocity, float * acceleration, int deltaTime)
 {
 	A(0,1) *= deltaTime;
 	A(0,2) *= deltaTime * deltaTime;

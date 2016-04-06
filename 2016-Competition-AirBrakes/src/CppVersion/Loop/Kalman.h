@@ -39,7 +39,7 @@ public:
 	// PBar = A * prevP * A^T + E // E-> scalar .0001 ????????????????????
 	// K = (P * H^T) / (H * P * H^T + R); 
 	  // step 5: new observation
-	void update(int * displacement, float * velocity, float * acceleration, int deltaTime);
+	void Update(int * displacement, float * velocity, float * acceleration, int deltaTime);
 	
 private:
 	Vector3f predX = Vector3f(3);
