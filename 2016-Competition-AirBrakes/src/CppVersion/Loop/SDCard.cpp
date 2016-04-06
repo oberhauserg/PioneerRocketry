@@ -93,7 +93,7 @@ int SDCard::ReadApogeeFromSDCard()
 	}
 }
 
-bool AirBrakesActive()
+bool SDCard::AirBrakesActive()
 {
   File sdFile = SD.open("break.txt");
   if(sdFile)

@@ -40,6 +40,7 @@ public:
   // character in the file is 'y', then the airbreaks are turned on.
   // -----------------------------------------------------------------------------------
   bool AirBrakesActive();
+  
 private:
 	const static int CS_PIN = 48; // pin on arduino connected to SD card
 	const static int MIN_INT = -2147483648; // returns this if no apogee read from Card

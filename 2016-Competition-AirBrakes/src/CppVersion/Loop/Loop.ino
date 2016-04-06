@@ -19,6 +19,7 @@ int apogeeReached = 0;
 
 void setup() {
   ab.Initialize();
+  
   sd.InitializeSDCard();
   apogeeGoal = sd.ReadApogeeFromSDCard();
   ab.SetActive(sd.AirBrakesActive());
