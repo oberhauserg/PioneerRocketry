@@ -46,9 +46,9 @@ void SensorHub::Update()
 
   
   //Get disStrato here
-  disStrato = st.GetDis();
-  velPito = st.GetVel();
-  ax = st.GetAx();
+  disStrato = senseT.GetDis();
+  velPito = senseT.GetVel();
+  ax = senseT.GetAx();
   ay = az = 0;
 
   if (deltaT == 0.0f)

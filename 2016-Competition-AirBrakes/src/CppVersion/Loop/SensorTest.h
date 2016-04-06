@@ -2,7 +2,7 @@
 #define _SENSORTEST_H
 
 #include<Arduino.h>
-#include <SD\src\SD.h>
+#include <SD.h>
 
 class SensorTest
 {
@@ -39,7 +39,7 @@ private:
 	//---------------------------------
 	// Initializes the SD card
 	//---------------------------------
-	void initSD();
-}
+	void InitSD();
+};
 
 #endif

@@ -3,6 +3,10 @@
 #include "Pitot.h"
 #include "BNO.h"
 #include "Kalman.h"
+#include "SensorTest.h"
+
+#ifndef _SENSOR_HUB
+#define _SENSOR_HUB
 
 #define DEBUG_SENSORS
 
@@ -63,7 +67,7 @@ private:
 	Kalman kal;
 
 #ifdef DEBUG_SENSORS
-	SensorTest st;
+	SensorTest senseT;
 	int prevDistStrato;
 
 #endif
@@ -71,3 +75,5 @@ private:
 
 
 };
+
+#endif

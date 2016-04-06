@@ -10,14 +10,13 @@ void SensorTest::InitSD()
 void SensorTest::Update()
 {
 	
-	char * str = readLine();
+	char * str = ReadLine();
 	char * p = str;
 	char * tok;
 	
-	dis = stof(strtok(p,","));
-	vel = stof(strtok(NULL, ",");
-	ax = stof(strtok(NULL, ",");
-
+	dis = String(strtok(p,",")).toFloat();
+	vel = String(strtok(NULL, ",")).toFloat();
+	ax = String(strtok(NULL, ",")).toFloat();
 }
 
 
