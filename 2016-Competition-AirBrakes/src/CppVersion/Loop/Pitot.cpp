@@ -1,19 +1,27 @@
 #include "Pitot.h"
 
-void Pitot::update()
+void Pitot::Update()
 {
-
-   //analogReadResolution(12);
-   int sensorValue = analogRead(pitoAnalogPin);
-   float pinRatio = (float)sensorValue / (float)MAX_12_INT;
-   havePitoData = true;
-   return pinRatio;
-
+	havePitotData = true;
+	prevTime = currTime;
+	currTime = millis();
+	int sensorValue = analogRead(PITO_ANALOG_PIN);
+	vel = (float)sensorValue / (float)MAX_12_INT;
+	CalcDis();
+	
 }
 
-float Pitot::getScalar()
+void Pitot::CalcDis()
 {
-   
+	if (havePitotData)
+	{
+		localPitoDisplacement = localPitoDisplacement + GetDeltaT() * vel;
+		dis = (int)localPitoDisplacement;
+	}
+}
 
-   
+float Pitot::GetDeltaT()
+{
+	
+	return (float)(currTime - prevTime) / MILLISEC_IN_SEC;
 }
