@@ -16,6 +16,7 @@ public:
 	float GetAy() { return ay; }
 	float GetAz() { return az; }
 private:
+  const float MPS_TO_FTPS = 3.28;
 	float ax, ay, az;
 	Adafruit_BNO055 bno;
 };

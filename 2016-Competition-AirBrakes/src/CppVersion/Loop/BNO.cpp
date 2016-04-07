@@ -14,7 +14,7 @@ void BNO::Update()
 	//VECTOR_LINEARACCEL == acceleration minus gravity
 	imu::Vector<3> accel = bno.getVector(Adafruit_BNO055::VECTOR_LINEARACCEL);
 
-	ax = accel.x();
-	ay = accel.y();
-	az = accel.z();
+	ax = MPS_TO_FTPS * accel.x();
+	ay = MPS_TO_FTPS * accel.y();
+	az = MPS_TO_FTPS * accel.z();
 }
