@@ -2,6 +2,8 @@
 #define _STRATOLOGGER_H
 #include "Sensor.h"
 
+#define _DONT_WAIT_FOR_STRATO
+
 // --------------------------------------------------------------------------------------
 // This class holds all the values and methods for the Stratologger.
 // --------------------------------------------------------------------------------------

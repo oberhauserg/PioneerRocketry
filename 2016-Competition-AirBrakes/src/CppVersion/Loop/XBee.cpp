@@ -9,9 +9,8 @@ void XBee::SendMessage(String msg)
 {
 #ifdef USING_SERIAL_MONITOR
 	Serial.print(msg);
-#else // using XBee
+#endif // using XBee
 	Serial1.print(msg);
-#endif
 }
 // -----------------------------------------------------------------------------------
 // This method opens the serial ports being used to communicate on.
@@ -22,9 +21,8 @@ void XBee::InitializeXBee()
 {
 #ifdef USING_SERIAL_MONITOR
 	Serial.begin(9600);
-#else
-	Serial1.begin(9600);
 #endif
+	Serial1.begin(9600);
 }
 
 

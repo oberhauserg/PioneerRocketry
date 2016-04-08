@@ -22,7 +22,7 @@ class SensorHub
 {
 	
 public:
-	SensorHub();
+	void Initialize();
 	float CalcDeltaT(){return (float)(currT - prevT) / MILLISEC_IN_SEC;}
 	void Update();
 

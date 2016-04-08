@@ -2,6 +2,7 @@
 
 //#include "Kalman.h"
 //#include <SD.h>
+
 #include "SDCard.h"
 #include "XBee.h"
 #include "SensorHub.h"
@@ -9,15 +10,21 @@
 
 // classes
 SDCard sd;
+//SensorHub sh;
+AirBrake ab;
 XBee xbee;
 SensorHub sh;
-AirBrake ab;
 
 // variables
 int apogeeGoal = 0;
 int apogeeReached = 0;
 
 void setup() {
+  //Serial.begin(9600);
+  
+  xbee.InitializeXBee();
+  sh.Initialize();
+  /*
   ab.Initialize();
   
   sd.InitializeSDCard();
@@ -25,16 +32,17 @@ void setup() {
   ab.SetActive(sd.AirBrakesActive());
   sd.InitializeDataFile();
   
-  xbee.InitializeXBee();
-  sh.Update();
   
+  sh.Update();
+  */
 }
 
 void loop() {
+  /*
   sh.Update();
   int dis = sh.GetDis();
   float vel = sh.GetVel();
   sd.WriteToSD(sh.CalcDeltaT(), sh.GetDisRaw(), sh.GetVelRaw(), sh.GetAccRaw());
   xbee.SendData(dis, vel, millis());
-  ab.Update(dis, vel, sh.GetAcc());
+  ab.Update(dis, vel, sh.GetAcc()); */
 }

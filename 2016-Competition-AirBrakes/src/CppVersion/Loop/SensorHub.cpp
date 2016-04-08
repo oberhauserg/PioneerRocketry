@@ -2,9 +2,10 @@
 
 
 
-SensorHub::SensorHub()
+void SensorHub::Initialize()
 {
 	xb.InitializeXBee();
+  delay(1000);
 	deltaT = 0;
 	prevT = currT = millis();
 	sensors[0] = dynamic_cast<Sensor*>(&st);

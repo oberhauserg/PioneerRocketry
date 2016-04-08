@@ -3,7 +3,11 @@
 bool Stratologger::Initialize()
 {
 	Serial2.begin(9600);
+#ifdef _DONT_WAIT_FOR_STRATO
+  long endTime = millis();
+#else
 	long endTime = millis() + DELAY_FOR_STRATO;
+#endif
 	while (Serial2.available() <= 0 && millis() < endTime); // loop until we receive data from stratologger
 	prevTime = currTime = millis();
 	if (millis() >= endTime)

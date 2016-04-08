@@ -12,7 +12,7 @@
 // -----------------------------------------------------------------------------------
 
 // switches from sending to XBee to sending to Serial Monitor
-//#define USING_SERIAL_MONITOR
+#define USING_SERIAL_MONITOR
 class XBee
 {
 public:
