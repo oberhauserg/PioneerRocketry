@@ -11,6 +11,7 @@
 #define _SENSOR_HUB
 
 #define DEBUG_SENSORS
+//#define NO_PITOT
 
 /**
 * This class organizes all of the sensors we have 
@@ -26,11 +27,11 @@ public:
 	float CalcDeltaT(){return (float)(currT - prevT) / MILLISEC_IN_SEC;}
 	void Update();
 
-  int GetDis() { return disPito; }
+  int GetDis() { return disStrato; }
   int GetDisBackUp() { return disStrato; }
   int GetDisRaw() { return disRaw; }
-  float GetVel() { return velStrato; }
-  float GetVelBackUp() { return velPito; }
+  float GetVel() { return velPito; }
+  float GetVelBackUp() { return velStrato; }
   float GetVelRaw() { return velRaw; }
   float GetAcc() { return ax; }
   float GetAccRaw() { return axRaw; }
@@ -39,6 +40,10 @@ private:
 	void FilterData();
 	const static int NUM_SENSORS = 3;
 	const static int MILLISEC_IN_SEC = 1000;
+  const static int MIN_INT = -2147483648;
+
+  bool haveStratoData = false;
+  bool havePitotData = false;
 
   XBee xb;
 	Sensor * sensors[NUM_SENSORS];

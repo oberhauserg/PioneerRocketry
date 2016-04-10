@@ -30,8 +30,9 @@ String SDCard::InitializeDataFile()
 	{
 		data.println("Time(milliSec), PitoVelocity, StratoDisplacement, accel X");
 		data.flush();
+   return fileName + String(" opened succesfully");
 	}
-	return fileName;
+	return String("Error opening SD card");
 }
 
 // -----------------------------------------------------------------------------------

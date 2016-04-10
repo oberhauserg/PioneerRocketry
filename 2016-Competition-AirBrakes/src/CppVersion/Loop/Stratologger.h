@@ -52,6 +52,7 @@ private:
 	const static long DELAY_FOR_STRATO = 120000; // time for strattologger to initialize
 	const static int MIN_INT = -2147483648;
 	const static int MILLISEC_IN_SEC = 1000;
+  const static long NO_DELAY_DELAY = 1000;
 
 	int altAboveSea = MIN_INT;
 	int prevDis = 0;

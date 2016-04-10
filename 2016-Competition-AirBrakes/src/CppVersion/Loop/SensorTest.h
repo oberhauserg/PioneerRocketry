@@ -27,6 +27,11 @@ public:
 	//---------------------------------
 	float GetAX();
 
+  //---------------------------------
+  // Initializes the SD card
+  //---------------------------------
+  void InitSD();
+
 private:
 
 	char* ReadLine();
@@ -36,10 +41,7 @@ private:
 	float vel;
 	float ax;
 
-	//---------------------------------
-	// Initializes the SD card
-	//---------------------------------
-	void InitSD();
+
 };
 
 #endif

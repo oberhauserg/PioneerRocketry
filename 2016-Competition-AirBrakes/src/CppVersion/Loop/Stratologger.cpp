@@ -4,7 +4,7 @@ bool Stratologger::Initialize()
 {
 	Serial2.begin(9600);
 #ifdef _DONT_WAIT_FOR_STRATO
-  long endTime = millis();
+  long endTime = millis() + NO_DELAY_DELAY;
 #else
 	long endTime = millis() + DELAY_FOR_STRATO;
 #endif

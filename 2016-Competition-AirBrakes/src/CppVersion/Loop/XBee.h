@@ -76,7 +76,7 @@ public:
 	
 private:
 	const static long TIME_DELAY = 10000; // time to wait for response in milliseconds
-	const static int MAX_SEQ_NUM = 1000; // capped to decrease message length
+	const static int MAX_SEQ_NUM = 100; // capped to decrease message length
 	int seqNum = 0; // current sequence number
 };
 

@@ -22,6 +22,11 @@ void SensorHub::Initialize()
 		else
 			xb.SendMessage(sensors[i]->GetID() + " failed to initialize\n");
 	}
+#ifdef DEBUG_SENSORS
+
+   senseT.InitSD();
+
+#endif
 	
 }
 void SensorHub::Update()
@@ -30,7 +35,8 @@ void SensorHub::Update()
   currT = millis();
   deltaT = (float)(currT - prevT) / MILLISEC_IN_SEC;
 
-#ifdef DEBUG_SENSORS
+#ifndef DEBUG_SENSORS
+  
 	for (int i = 0; i < NUM_SENSORS; i++)
 	{
 		sensors[i]->Update();
@@ -39,11 +45,14 @@ void SensorHub::Update()
 	disStrato = strato->GetDis();
 	velStrato = strato->GetVel();
 
-
-
 	Pitot * pito = (Pitot*)(sensors[1]);
 	velPito = pito->GetVel();
 	disPito = pito->GetDis();
+ 
+#ifdef NO_PITOT
+  velPito = velStrato;
+  disPito = disStrato;
+#endif
 
 	BNO * bno = (BNO*)(sensors[2]);
 	ax = bno->GetAx();
@@ -51,23 +60,24 @@ void SensorHub::Update()
 	az = bno->GetAz();
 #endif
 
-#ifndef DEBUG_SENSORS
+#ifdef DEBUG_SENSORS
 
-  
+  senseT.Update();
   //Get disStrato here
-  disStrato = senseT.GetDis();
-  velPito = senseT.GetVel();
-  ax = senseT.GetAx();
+  disRaw = disStrato = senseT.GetDis();
+  //xb.SendMessage("readValue is " + String(disStrato) + "\n");
+  velRaw = velPito = senseT.GetVel();
+  axRaw = ax = senseT.GetAX();
   ay = az = 0;
-
+/*
   if (deltaT == 0.0f)
     velStrato = (float)(disStrato - prevDisStrato) / deltaT;
   else
     velStrato = 0;
-
+*/
 #endif
 
-
+  
 	FilterData();
 }
 
@@ -75,55 +85,3 @@ void SensorHub::FilterData()
 {
 	kal.Update(&disStrato, &velPito, &ax, deltaT);
 }
-
-
-
-/*
-void SensorHub::update()
-{
-
-  //Calculate delta time
-  deltaTime = millis() - lastLoopTime;
-
-  lastLoopTime = millis();
-
-  //Get pitot velocity
-  int sensorValue = analogRead(pitoAnalogPin);
-  float pinRatio = (float) sensorValue / (float) Constants::MAX_12_INT;
-  havePitoData = true;
-
-  lastPitoVel = pitoVel;
-  pitoVel = pinRatio * Constants::PITOT_GAIN + Constants::PITOT_ZERO;
-
-  //Get altitude from strattologger
-  if(Serial2.available() > 0)
-  {
-  	lastStratoAlt = stratoAlt;
-  	stratoAlt = Serial2.parseInt();
-  }
-
-  //Calculating redundant velocity from the altimeter.
-  redundantVel = ((float)stratoAlt - lastStratoAlt) * (((float)deltaTime)/MILLIS_TO_BASE));
-
-  
-
-}
-
-bool SensorHub::setup()
-{
-	long endTime = millis() + Constants::DELAY_FOR_STRATO;
-
-  	while(Serial2.available() <= 0 && millis() < endTime); // loop until we receive data from stratologger
-  	
-  	//Check if we timed out
-  	if(millis() < endTime)
-  	{
-  		stratoZero = Serial2.parseInt();
-  		return true;
-  	}
-  	else
-  	{ 
-  		stratoZero = -1;
-  		return false;
-  	}
-}*/

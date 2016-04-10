@@ -2,7 +2,7 @@
 
 void Pitot::Update()
 {
-	havePitotData = true;
+	havePitotData = false;
 	prevTime = currTime;
 	currTime = millis();
 	int sensorValue = analogRead(PITO_ANALOG_PIN);
