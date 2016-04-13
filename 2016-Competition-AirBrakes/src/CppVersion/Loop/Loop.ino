@@ -19,118 +19,105 @@ Event event;
 // variables
 int apogeeGoal = 0;
 int apogeeReached = 0;
-bool airBrakessActive = false;
 const static int MIN_INT = -2147483648;
+const static int ALT_PERCENT = 75;
+const static int DENOMINATOR_OF_PERCENT = 100;
+const static int MIN_AIRBRAKE_VELOCITY = 8; // fps
 
-bool landed = true;
-bool engineBurning = false;
-bool descending = false;
 
 
 
 void setup() 
 {
-  //Serial.begin(9600);
-  
   xbee.InitializeXBee();
   sh.Initialize();
-  
   ab.Initialize();
-  
   sd.InitializeSDCard();
-  apogeeGoal = sd.ReadApogeeFromSDCard();
+
+  // sets apogee goal
   xbee.SendMessage("Opening Apogee file.\n");
-  if(apogeeGoal ==  MIN_INT)
+  apogeeGoal = (sd.ReadApogeeFromSDCard() * ALT_PERCENT) / DENOMINATOR_OF_PERCENT;
+  if(apogeeGoal ==  MIN_INT) // no apogee read
   {
     xbee.SendMessage("Error reading apogee from SD card.\n");
     apogeeGoal = 0;
   }
-
-  apogeeGoal = xbee.InitializeApogee(apogeeGoal);
-  airBrakessActive = sd.AirBrakesActive();
-  ab.SetActive(sd.AirBrakesActive());
-  xbee.SendMessage(sd.InitializeDataFile() + "\n");
+  apogeeGoal = xbee.InitializeApogee(apogeeGoal); // input apogee via xbee
+  
+  // sets air brakes active or inactive
+  ab.SetActive(sd.AirBrakesActive()); // checks sd card for apogee file
+  if(ab.IsActive())
+    xbee.SendMessage("AirBrakes are ACTIVE\n");
+  else
+    xbee.SendMessage("AirBrakes are NOT active\n");
+    
+  xbee.SendMessage(sd.InitializeDataFile() + "\n"); // let user know what data file name is
   sh.Update();
   xbee.SendMessage("SequenceNumber,Time(milliSec),Altitude(feet),Velocity(fps)\n");
 }
 
-bool ap = false;
-bool lft = false;
-bool lnd = false;
+// event memory
+bool landed = true;
+bool burnedOut = false;
+bool descending = false;
 
 void loop() 
 {
-  
+  //Sensor Hub
   sh.Update();
   int dis = sh.GetDis();
   float vel = sh.GetVel();
+  float acc = sh.GetAcc();
+
+  // update events
+  event.Update(dis,vel,sh.GetVelBackUp(),sh.GetAcc());
+  if(event.HasBurnedOut() && !burnedOut)
+  {
+     xbee.SendMessage("Burnout\n");
+     burnedOut = true;
+     landed = false;
+     if(ab.IsActive())
+     {
+      ab.OpenBrakes(); // initially set to max
+      // update loop will take over later but we want to open quickly
+      xbee.SendMessage("Opening AirBrakes\n");
+     }
+     else
+       xbee.SendMessage("AirBrake Point\n");
+     
+  }
+  else if(event.HasReachedApogee() && !descending)
+  {
+    apogeeReached = event.GetApogee();
+    sd.WriteApogeeToSD(apogeeReached);
+    xbee.SendMessage("Apogee " + String(apogeeReached) + "\n");
+  }
+  else if(event.HasLanded() && !landed)
+  {
+    xbee.SendMessage("Landed\n");
+    descending = false;
+    landed = true;
+  }
+
+  if(burnedOut && ab.IsActive())
+  {
+    if( vel < MIN_AIRBRAKE_VELOCITY)
+    {
+      ab.CloseBrakes();
+      xbee.SendMessage("Close AirBrakes\n");
+    }
+    else
+    {
+      ab.Update(dis, vel, acc);
+    }
+  }
+  else // Landed || Descending || burnedOut && AirBrakes inactive
+    ab.CloseBrakes();
+
+  // record data
   sd.WriteToSD(sh.CalcDeltaT(), sh.GetDisRaw(), sh.GetVelRaw(), sh.GetAccRaw());
   xbee.SendData(dis, vel, millis());
-  ab.Update(dis, vel, sh.GetAcc()); 
-  event.Update(dis,vel,sh.GetVelBackUp(),sh.GetAcc());
-  if(landed)
-  {
-    if(event.HasBurnedOut())
-    {
-      landed = false;
-      engineBurning = true;
-      xbee.SendMessage("Burnout Occured.\n");
-    }
-  }
-  else if(engineBurning)
-  {
-    if(event.HasReachedApogee())
-    {
-      descending = true;
-      engineBurning = false;
-      apogeeReached = event.GetApogee();
-      xbee.SendMessage("Apogee read at " + String(apogeeReached) + ".\n");
-      sd.WriteApogeeToSD(apogeeReached);
-    }
-  }
-  else
-  {
-    if(event.HasLanded())
-    {
-      descending = false;
-      landed = true;
-      xbee.SendMessage("Rocket has Landed.\n");
-    }
-  }
-  /*
-//bool engineBurning = false;
-//bool descending
-  //xbee.SendMessage("vel is " + String(sh.GetVelBackUp()) + "\n");
-  if(event.HasBurnedOut() )
-  {
-    if(!lft)
-    {
-      lnd = false;
-      lft = true;
-      xbee.SendMessage("Burned out\n");
-    }
-  }
-  if(event.HasReachedApogee())
-  {
-    if(!ap)
-    {
-      lft = false;
-      ap = true;
-      xbee.SendMessage("Reached apogee " + String(event.GetApogee()) + "\n");
-    }
-    
-  }
-  if(event.HasLanded())
-  {
-    if(!lnd)
-    {
-      ap = false;
-      lnd = true;
-      xbee.SendMessage("Landed\n");
-    }
-  }
-  */
-  
+ 
 }
 
 

@@ -36,7 +36,7 @@ void XBee::InitializeXBee()
 int XBee::InitializeApogee(int apogee)
 {
 	// get apogee from XBee
-	SendMessage("Current apogee is set at : " + String(apogee) +
+	SendMessage("Current apogee goal is set at : " + String(apogee) +
 				"\nDo you want to change this. \"Y\" -> change. "
 				+ "\"N\" -> leave as is\n");
 	String response = ReceiveMessage();
@@ -50,7 +50,7 @@ int XBee::InitializeApogee(int apogee)
 		{
 			SendMessage("\nPlease input your altitude as an integer. (No Periods, Spaces, Commas, or \\n).\n");
 			response = ReceiveMessage();
-			SendMessage("\nCurrent apogee is set at : " + response +      
+			SendMessage("\nCurrent apogee goal is set at : " + response +      
 				"\nIs this correct.  \"Y\" -> correct. \"N\" -> try again\n");
 			String response2 = ReceiveMessage();
 			response2.toUpperCase();
@@ -67,7 +67,7 @@ int XBee::InitializeApogee(int apogee)
 			SendMessage("\nExceeded max number of attemps!\n");
 		}
 	}
-	SendMessage("Apogee set at :" + String(apogee) + "\n");
+	SendMessage("Apogee goal set at :" + String(apogee) + "\n");
 	return apogee;
 }
 // -----------------------------------------------------------------------------------

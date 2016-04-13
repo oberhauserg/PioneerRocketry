@@ -34,6 +34,10 @@ public:
 	// The num is an integer for the precentage the airbrakes need  to be opened. 
 	// -----------------------------------------------------------------------------------
 	void AirBrakePercent(int num); 
+  // -----------------------------------------------------------------------------------
+  // This method returns whether the airbrakes were set active or not. 
+  // -----------------------------------------------------------------------------------
+  bool IsActive() { return isActive; }
 private:
 	const static int BRAKE_OPEN = 2000; // for use with writeMicroseconds
 	const static int BRAKE_CLOSED = 1000; // for use with writeMicroseconds
