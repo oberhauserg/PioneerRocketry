@@ -114,9 +114,8 @@ String XBee::ReceiveMessage()
 // -----------------------------------------------------------------------------------
 void XBee::SendData(int combinedDis, long timeData)
 {
-	if (seqNum == MAX_SEQ_NUM)
+	if (++seqNum == MAX_SEQ_NUM)
 		seqNum = 0;
-	seqNum++;
 	String num = String(seqNum);
 	String msgTime = String(timeData);
 	String vel = "None";
@@ -132,7 +131,7 @@ void XBee::SendData(int combinedDis, long timeData)
 // -----------------------------------------------------------------------------------
 void XBee::SendData(int combinedDis, float combinedVel,  long timeData)
 {
-	if (seqNum++ == MAX_SEQ_NUM)
+	if (++seqNum == MAX_SEQ_NUM)
 		seqNum = 0;
 	String num = String(seqNum);
 	String msgTime = String(timeData);
@@ -144,7 +143,7 @@ void XBee::SendData(int combinedDis, float combinedVel,  long timeData)
 
 void XBee::SendData(String msg)
 {
-	if (seqNum++ == MAX_SEQ_NUM)
+	if (++seqNum == MAX_SEQ_NUM)
 		seqNum = 0;
 
 	String num = String(seqNum);
