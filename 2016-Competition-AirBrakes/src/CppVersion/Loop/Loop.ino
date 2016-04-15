@@ -25,10 +25,9 @@ const static int DENOMINATOR_OF_PERCENT = 100;
 const static int MIN_AIRBRAKE_VELOCITY = 20; // fps
 
 
-
-
 void setup() 
 {
+  
   xbee.InitializeXBee();
   sh.Initialize();
   ab.Initialize();

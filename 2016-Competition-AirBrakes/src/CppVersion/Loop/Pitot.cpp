@@ -1,5 +1,11 @@
 #include "Pitot.h"
 
+bool Pitot::Initialize()
+{
+   Wire.begin();
+   digitalWrite(RESET_PIN, HIGH); 
+   return true;
+}
 void Pitot::Update()
 {
 	havePitotData = false;
@@ -46,3 +52,26 @@ float Pitot::GetDeltaT()
 {
 	return (float)(currTime - prevTime) / MILLISEC_IN_SEC;
 }
+
+float Pitot::GetVel()
+{
+  Wire.requestFrom(8, 10);
+  
+  char buf [10];
+
+  if (Wire.requestFrom (8, 10))
+  {
+    for (byte i = 0; i < 10; i++)\
+      buf [i] = Wire.read ();
+    
+     
+    return (float)atof(buf);    
+  }
+  else
+  {
+    return 0;
+  }
+  
+}
+
+

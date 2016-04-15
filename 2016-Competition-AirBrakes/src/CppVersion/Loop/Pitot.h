@@ -1,6 +1,8 @@
 #ifndef _PITOT_H
 #define _PITOT_H
 #include "Sensor.h"
+#include <Arduino.h>
+#include <Wire.h>
 
 // --------------------------------------------------------------------------------------
 // This class holds all the values and methods for the Pitot Tube.
@@ -9,7 +11,7 @@
 class Pitot: public Sensor
 {
 public:
-  bool Initialize(){return true;}
+  bool Initialize();
 	// -----------------------------------------------------------------------------------
 	// This method is called to update the vel and dis values of the class.
 	// -----------------------------------------------------------------------------------
@@ -17,7 +19,7 @@ public:
 	// -----------------------------------------------------------------------------------
 	// This method returns the stored velocity.
 	// -----------------------------------------------------------------------------------
-	float GetVel() { return vel; }
+	float GetVel();
 	// -----------------------------------------------------------------------------------
 	// This method returns the stored displacement.
 	// -----------------------------------------------------------------------------------
@@ -38,6 +40,7 @@ private:
 	const static int MILLISEC_IN_SEC = 1000;
 	const static int MAX_12_INT = 1024;;
 	const static int PITO_ANALOG_PIN = A5;
+  const static int RESET_PIN = 10;
 
 	int dis = 0;
 	float vel = 0;
