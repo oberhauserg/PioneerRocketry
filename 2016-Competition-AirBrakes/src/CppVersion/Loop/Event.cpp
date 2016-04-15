@@ -153,7 +153,10 @@ float Event::CalcAveCalcVel()
 
 bool Event::IsDescending()
 {
-	if (aveCalcVel < -13)
+  //XBee xb;
+  //xb.InitializeXBee();
+ // xb.SendMessage("vel " + String(aveCalcVel) + "\n");
+	if (aveCalcVel < DESC_VEL_INDICATOR)
 	{
 		CalcApogee();
 		burnedOut = false;

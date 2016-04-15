@@ -32,9 +32,10 @@ public:
 private:
 	const static int MIN_INT = -2147483648;
 	const static int NUM_SAMPLES = 8;
-	const static int BURNOUT_HEIGHT = 140;
+	const static int BURNOUT_HEIGHT = 120;
 	const static int LANDED_DEVIATION = 1;
   const static int NUM_DIS_APOGEE_SAMPLES = 20;
+  const static int DESC_VEL_INDICATOR = -13;
 
 	float CalcAveDis();
 	float CalcAveVel();

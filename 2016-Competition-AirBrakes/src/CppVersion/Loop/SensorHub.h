@@ -10,7 +10,7 @@
 #ifndef _SENSOR_HUB
 #define _SENSOR_HUB
 
-#define DEBUG_SENSORS
+//#define DEBUG_SENSORS
 //#define NO_PITOT
 
 /**

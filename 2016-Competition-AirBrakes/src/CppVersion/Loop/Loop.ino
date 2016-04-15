@@ -22,7 +22,7 @@ int apogeeReached = 0;
 const static int MIN_INT = -2147483648;
 const static int ALT_PERCENT = 75;
 const static int DENOMINATOR_OF_PERCENT = 100;
-const static int MIN_AIRBRAKE_VELOCITY = 8; // fps
+const static int MIN_AIRBRAKE_VELOCITY = 20; // fps
 
 
 
@@ -91,12 +91,15 @@ void loop()
     apogeeReached = event.GetApogee();
     sd.WriteApogeeToSD(apogeeReached);
     xbee.SendMessage("Apogee " + String(apogeeReached) + "\n");
+    descending = true;
+    burnedOut = false;
   }
   else if(event.HasLanded() && !landed)
   {
     xbee.SendMessage("Landed\n");
-    descending = false;
     landed = true;
+    descending = false;
+    
   }
 
   if(burnedOut && ab.IsActive())
@@ -117,7 +120,6 @@ void loop()
   // record data
   sd.WriteToSD(sh.CalcDeltaT(), sh.GetDisRaw(), sh.GetVelRaw(), sh.GetAccRaw());
   xbee.SendData(dis, vel, millis());
- 
 }
 
 
