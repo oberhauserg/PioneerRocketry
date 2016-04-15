@@ -1,6 +1,8 @@
 //Update
 #include <Wire.h>
 
+uint32_t floatRep;
+
 void setup() {
   Serial.begin(9600);
   Wire.begin(8);
@@ -11,25 +13,31 @@ void setup() {
 }
 
 void loop() {
-  delay(100);
+  
+  Serial.println(value);
 }
 
-float value = 60.55f;
-uint32_t floatRep;
+//5V is 1023 for value. 
+float calculateSpeed(int value)
+{
+
+  return 0.00f;
+  
+}
 
 void requestEvent()
 {
   char floatString[10];
 
+  int value = analogRead(A0);
+
+  float calcedSpeed = calculateSpeed(value);
+
   dtostrf(value, 10, 1, floatString);
 
   Serial.println(value);
   Serial.println(floatString);
-
   
-
-
-  //for(int i = 0; i < 10; i++)
   Wire.write(floatString, 10);
   
   /*floatRep = value;
