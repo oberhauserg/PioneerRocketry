@@ -5,7 +5,29 @@ void Pitot::Update()
 	havePitotData = false;
 	prevTime = currTime;
 	currTime = millis();
-	int sensorValue = analogRead(PITO_ANALOG_PIN);
+
+	//Ensure a delay for at least 40 millis to allow the slave to make calculations
+	if(millis() % 100 < 60)
+	{
+	  
+		char buf [10];
+		 
+		if (Wire.requestFrom (8, 10))
+		{
+			for (byte i = 0; i < 10; i++)\
+		    	buf [i] = Wire.read ();
+		     
+		      
+		    vel = (float)atof(buf);    
+		}
+		else
+		{
+		    // The request failed. Just continue requesting.
+		}
+
+	}
+
+	//int sensorValue = analogRead(PITO_ANALOG_PIN);
 	vel = (float)sensorValue / (float)MAX_12_INT;
 	CalcDis();
 	
