@@ -13,7 +13,7 @@ byte data = 0;
 float currentValue;
 
 void loop() {
-
+  Serial.println("top of loop");
   Wire.requestFrom(8, 10);
   
   char buf [10];
