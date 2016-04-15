@@ -15,21 +15,25 @@ float currentValue;
 void loop() {
 
   Wire.requestFrom(8, 10);
-
+  
   char buf [10];
 
   if (Wire.requestFrom (8, 10))
   {
-    for (byte i = 0; i < 10; i++)
+    for (byte i = 0; i < 10; i++)\
       buf [i] = Wire.read ();
-      
+    
+     
     currentValue = (float)atof(buf);    
   }
   else
   {
     // The request failed. Just continue requesting.
   }
-  
+
+  Serial.print("Current Value: ");
+  Serial.print(currentValue);
+  Serial.print("\n");
   /*Wire.beginTransmission(8);
   //Serial.println(data);
   String floatValue = "";
