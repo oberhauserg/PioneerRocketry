@@ -21,10 +21,16 @@ void requestEvent()
 {
   char floatString[10];
 
-  dtostrf(value, 10, 3, floatString);
+  dtostrf(value, 10, 1, floatString);
 
-  for(int i = 0; i < 10; i++)
-    Wire.write(floatString[i]);
+  Serial.println(value);
+  Serial.println(floatString);
+
+  
+
+
+  //for(int i = 0; i < 10; i++)
+  Wire.write(floatString, 10);
   
   /*floatRep = value;
 
