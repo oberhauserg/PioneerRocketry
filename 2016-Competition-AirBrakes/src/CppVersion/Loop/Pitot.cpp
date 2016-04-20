@@ -33,7 +33,7 @@ void Pitot::Update()
 
 	}
 
-	//int sensorValue = analogRead(PITO_ANALOG_PIN);
+	int sensorValue = analogRead(PITO_ANALOG_PIN);
 	vel = (float)sensorValue / (float)MAX_12_INT;
 	CalcDis();
 	
