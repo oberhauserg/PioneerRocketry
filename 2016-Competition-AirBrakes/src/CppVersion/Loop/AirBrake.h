@@ -16,7 +16,7 @@ public:
 	// -----------------------------------------------------------------------------------
 	// This method will control the airBrakes with the input values below.
 	// -----------------------------------------------------------------------------------
-	void Update(int dis, float vel, float acc) {};
+	void Update(int dis, float vel, float deltaT, int goalApogee);
 	// -----------------------------------------------------------------------------------
 	// This method is called to update the vel and dis values of the class.
 	// -----------------------------------------------------------------------------------
@@ -39,10 +39,33 @@ public:
   // -----------------------------------------------------------------------------------
   bool IsActive() { return isActive; }
 private:
+  //------------------------------------------------------------------------------------
+  // This method calculates the height the rocket still is going to travel.
+  // This is rocket specific based off the mass of the specific rocket being used.
+  //------------------------------------------------------------------------------------
+  int PredictedRemaining(float vel);
+
+  //------------------------------------------------------------------------------------
+  // This method goes through the velAry and finds the two surrounding indexes of target.
+  // If the velocity equals one of the values, then it returns the first value, and -1 
+  // second. The user must check to ensure that the velocity is not larger then the max
+  // velocity in velAry and not smaller than the min value int he velAry before calling 
+  // this.
+  //------------------------------------------------------------------------------------
+  void FindIndeces(float target, int& lowerBound, int& upperBound);
+
 	const static int BRAKE_OPEN = 2000; // for use with writeMicroseconds
 	const static int BRAKE_CLOSED = 1000; // for use with writeMicroseconds
 	const static int PIN_NUM = 13; // pin num for arduino
 	const static int BASE_OF_PERCENT = 100;
+  const static int NUM_SAMPLES_IN_LOOKUP_TABLE = 20;
+  const float kP = 0.02; // used in Update, proportional gain
+  const float kD = 0.003; // used in Update, derivative gain
+  float eN, prevEN = 0; // how far is off sample
+
+  float velAry[NUM_SAMPLES_IN_LOOKUP_TABLE];
+  int heightArray[NUM_SAMPLES_IN_LOOKUP_TABLE];
+  
 
 	Servo myServo;
 	bool isActive;

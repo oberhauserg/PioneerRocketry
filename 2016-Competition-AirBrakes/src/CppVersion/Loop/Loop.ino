@@ -110,7 +110,7 @@ void loop()
     }
     else
     {
-      ab.Update(dis, vel, acc);
+      ab.Update(dis, vel, sh.CalcDeltaT(), apogeeGoal);
     }
   }
   else // Landed || Descending || burnedOut && AirBrakes inactive
