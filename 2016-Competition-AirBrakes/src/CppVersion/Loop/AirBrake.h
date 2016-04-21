@@ -54,8 +54,8 @@ private:
   //------------------------------------------------------------------------------------
   void FindIndeces(float target, int& lowerBound, int& upperBound);
 
-	const static int BRAKE_OPEN = 2000; // for use with writeMicroseconds
-	const static int BRAKE_CLOSED = 1000; // for use with writeMicroseconds
+	const static int BRAKE_OPEN = 1860; // for use with writeMicroseconds
+	const static int BRAKE_CLOSED = 965; // for use with writeMicroseconds
 	const static int PIN_NUM = 13; // pin num for arduino
 	const static int BASE_OF_PERCENT = 100;
   const static int NUM_SAMPLES_IN_LOOKUP_TABLE = 20;
