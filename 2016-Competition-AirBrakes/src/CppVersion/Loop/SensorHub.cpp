@@ -56,7 +56,7 @@ void SensorHub::Update()
   
   float unsquared = 293 * (pow(((pressure)/P0 + 1), 0.286) - 1);
  
-  velPito = 44.83 * 3.28084 * sqrt(unsquare);
+  velPito = 44.83 * 3.28084 * sqrt(unsquared);
 
   disPito += velPito * CalcDeltaT();
  

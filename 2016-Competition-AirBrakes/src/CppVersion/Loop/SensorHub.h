@@ -44,8 +44,8 @@ private:
 	const static int NUM_SENSORS = 3;
 	const static int MILLISEC_IN_SEC = 1000;
   const static int MIN_INT = -2147483648;
-  const static float P0 = 101.325;
-  const static float STATIC_P_CONST = 0.00038897965879265;
+  const float P0 = 101.325;
+  const float STATIC_P_CONST = 0.00038897965879265;
   
 
   bool haveStratoData = false;
