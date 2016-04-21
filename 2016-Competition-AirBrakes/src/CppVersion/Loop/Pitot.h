@@ -24,6 +24,10 @@ public:
 	// This method returns the stored displacement.
 	// -----------------------------------------------------------------------------------
 	int GetDis() { return dis; }
+  // -----------------------------------------------------------------------------------
+  // This method returns the stored pressure.
+  // -----------------------------------------------------------------------------------
+  int GetPressure() { return pressure; }
 	// -----------------------------------------------------------------------------------
 	// This method returns whether the Pitot is active or not.
 	// -----------------------------------------------------------------------------------
@@ -38,12 +42,15 @@ private:
 	// -----------------------------------------------------------------------------------
 	void CalcDis();
 	const static int MILLISEC_IN_SEC = 1000;
-	const static int MAX_12_INT = 1024;;
+	const static int MAX_12_INT = 1024;
 	const static int PITO_ANALOG_PIN = A5;
-  const static int RESET_PIN = 10;
+  const static int RESET_PIN = 50;
+  float DISPLACED = 0.4;
 
 	int dis = 0;
+  int curFails = 0;
 	float vel = 0;
+  float pressure = 0;
 	bool havePitotData = false;
 	long prevTime = 0;
 	long currTime = 0;

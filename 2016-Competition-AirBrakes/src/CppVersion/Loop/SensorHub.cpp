@@ -45,9 +45,20 @@ void SensorHub::Update()
 	disStrato = strato->GetDis();
 	velStrato = strato->GetVel();
 
+  //Pitot returns pressure. 
+  //Velocity requires displacement.
 	Pitot * pito = (Pitot*)(sensors[1]);
-	velPito = pito->GetVel();
-	disPito = pito->GetDis();
+  float pressure = pito->GetPressure();
+	//velPito = pito->GetVel();
+	//disPito = pito->GetDis();
+
+  float staticPressure = P0 * (1 - STATIC_P_CONST * disStrato); 
+  
+  float unsquared = 293 * (pow(((pressure)/P0 + 1), 0.286) - 1);
+ 
+  velPito = 44.83 * 3.28084 * sqrt(unsquare);
+
+  disPito += velPito * CalcDeltaT();
  
 #ifdef NO_PITOT
   velPito = velStrato;
