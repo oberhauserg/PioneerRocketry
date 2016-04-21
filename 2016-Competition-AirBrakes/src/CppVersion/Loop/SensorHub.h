@@ -1,7 +1,7 @@
 #include "XBee.h"
 #include "Sensor.h"
 #include "Stratologger.h"
-
+#include "Macros.h"
 #include "BNO.h"
 #include "Pitot.h"
 #include "Kalman.h"
@@ -10,9 +10,6 @@
 
 #ifndef _SENSOR_HUB
 #define _SENSOR_HUB
-
-#define DEBUG_SENSORS
-//#define NO_PITOT
 
 
 

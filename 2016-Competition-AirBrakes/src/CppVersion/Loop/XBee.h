@@ -1,6 +1,6 @@
 #ifndef _XBEE_H
 #define _XBEE_H
-
+#include "Macros.h"
 #include <Arduino.h>
 #include <Wire.h>
 
@@ -12,7 +12,6 @@
 // -----------------------------------------------------------------------------------
 
 // switches from sending to XBee to sending to Serial Monitor
-#define USING_SERIAL_MONITOR
 class XBee
 {
 public:

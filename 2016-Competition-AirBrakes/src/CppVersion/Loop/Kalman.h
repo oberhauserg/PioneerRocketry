@@ -1,7 +1,7 @@
 #ifndef _KALMAN_H
 #define _KALMAN_H
 
-//#define DEBUG_KALMAN
+#include "Macros.h"
 #ifdef DEBUG_KALMAN
 #include <iostream>
 #include <fstream>

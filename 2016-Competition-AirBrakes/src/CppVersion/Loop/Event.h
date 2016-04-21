@@ -1,9 +1,7 @@
 #ifndef _EVENT_H
 #define _EVENT_H
 
-//#define TESTING_EVENT
-//#define TESTING_EVENT_
-
+#include "Macros.h"
 #include "XBee.h"
 
 #ifdef TESTING_EVENT
