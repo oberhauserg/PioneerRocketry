@@ -12,35 +12,42 @@ void setup() {
 byte data = 0;
 
 float currentValue;
+float currentVelocity;
+float unsquare;
+float P0 = 101;
 
 void loop() {
-<<<<<<< .mine  Serial.println("top of loop");
-  if(millis() % 100 == 0)
-  {
       
     char buf [10];
-=======  Serial.println("top of loop");
-  Wire.requestFrom(8, 10);
->>>>>>> .theirs  
 
     if (Wire.requestFrom (9, 10))
     {
-      
       for (byte i = 0; i < 10; i++)
         buf [i] = Wire.read ();
      
-      currentValue = (float)atof(buf);    
+      currentValue = (float)atof(buf);  
+      currentValue += 0.4;
+        
     }
     else
     {
       Serial.println("FAIL!");
       // The request failed. Just continue requesting.
     }
+
+     
+
+    unsquare = 293 * (pow(((currentValue)/P0 + 1), 0.286) - 1);
+
+    if(unsquare >= 0)
+      currentVelocity = 44.83 * 2.23694 * sqrt(unsquare);
+    else
+      currentVelocity = 0;
   
-    Serial.print("Current Value: ");
-    Serial.print(currentValue);
+    Serial.print("Current Velocity: ");
+    Serial.print(currentVelocity);
     Serial.print("\n");
-  }
+
 
 
 }
