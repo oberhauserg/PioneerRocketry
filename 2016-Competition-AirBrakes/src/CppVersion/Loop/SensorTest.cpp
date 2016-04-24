@@ -68,6 +68,17 @@ char* SensorTest::ReadLine()
 
 }
 
+//--------------------------------------------------------------------
+  // Get velocity of pito. 
+  // This take the velocity read in. If it is negative, it inverts it.
+  //--------------------------------------------------------------------
+  float SensorTest::GetPitoVel()
+  {
+    if(dis < 0)
+      return - dis;
+    return dis;
+  }
+
 /*void main()
 {
 	String str;

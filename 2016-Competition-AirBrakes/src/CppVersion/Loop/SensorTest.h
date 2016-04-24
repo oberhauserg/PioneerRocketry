@@ -32,6 +32,12 @@ public:
   //---------------------------------
   void InitSD();
 
+  //--------------------------------------------------------------------
+  // Get velocity of pito. 
+  // This take the velocity read in. If it is negative, it inverts it.
+  //--------------------------------------------------------------------
+  float GetPitoVel();
+
 private:
 
 	char* ReadLine();

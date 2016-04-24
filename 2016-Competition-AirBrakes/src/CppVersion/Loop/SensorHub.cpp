@@ -78,6 +78,7 @@ void SensorHub::Update()
   disRaw = disStrato = senseT.GetDis();
   //xb.SendMessage("readValue is " + String(disStrato) + "\n");
   velStrato = velRaw = velPito = senseT.GetVel();
+  velPito = senseT.GetPitoVel();
   axRaw = ax = senseT.GetAX();
   ay = az = 0;
   deltaT = 0.05;

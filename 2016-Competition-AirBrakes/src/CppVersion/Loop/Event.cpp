@@ -180,7 +180,7 @@ bool Event::IsBurnedOut()
 
 bool Event::IsLanded()
 {
-  if(aveVel > - DESC_VEL_INDICATOR)
+  if(aveCalcVel > - DESC_VEL_INDICATOR)
   {
      descending = false;
      burnedOut = true;
