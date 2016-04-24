@@ -2,6 +2,8 @@
 #define _AIRBRAKE_H
 
 #include <Servo.h>
+#include "XBee.h"
+//#include <Arduino.h>
 // --------------------------------------------------------------------------------------
 // This class contains all the methods related to the operation of the servo.
 // --------------------------------------------------------------------------------------
@@ -24,11 +26,11 @@ public:
 	// -----------------------------------------------------------------------------------
 	// This method is called to open the Air Brakes to the BRAKE_OPEN amount. 
 	// -----------------------------------------------------------------------------------
-	void OpenBrakes() { myServo.writeMicroseconds(BRAKE_OPEN); }
+	void OpenBrakes() { myServo.writeMicroseconds(BRAKE_OPEN); percent = 100; }
 	// -----------------------------------------------------------------------------------
 	// This method is called to close the Air Brakes to the BRAKE_CLOSED amount. 
 	// -----------------------------------------------------------------------------------
-	void CloseBrakes() { myServo.writeMicroseconds(BRAKE_CLOSED); }
+	void CloseBrakes() { myServo.writeMicroseconds(BRAKE_CLOSED); percent = 0; }
 	// -----------------------------------------------------------------------------------
 	// This method is called to open the Air Brakes a set amount. 
 	// The num is an integer for the precentage the airbrakes need  to be opened. 
@@ -38,6 +40,10 @@ public:
   // This method returns whether the airbrakes were set active or not. 
   // -----------------------------------------------------------------------------------
   bool IsActive() { return isActive; }
+  // -----------------------------------------------------------------------------------
+  // This method returns the current percent the airbrakes are set at.
+  // -----------------------------------------------------------------------------------
+  int GetAirBrakePercent() { return percent; }
 private:
   //------------------------------------------------------------------------------------
   // This method calculates the height the rocket still is going to travel.
@@ -62,6 +68,10 @@ private:
   const float kP = 0.02; // used in Update, proportional gain
   const float kD = 0.003; // used in Update, derivative gain
   float eN, prevEN = 0; // how far is off sample
+
+  int percent = 0;
+
+  XBee xb;
 
   float velAry[NUM_SAMPLES_IN_LOOKUP_TABLE] {0,43.16894737,86.33789474,129.5068421,172.6757895,215.8447368,259.0136842,302.1826316,345.3515789,388.5205263,431.6894737,474.8584211,518.0273684,561.1963158,604.3652632,647.5342105,690.7031579,733.8721053,777.0410526,820.21};
 

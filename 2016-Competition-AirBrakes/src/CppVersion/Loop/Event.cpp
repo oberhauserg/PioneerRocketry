@@ -155,7 +155,7 @@ bool Event::IsDescending()
 {
   //XBee xb;
   //xb.InitializeXBee();
- // xb.SendMessage("vel " + String(aveCalcVel) + "\n");
+  //xb.SendMessage("vel " + String(aveCalcVel) + "\n");
 	if (aveCalcVel < DESC_VEL_INDICATOR)
 	{
 		CalcApogee();
@@ -180,6 +180,12 @@ bool Event::IsBurnedOut()
 
 bool Event::IsLanded()
 {
+  if(aveVel > - DESC_VEL_INDICATOR)
+  {
+     descending = false;
+     burnedOut = true;
+     return false;
+  }
 	float stdDev = CalcStandardDeviation(dis);
 	if (stdDev < LANDED_DEVIATION)
 	{

@@ -80,6 +80,7 @@ void SensorHub::Update()
   velStrato = velRaw = velPito = senseT.GetVel();
   axRaw = ax = senseT.GetAX();
   ay = az = 0;
+  deltaT = 0.05;
 /*
   if (deltaT == 0.0f)
     velStrato = (float)(disStrato - prevDisStrato) / deltaT;
@@ -95,4 +96,13 @@ void SensorHub::Update()
 void SensorHub::FilterData()
 {
 	kal.Update(&disStrato, &velPito, &ax, deltaT);
+}
+
+float SensorHub::CalcDeltaT()
+{
+#ifndef DEBUG_SENSORS
+  return (float)(currT - prevT) / MILLISEC_IN_SEC;
+#else
+  return deltaT;
+#endif
 }

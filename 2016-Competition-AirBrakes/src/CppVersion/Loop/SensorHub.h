@@ -24,7 +24,7 @@ class SensorHub
 	
 public:
 	void Initialize();
-	float CalcDeltaT(){return (float)(currT - prevT) / MILLISEC_IN_SEC;}
+	float CalcDeltaT();//{return (float)(currT - prevT) / MILLISEC_IN_SEC;}
 	void Update();
 
   int GetDis() { return disStrato; }
@@ -34,6 +34,8 @@ public:
   float GetVelBackUp() { return velStrato; }
   float GetVelRaw() { return velRaw; }
   float GetAcc() { return ax; }
+  float GetAy() { return ay; }
+  float GetAz() { return az; }
   float GetAccRaw() { return axRaw; }
 
 private: 

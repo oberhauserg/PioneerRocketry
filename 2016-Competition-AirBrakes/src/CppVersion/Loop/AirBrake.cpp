@@ -2,6 +2,7 @@
 
 bool AirBrake::Initialize()
 {
+  //xb.InitializeXBee();
 	myServo.attach(PIN_NUM);
 	myServo.writeMicroseconds(BRAKE_CLOSED);
 	return myServo.attached();
@@ -9,6 +10,7 @@ bool AirBrake::Initialize()
 
 void AirBrake::AirBrakePercent(int num)
 {
+  //xb.SendMessage("per " + String(num) + "\n");
 	if (num >= 0 && num <= BASE_OF_PERCENT)
 	{
 		int range = BRAKE_OPEN - BRAKE_CLOSED;
@@ -20,10 +22,12 @@ void AirBrake::AirBrakePercent(int num)
 void AirBrake::Update(int dis, float vel, float deltaT, int goalApogee)
 {
   prevEN = eN;
+  //xb.SendMessage("pred " + String(PredictedRemaining(vel)) + "\n");
   eN = dis + PredictedRemaining(vel) - goalApogee;
   float x = eN * ( kP + kD / deltaT ) - prevEN * kD / deltaT;
+  x = constrain(x,0,1);
   x *= 100;
-  int percent = (int)x;
+  percent = (int)x;
   AirBrakePercent(percent);
 }
 

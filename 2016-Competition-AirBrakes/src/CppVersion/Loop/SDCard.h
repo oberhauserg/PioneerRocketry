@@ -26,7 +26,7 @@ public:
 	// -----------------------------------------------------------------------------------
 	// This methods writes data to the SD card data file.
 	// -----------------------------------------------------------------------------------
-	void WriteToSD(int deltaTime, float dis, float vel, float acc);
+	void WriteToSD(int deltaTime, float dis, float vel, float ax, float ay, float az, float filteredDis, float filteredVel, float filteredAx, int airBrakePercent);
 	// -----------------------------------------------------------------------------------
 	// This methods reads the apogee value from the SD card. 
 	// It looks for a file name apogee.txt on the SD card. If it finds one, it reads
@@ -40,6 +40,10 @@ public:
   // character in the file is 'y', then the airbreaks are turned on.
   // -----------------------------------------------------------------------------------
   bool AirBrakesActive();
+  // -----------------------------------------------------------------------------------
+  // This method reads a message to the data file on the SD card.
+  // -----------------------------------------------------------------------------------
+  void WriteToDataFile(String msg);
   
 private:
 	const static int CS_PIN = 48; // pin on arduino connected to SD card

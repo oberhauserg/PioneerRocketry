@@ -28,7 +28,7 @@ String SDCard::InitializeDataFile()
 	data = SD.open(fileName, FILE_WRITE);
 	if (data)
 	{
-		data.println("Time(milliSec), PitoVelocity, StratoDisplacement, accel X");
+		data.println("Time(milliSec), PitoVelocity, StratoDisplacement, accel X, accel Y, accel Z, filtDis, filtVel, filtAx, airBrakePercent");
 		data.flush();
    return fileName + String(" opened succesfully");
 	}
@@ -56,10 +56,13 @@ bool SDCard::WriteApogeeToSD(int height)
 // -----------------------------------------------------------------------------------
 // This methods writes data to the SD card data file.
 // -----------------------------------------------------------------------------------
-void SDCard::WriteToSD(int deltaTime, float dis, float vel, float acc)
+void SDCard::WriteToSD(int deltaTime, float dis, float vel, float ax, float ay, float az, float filteredDis, float filteredVel, float filteredAx, int airBrakePercent)
 {
-	String info = String(deltaTime) + "," + String(vel) + ","
-						 + String(dis) + "," + String(acc) + "\n";
+	String info = String(deltaTime) + "," + String(vel) + "," + String(dis) 
+						 + "," + String(ax) + "," + String(ay) + "," + String(az) + "," 
+						 + String(filteredDis) + "," + String(filteredVel) + "," 
+             + String(filteredAx) + "," + String(airBrakePercent) +
+						 "\n";
 	// if the file opened okay, write to it:
 	if (data)
 	{
@@ -107,4 +110,17 @@ bool SDCard::AirBrakesActive()
   }
   return false;
 }
+
+// -----------------------------------------------------------------------------------
+  // This method reads a message to the SD card.
+  // -----------------------------------------------------------------------------------
+  void SDCard::WriteToDataFile(String msg)
+  {
+    if (data)
+    {
+      data.print(msg);
+      data.flush();
+    }
+  }
+  
 

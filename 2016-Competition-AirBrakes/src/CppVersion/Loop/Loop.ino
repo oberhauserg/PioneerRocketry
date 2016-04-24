@@ -75,16 +75,21 @@ void loop()
   if(event.HasBurnedOut() && !burnedOut)
   {
      xbee.SendMessage("Burnout\n");
+     sd.WriteToDataFile("Burnout\n");
      burnedOut = true;
-     landed = false;
+     landed = descending = false;
      if(ab.IsActive())
      {
       ab.OpenBrakes(); // initially set to max
       // update loop will take over later but we want to open quickly
       xbee.SendMessage("Opening AirBrakes\n");
+      sd.WriteToDataFile("Opening AirBrakes\n");
      }
      else
+     {
        xbee.SendMessage("AirBrake Point\n");
+       sd.WriteToDataFile("AirBrake Point\n");
+     }
      
   }
   else if(event.HasReachedApogee() && !descending)
@@ -92,14 +97,16 @@ void loop()
     apogeeReached = event.GetApogee();
     sd.WriteApogeeToSD(apogeeReached);
     xbee.SendMessage("Apogee " + String(apogeeReached) + "\n");
+    sd.WriteToDataFile("Apogee " + String(apogeeReached) + "\n");
     descending = true;
-    burnedOut = false;
+    burnedOut = landed = false;
   }
   else if(event.HasLanded() && !landed)
   {
     xbee.SendMessage("Landed\n");
+    sd.WriteToDataFile("Landed\n");
     landed = true;
-    descending = false;
+    descending = burnedOut = false;
     
   }
 
@@ -119,7 +126,7 @@ void loop()
     ab.CloseBrakes();
 
   // record data
-  sd.WriteToSD(sh.CalcDeltaT(), sh.GetDisRaw(), sh.GetVelRaw(), sh.GetAccRaw());
+  sd.WriteToSD(sh.CalcDeltaT(), sh.GetDisRaw(), sh.GetVelRaw(), sh.GetAccRaw(), sh.GetAy(), sh.GetAz(),dis, vel, acc, ab.GetAirBrakePercent());
   xbee.SendData(dis, vel, millis());
 }
 
