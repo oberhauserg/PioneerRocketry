@@ -90,7 +90,9 @@ void SensorHub::Update()
 */
 #endif
 
-  
+  disRaw = disStrato;
+  velRaw = velPito;
+  axRaw = ax;
 	FilterData();
 }
 
@@ -102,7 +104,7 @@ void SensorHub::FilterData()
 float SensorHub::CalcDeltaT()
 {
 #ifndef DEBUG_SENSORS
-  return (float)(currT - prevT) / MILLISEC_IN_SEC;
+  return deltaT; //(float)(currT - prevT) / MILLISEC_IN_SEC;
 #else
   return deltaT;
 #endif

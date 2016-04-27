@@ -28,7 +28,7 @@ String SDCard::InitializeDataFile()
 	data = SD.open(fileName, FILE_WRITE);
 	if (data)
 	{
-		data.println("Time(milliSec), PitoVelocity, StratoDisplacement, accel X, accel Y, accel Z, filtDis, filtVel, filtAx, airBrakePercent");
+		data.println("Time(milliSec), StratoDisplacement, PitoVelocity, accel X, accel Y, accel Z, filtDis, filtVel, filtAx, airBrakePercent");
 		data.flush();
    return fileName + String(" opened succesfully");
 	}
@@ -56,9 +56,9 @@ bool SDCard::WriteApogeeToSD(int height)
 // -----------------------------------------------------------------------------------
 // This methods writes data to the SD card data file.
 // -----------------------------------------------------------------------------------
-void SDCard::WriteToSD(int deltaTime, float dis, float vel, float ax, float ay, float az, float filteredDis, float filteredVel, float filteredAx, int airBrakePercent)
+void SDCard::WriteToSD(float deltaTime, float dis, float vel, float ax, float ay, float az, float filteredDis, float filteredVel, float filteredAx, int airBrakePercent)
 {
-	String info = String(deltaTime) + "," + String(vel) + "," + String(dis) 
+	String info = String(deltaTime,3) + "," + String(dis) + "," + String(vel) 
 						 + "," + String(ax) + "," + String(ay) + "," + String(az) + "," 
 						 + String(filteredDis) + "," + String(filteredVel) + "," 
              + String(filteredAx) + "," + String(airBrakePercent) +
