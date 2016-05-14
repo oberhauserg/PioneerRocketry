@@ -65,8 +65,8 @@ private:
 	const static int PIN_NUM = 13; // pin num for arduino
 	const static int BASE_OF_PERCENT = 100;
   const static int NUM_SAMPLES_IN_LOOKUP_TABLE = 20;
-  const float kP = 0.02; // used in Update, proportional gain
-  const float kD = 0.003; // used in Update, derivative gain
+  const float kP = 0.05; // used in Update, proportional gain
+  const float kD = 0.01; // used in Update, derivative gain
   float eN, prevEN = 0; // how far is off sample
 
   int percent = 0;

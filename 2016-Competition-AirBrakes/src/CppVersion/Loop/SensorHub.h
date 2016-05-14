@@ -33,9 +33,9 @@ public:
   float GetVel() { return velPito; }
   float GetVelBackUp() { return velStrato; }
   float GetVelRaw() { return velRaw; }
-  float GetAcc() { return ax; }
+  float GetAcc() { return az; }
   float GetAy() { return ay; }
-  float GetAz() { return az; }
+  float GetAx() { return ax; }
   float GetAccRaw() { return axRaw; }
 
 private: 

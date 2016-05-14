@@ -77,11 +77,13 @@ void SensorHub::Update()
   //Get disStrato here
   disRaw = disStrato = senseT.GetDis();
   //xb.SendMessage("readValue is " + String(disStrato) + "\n");
+  
   velStrato = velRaw = velPito = senseT.GetVel();
   velPito = senseT.GetPitoVel();
-  axRaw = ax = senseT.GetAX();
-  ay = az = 0;
+  axRaw = az = senseT.GetAX();
+  ay = ax = 0;
   deltaT = 0.05;
+
 /*
   if (deltaT == 0.0f)
     velStrato = (float)(disStrato - prevDisStrato) / deltaT;
@@ -92,13 +94,13 @@ void SensorHub::Update()
 
   disRaw = disStrato;
   velRaw = velPito;
-  axRaw = ax;
+  axRaw = az;
 	FilterData();
 }
 
 void SensorHub::FilterData()
 {
-	kal.Update(&disStrato, &velPito, &ax, deltaT);
+	kal.Update(&disStrato, &velPito, &az, deltaT);
 }
 
 float SensorHub::CalcDeltaT()

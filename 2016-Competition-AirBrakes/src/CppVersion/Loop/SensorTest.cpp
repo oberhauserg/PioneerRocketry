@@ -25,10 +25,13 @@ void SensorTest::Update()
 	char * tok;
   //String temp = String(strtok_r(p, ",", &i));
 	dis = String(strtok(p,",")).toFloat();
+  //Serial.print(" dis: " + String(dis));
   //xb.SendMessage("dis is " + String(dis) + "\n");
 	vel = String(strtok(NULL, ",")).toFloat();
+  //Serial.print(" vel: " + String(vel));
   //xb.SendMessage("vel is " + String(vel) + "\n");
 	ax = String(strtok(NULL, ",")).toFloat();
+ //Serial.println(" ax: " + String(ax));
   //xb.SendMessage("ax is " + String(ax) + "\n");
   //delay(2000);
 }
@@ -74,9 +77,9 @@ char* SensorTest::ReadLine()
   //--------------------------------------------------------------------
   float SensorTest::GetPitoVel()
   {
-    if(dis < 0)
-      return - dis;
-    return dis;
+    if(vel < 0)
+      return - vel;
+    return vel;
   }
 
 /*void main()
