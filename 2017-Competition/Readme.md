@@ -2,7 +2,7 @@ Welcome to the 2017 Competition repository!
 
 In order to try implementing a true software process there have been created different repositories. 
 
-1. 01_Planning 
+* 01_Planning 
   * Everything for the planning stage goes here. Hardware plans, software plans, coding standards, lifecycle stage plans. 
 2. 02_System
   * Everything for documenting the agreed upon hardware level plans goes here.
