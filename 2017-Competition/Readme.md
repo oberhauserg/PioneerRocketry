@@ -19,11 +19,12 @@ In order to try implementing a true software process there have been created dif
 8. 08_Testing
   * Results of tests, and the actual tests themselves go here. (We might not get this far. We can hope!)
 
+This folder structure was made by Esterline Avista, so it's been tried and tested. They do have more folders above just this, so maybe we can add some of those too. However, those are mainly for book-keeping purposes, which we already do in Google Drive.
 
 A couple of ground rules: 
 
 1. ***Don't make new "branches" (or directories) all willy nilly.*** It makes the repository a mess and doesn't make it clear as to where the code we need is. This can result in lost work and lost time if we can't find something we need. Just don't do it. 
-  * If we do come across a serious problem with our structure, we will have a team meating to decide the best way to fix the issue.
+  * If we do come across a serious problem with our structure, we will have a team meating to decide the best way to fix the issue. 
    
   * This problem seems to stem from using Subversion, or not knowing how to properly make branches in git. We should look into making training for git on the Wiki.
 
