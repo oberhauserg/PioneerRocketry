@@ -23,7 +23,8 @@ In order to try implementing a true software process there have been created dif
 A couple of ground rules: 
 
 1. ***Don't make new "branches" (or directories) all willy nilly.*** It makes the repository a mess and doesn't make it clear as to where the code we need is. This can result in lost work and lost time if we can't find something we need. Just don't do it. 
-  a. If we do come across a serious problem with our structure, we will have a team meating to decide the best way to fix the issue.
-  b. This problem seems to stem from using Subversion, or not knowing how to properly make branches in git. We should look into making training for git on the Wiki.
+  * If we do come across a serious problem with our structure, we will have a team meating to decide the best way to fix the issue.
+   
+  * This problem seems to stem from using Subversion, or not knowing how to properly make branches in git. We should look into making training for git on the Wiki.
 
 
