@@ -27,4 +27,4 @@ A couple of ground rules:
    
   * This problem seems to stem from using Subversion, or not knowing how to properly make branches in git. We should look into making training for git on the Wiki.
 
-
+2. Let's try using the tools that github has built in, such as the issue tracker and the wiki. Real tools like these will be used in the real world and having practice is always a good idea!
