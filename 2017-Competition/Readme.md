@@ -1,6 +1,6 @@
 Welcome to the 2017 Competition repository!
 
-In order to try implementing a true software process there have been created different repositories. 
+In order to try implementing a true software process, different directories have been created. 
 
 * Exploritory
   * Prototyping and testing ways of implementing go here. This can be as clean or as messy as we see fit. Lessons learned from this code shall be documented here as well. 
