@@ -2,6 +2,8 @@ Welcome to the 2017 Competition repository!
 
 In order to try implementing a true software process there have been created different repositories. 
 
+* Exploritory
+  * Prototyping and testing ways of implementing go here. This can be as clean or as messy as we see fit. Lessons learned from this code shall be documented here as well. 
 * 01_Planning 
   * Everything for the planning stage goes here. Hardware plans, software plans, coding standards, lifecycle stage plans. 
 2. 02_System
@@ -19,7 +21,7 @@ In order to try implementing a true software process there have been created dif
 8. 08_Testing
   * Results of tests, and the actual tests themselves go here. (We might not get this far. We can hope!)
 
-This folder structure was made by Esterline Avista, so it's been tried and tested. They do have more folders above just this, so maybe we can add some of those too. However, those are mainly for book-keeping purposes, which we already do in Google Drive.
+This folder structure was made by Esterline Avista, so it's been tried and tested. They do have more folders above just this, so maybe we can add some of those too. However, those are mainly for book-keeping purposes, which we already do in Google Drive. I have also added the Exploritory directory, which is usually in the 05_Code directory, then it becomes demoted  and moved to an Obsolete directory within 05_Code. I feel like we might not do that and go forward with the prototype code, which is bad. This forces us to start over.
 
 A couple of ground rules: 
 
