@@ -126,7 +126,7 @@ void loop()
     ab.CloseBrakes();
 
   // record data
-  sd.WriteToSD(sh.CalcDeltaT(), sh.GetDisRaw(), sh.GetVelRaw(), sh.GetAx(), sh.GetAy(), sh.GetAccRaw(),dis, vel, acc, ab.GetAirBrakePercent());
+  sd.WriteToSD(sh.CalcDeltaT(), sh.GetDisRaw(), sh.GetVelRaw(), sh.GetAccRaw(), sh.GetAy(), sh.GetAz(),dis, vel, acc, ab.GetAirBrakePercent());
   xbee.SendData(dis, vel, millis());
 }
 
